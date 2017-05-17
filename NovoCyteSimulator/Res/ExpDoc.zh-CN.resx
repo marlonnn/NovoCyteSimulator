@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddSampleData" xml:space="preserve">
+    <value>增加样本事件。</value>
+  </data>
+  <data name="AskCompactFile" xml:space="preserve">
+    <value>部分数据被删除，现在释放未使用的文件空间吗？</value>
+  </data>
+  <data name="CouldNotFindFCPlate" xml:space="preserve">
+    <value>找不到 FCPlate.sys 文件。</value>
+  </data>
+  <data name="CreateSample" xml:space="preserve">
+    <value>创建样本。</value>
+  </data>
+  <data name="DeleteSample" xml:space="preserve">
+    <value>删除样本。</value>
+  </data>
+  <data name="DeleteSampleData" xml:space="preserve">
+    <value>删除样本事件。</value>
+  </data>
+  <data name="FileDamage" xml:space="preserve">
+    <value>文件{0}非法或被损坏。</value>
+  </data>
+  <data name="FileOpendAlready" xml:space="preserve">
+    <value>文件已经被打开，只能用只读模式打开。</value>
+  </data>
+  <data name="FileOpenFromCD" xml:space="preserve">
+    <value>文件从{0}打开。
+它是只读的并且不能继续实验。</value>
+  </data>
+  <data name="FileReadOnly" xml:space="preserve">
+    <value>文件只读，不能继续实验。</value>
+  </data>
+  <data name="ImportSampleData" xml:space="preserve">
+    <value>导入样本事件。</value>
+  </data>
+  <data name="OverWriteSampleData" xml:space="preserve">
+    <value>重写样本事件。</value>
+  </data>
+  <data name="SaveFailedCouldNotFindFile" xml:space="preserve">
+    <value>不能找到文件{0}，保存失败。</value>
+  </data>
+  <data name="SaveFileFailed" xml:space="preserve">
+    <value>文件保存失败。</value>
+  </data>
+  <data name="UpdateSampleAnalysis" xml:space="preserve">
+    <value>更新样本分析。</value>
+  </data>
+  <data name="UpdateSampleSettings" xml:space="preserve">
+    <value>更新样本设置。</value>
+  </data>
+  <data name="SaveAsFileOpened" xml:space="preserve">
+    <value>文件保存失败。
+文件{0}可能已经被打开。</value>
+  </data>
+  <data name="StrParameterNotCompactible" xml:space="preserve">
+    <value>某些未采集样本的参数设置跟当前仪器型号不匹配，将按照当前仪器型号更改。</value>
+  </data>
+  <data name="ModifySWVersionLarger" xml:space="preserve">
+    <value>该文件由更新版本软件生成或修改，将使用只读模式打开。</value>
+  </data>
+  <data name="GeneratedByNewerSWVersion" xml:space="preserve">
+    <value>该文件由更新版本 {1} 软件生成或修改，因此无法打开。请升级到最新版本软件后重试。</value>
+  </data>
+  <data name="EventsDataBroken" xml:space="preserve">
+    <value>样本 {0} 的事件数据已损坏。</value>
+  </data>
+  <data name="LoadEventsFailed" xml:space="preserve">
+    <value>加载样本 {0} 的事件数据失败，请检查实验文件 {1} 是否存在。</value>
+  </data>
+  <data name="FilePartiallyDamage" xml:space="preserve">
+    <value>文件{0}已损坏，仅部分数据被加载。</value>
+  </data>
+  <data name="CheckingFileIntegrity" xml:space="preserve">
+    <value>检查实验文件完整性...</value>
+  </data>
+  <data name="FileIntegrityCheckFailed" xml:space="preserve">
+    <value>由于在保存数据到磁盘时系统崩溃或电源故障，文件已经损坏。该实验文件无法继续保存数据，将使用只读模式打开。</value>
+  </data>
+</root>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--复制此文档各种Ioc定义方式到需要的地方-->
+<objects xmlns="http://www.springframework.net">
+
+  <object name="novoCyteSimulatorForm" type="NovoCyteSimulator.NovoCyteSimulatorForm, NovoCyteSimulator">
+    <constructor-arg ref="config"/>
+    <constructor-arg value="\Config\simulatorConfig.json"/>
+    <property name="_sampleData" ref="sampleData"/>
+    
+    <property name="_runUSBDevice" ref="_runUSBDevice"/>
+  </object>
+
+  <object name="sampleData" type="NovoCyteSimulator.ExpClass.SampleData, NovoCyteSimulator">
+  </object>
+</objects>

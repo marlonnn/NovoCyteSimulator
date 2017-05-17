@@ -1,0 +1,606 @@
+{
+  "config": {
+    "chlx": [ 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3 ], // 通道触发激光器
+    "chfx": [ 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7 ], // 通道滤光片
+    "mxd": { // 荧光触发相关参数
+      "A": {
+        "wpos": [ // 窗口位置参数
+          // L1  L2   L3   L4
+          [ 20, 200, 380, 560 ], // 相对于L1触发的窗口位置
+          [ 20, 200, 380, 560 ], // 相对于L2触发的窗口位置
+          [ 20, 200, 380, 560 ], // 相对于L3触发的窗口位置
+          [ 20, 200, 380, 560 ] // 相对于L4触发的窗口位置
+        ],
+        "wdelta": [ // 计算窗口拓宽点数
+          // PD  L2  Lx
+          [ 40, 40, 40 ], // 相对于L1触发的窗口拓宽点数
+          [ 40, 40, 40 ], // 相对于L2触发的窗口拓宽点数
+          [ 40, 40, 40 ], // 相对于L3触发的窗口拓宽点数
+          [ 40, 40, 40 ] // 相对于L4触发的窗口拓宽点数
+        ],
+        "threshold": [ // 识别门限
+          // WCT    DT
+          [ 6400, 6400 ], // FSC或SSC触发时
+          [ 6400, 6400 ] // 荧光触发时
+        ]
+      }
+    },
+    "pmt": { // PMT相关参数
+      "masksel": 65535, // PMT选择码位,bitx对应PMTx使能,0表示未选择,1表示选择
+      //  PMT1 PMT2 PMT3 PMT4 PMT5 PMT6 PMT7 PMT8
+      "voltage1": [ 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0 ], // SBoard-1 PMT电压
+      "voltage2": [ 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0 ], // SBoard-2 PMT电压
+      "voltage3": [ 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0 ], // SBoard-3 PMT电压
+      "voltage4": [ 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0 ] // SBoard-4 PMT电压
+    },
+    "mon1": {
+      "number": 31,
+      "threshold": {
+        "U1": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U2": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U3": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U4": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U5": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U6": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U7": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U8": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U9": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U10": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U11": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U12": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U13": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U14": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U15": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U16": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U17": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U18": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U19": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U20": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U21": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U22": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U23": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U24": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U25": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U26": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U27": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U28": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U29": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U30": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        },
+        "U31": {
+          "low": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          },
+          "high": {
+            "ischk": false,
+            "value": [ 0.0, 0.0, 0.1 ]
+          }
+        }
+      },
+      "scale": {
+        "U1": {
+          "k": 1.0,
+          "b": 0
+        }, // (A) AD1_+8V_I
+        "U2": {
+          "k": -39.2,
+          "b": 0
+        }, // (V) AD1_-80V
+        "U3": {
+          "k": 1.0,
+          "b": 0
+        }, // (A) AD2_+8V_I
+        "U4": {
+          "k": -39.2,
+          "b": 0
+        }, // (V) AD2_-80V
+        "U5": {
+          "k": 1.0,
+          "b": 0
+        }, // (A) AD3_+8V_I
+        "U6": {
+          "k": -39.2,
+          "b": 0
+        }, // (V) AD3_-80V
+        "U7": {
+          "k": 1.0,
+          "b": 0
+        }, // (A) AD4_+8V_I
+        "U8": {
+          "k": -39.2,
+          "b": 0
+        }, // (V) AD4_-80V
+        "U9": {
+          "k": -39.2,
+          "b": 0
+        }, // (V) -80V
+        "U10": {
+          "k": 20.0,
+          "b": 0
+        }, // (A) -80V_I
+        "U11": {
+          "k": -2.0,
+          "b": 0
+        }, // (V) -4V
+        "U12": {
+          "k": 0.5,
+          "b": 0
+        }, // (A) -4V_I
+        "U13": {
+          "k": 1.0,
+          "b": 0
+        }, // (V) Fan1
+        "U14": {
+          "k": 1.0,
+          "b": 0
+        }, // (V) Fan_d
+        "U15": {
+          "k": 1.0,
+          "b": 0
+        }, // (V) Fan2
+        "U16": {
+          "k": 1.0,
+          "b": 0
+        }, // (V) Fan3
+        "U17": {
+          "k": 11.0,
+          "b": 0
+        }, // (V) +24V
+        "U18": {
+          "k": 4.3,
+          "b": 0
+        }, // (V) +8V
+        "U19": {
+          "k": 3.333,
+          "b": 0
+        }, // (A) +8V_I
+        "U20": {
+          "k": 5.7,
+          "b": 0
+        }, // (V) +12V
+        "U21": {
+          "k": 1.667,
+          "b": 0
+        }, // (A) +12V_I
+        "U22": {
+          "k": 2.0,
+          "b": 0
+        }, // (V) +5VD
+        "U23": {
+          "k": 100.0,
+          "b": 0
+        }, // (A) +5Vo
+        "U24": {
+          "k": 1.0,
+          "b": 0
+        }, // (V) +3.3VD
+        "U25": {
+          "k": 50.0,
+          "b": 0
+        }, // (A) +3.3Vo
+        "U26": {
+          "k": 1.0,
+          "b": 0
+        }, // (V) +2.5VD
+        "U27": {
+          "k": 50.0,
+          "b": 0
+        }, // (A) +2.5Vo
+        "U28": {
+          "k": 1.0,
+          "b": 0
+        }, // (V) +0.9VD
+        "U29": {
+          "k": 50.0,
+          "b": 0
+        }, // (A) +0.9Vo
+        "U30": {
+          "k": 1.0,
+          "b": 0
+        }, // (V) +1.8VD
+        "U31": {
+          "k": 1.0,
+          "b": 0
+        } // (V) +2.5Vo2
+      }
+    },
+    "mon2": {
+      "number": 8,
+      "threshold": "default",
+      "scale": {
+        "P1": {
+          "k": 80,
+          "b": -135
+        }, // 压力传感器1转换系数
+        "P2": {
+          "k": 80,
+          "b": -135
+        }, // 压力传感器2转换系数
+        "P3": {
+          "k": 80,
+          "b": -135
+        }, // 压力传感器3转换系数
+        "P4": {
+          "k": 80,
+          "b": -135
+        }, // 压力传感器4转换系数
+        "U1": {
+          "k": 0.5,
+          "b": 0
+        }, // (A) +12VD_I
+        "U2": {
+          "k": 0.5,
+          "b": 0
+        }, // (A) +12VF_I
+        "U3": {
+          "k": 0.5,
+          "b": 0
+        }, // (A) +24VD
+        "U4": {
+          "k": 1.0,
+          "b": 0
+        } // (V) VREF
+      }
+    },
+    "mon3": {
+      "number": 4,
+      "threshold": {
+        "waste": {
+          "high": {
+            "ischk": true,
+            "value": [ 3040.0, 3200.0, 30.0 ]
+          }
+        }, // 废液的警告和错误门限
+        "novorinse": {
+          "low": {
+            "ischk": true,
+            "value": [ 221.0, 163.2, 8.0 ]
+          }
+        }, // NovoRinse的警告和错误门限
+        "novosheath": {
+          "low": {
+            "ischk": true,
+            "value": [ 975.0, 775.0, 30.0 ]
+          }
+        }, // NovoSheath的警告和错误门限
+        "novoclean": {
+          "low": {
+            "ischk": true,
+            "value": [ 221.0, 163.2, 8.0 ]
+          }
+        } // NovoClean的警告和错误门限
+      },
+      "scale": {
+        "waste": {
+          "k": 1.0,
+          "b": 0
+        }, // 废液的转换系数
+        "novorinse": {
+          "k": 1.0,
+          "b": 0
+        }, // NovoRinse的转换系数
+        "novosheath": {
+          "k": 1.0,
+          "b": 0
+        }, // NovoSheath的转换系数
+        "novoclean": {
+          "k": 1.0,
+          "b": 0
+        } // NovoClean的转换系数
+      }
+    },
+    "laser": [ // laser相关配置参数
+      { // Laser 1
+        "typeis": "405nm", // 激光器类型
+        "autostart": false, // 开机是否自动出光
+        "mode": "DIGITAL", // 模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"
+        "power": 20.0 // 输出功率,单位:mW
+      },
+      { // Laser 2
+        "typeis": "488nm", // 激光器类型
+        "autostart": false, // 开机是否自动出光
+        "mode": "DIGITAL", // 模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"
+        "power": 20.0 // 输出功率,单位:mW
+      },
+      { // Laser 3
+        "typeis": "640nm", // 激光器类型
+        "autostart": false, // 开机是否自动出光
+        "mode": "DIGITAL", // 模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"
+        "power": 20.0 // 输出功率,单位:mW
+      },
+      { // Laser 4
+        "typeis": "561nm", // 激光器类型
+        "autostart": false, // 开机是否自动出光
+        "mode": "DIGITAL", // 模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"
+        "power": 20.0 // 输出功率,单位:mW
+      }
+    ],
+    "SystemInfo": {
+      "CompanyName": "ACEA Biosciences, Inc.", //公司名称
+      "SystemName": "NovoCyte", //仪器名称 
+      "SystemType" :"3000", //仪器型号
+      "SerialNumber": "451151120437", //仪器序列号
+      "ProductionDate": "2014-10-25", //仪器生产日期
+      "FPGAFirmwareVersion": "Ver05.13.40.13", //FPGA版本
+      "SystemFirmwareVersion":  "V4.7.6.10E",  //System Firmware版本
+      "NIOSFirmwareVersion": "V3.14.6", //仪器NIOS-II Firmware版本号
+      "NIOSFirmwareType": "Preview", // Firmware 类型
+      "NIOSFirmwareBulidDate": "Mar 13 2017", //Nios-II Firmware编译日期
+      "HardwareVersion": "V3.4", //Hardware版本
+      "PCBVersion": "V3.3", //PCB版本号
+      "FluidTimingVersion": "V4.0.2", // 流体时序版本
+      "PCBSN": "123456789",  //主板序列号 
+      "PartFirmwareVersion": "V4.0.2" // 副版本号 
+    }
+  }
+}

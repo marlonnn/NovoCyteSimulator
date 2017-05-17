@@ -1,0 +1,138 @@
+﻿using NovoCyteSimulator.Messages;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NovoCyteSimulator.Protocols.Messages
+{
+    //读取仪器状态
+    public class C11 : CBase
+    {
+
+        public C11(byte message)
+        {
+            this.message = message;
+        }
+
+        public byte[] CreateDeviceWorkingStateParam()
+        {
+            byte[] param = new byte[35];
+            byte[] M1 = new byte[4];
+            int workMode = (int)config.Device.SystemMainWorkMode;
+            M1[0] = (byte)(workMode);
+            M1[1] = (byte)(workMode >> 8);
+            M1[2] = (byte)(workMode >> 16);
+            M1[4] = (byte)(workMode >> 24);
+            Array.Copy(M1, 0, param, 0, 4);
+
+            byte[] M2 = new byte[4];
+            int state = 0;
+            switch (config.Device.SystemMainWorkMode)
+            {
+                case Equipment.Device.ESystemMainWorkMode.WM_Testing:
+                    state = (int)config.Device.MeasState;
+                    M2[0] = (byte)(state);
+                    M2[1] = (byte)(state >> 8);
+                    M2[2] = (byte)(state >> 16);
+                    M2[4] = (byte)(state >> 24);
+                    break;
+                case Equipment.Device.ESystemMainWorkMode.WM_FlowMaintenance:
+                    state = (int)config.Device.FlowMaintainMode;
+                    M2[0] = (byte)(state);
+                    M2[1] = (byte)(state >> 8);
+                    M2[2] = (byte)(state >> 16);
+                    M2[4] = (byte)(state >> 24);
+                    break;
+                case Equipment.Device.ESystemMainWorkMode.WM_FirstPriming:
+                case Equipment.Device.ESystemMainWorkMode.WM_Drain:
+                    //M2 - H | M2 - L
+                    //INT16U | INT16U
+                    //M2 - H为M2的高字节,0表示执行完成,1表示执行中
+                    //M2 - L为M2的低字节,表示执行的步骤
+                    //M2 = 0表示等待上位机命令
+                    break;
+                case Equipment.Device.ESystemMainWorkMode.WM_ErrorHandle:
+                    //M2为错误代码值，表示正在执行的错误处理
+                    break;
+                case Equipment.Device.ESystemMainWorkMode.WM_ShutDown:
+                    //M2 - H | M2 - L
+                    //INT16U | INT16U
+                    //M2 - H为M2的高字节,0表示执行完成,1表示执行中
+                    //M2 - L为M2的低字节,表示执行的步骤
+                    //M2 = 0表示正常关机流程
+                    break;
+            }
+            Array.Copy(M2, 0, param, 4, 4);
+
+            //当前警告数
+            byte[] W = new byte[2];
+            Array.Copy(W, 0, param, 8, 2);
+
+            //当前错误个数
+            byte[] E = new byte[2];
+            Array.Copy(E, 0, param, 10, 2);
+
+            //测试开始时间
+            byte[] T = new byte[4];
+            Array.Copy(T, 0, param, 12, 4);
+
+            //测试样本量
+            byte[] V = new byte[4];
+            Array.Copy(V, 0, param, 16, 4);
+
+            //重力传感器检测是否使能(0：关闭，1：开启)
+            //byte C = novoCyteConfig.Config.Device.GravitySensorDetectionEnable;
+            param[20] = config.Device.GravitySensorDetectionEnable;
+
+            //流程执行的节拍数
+            byte[] t1 = new byte[4];
+            Array.Copy(t1, 0, param, 21, 4);
+
+            //总节拍数
+            byte[] t2 = new byte[4];
+            Array.Copy(t2, 0, param, 25, 4);
+
+            //AutoSampler联机状态
+            param[29] = (byte)config.Device.AutoSampleConnectStateType;
+
+            //QC状态
+            param[30] = (byte)config.Device.QCStateType;
+
+            //子状态
+            byte[] M3 = new byte[4];
+
+            int M2State = BitConverter.ToInt32(M2, 0);
+            if (M2State == (int)config.Device.BoostingState)
+            {
+                state = (int)config.Device.BoostingState;
+                M3[0] = (byte)(state);
+                M3[1] = (byte)(state >> 8);
+                M3[2] = (byte)(state >> 16);
+                M3[4] = (byte)(state >> 24);
+            }
+            else if (M2State == (int)config.Device.TestingState)
+            {
+                state = (int)config.Device.TestingState;
+                M3[0] = (byte)(state);
+                M3[1] = (byte)(state >> 8);
+                M3[2] = (byte)(state >> 16);
+                M3[4] = (byte)(state >> 24);
+            }
+            Array.Copy(M3, 0, param, 31, 4);
+            return param;
+        }
+
+        public override bool Decode(byte[] buf)
+        {
+            return this.Decode(message, buf, out parameter);
+        }
+
+        public override byte[] Encode()
+        {
+            byte[] param = CreateDeviceWorkingStateParam();
+            return this.Encode(message, param);
+        }
+    }
+}

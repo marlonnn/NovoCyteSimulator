@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--复制此文档各种Ioc定义方式到需要的地方-->
+<objects xmlns="http://www.springframework.net">
+  
+  <object name="config" type="NovoCyteSimulator.Config, NovoCyteSimulator">
+    <property name="SystemInfo" ref="SystemInfo"/>
+    <property name="AutoSample" ref="AutoSample"/>
+    <property name="Weight" ref="Weight"/>
+    <property name="Device" ref="Device"/>
+    <property name="LaserConfig" ref="LaserConfig"/>
+  </object>
+  
+  <object name="SystemInfo" type="NovoCyteSimulator.Equipment.SystemInfo, NovoCyteSimulator">
+    <property name="CompanyName" value="ACEA Biosciences, Inc."/><!--公司名称-->
+    <property name="SystemName" value="NovoCyte"/><!--仪器名称-->
+    <property name="SystemType" value="3000"/><!--仪器型号-->
+    <property name="SerialNumber" value="451151120437"/><!--仪器序列号-->
+    <property name="ProductionDate" value="2014-10-25"/><!--仪器生产日期-->
+    <property name="FPGAFirmwareVersion" value="Ver05.13.40.13"/><!--FPGA版本-->
+    <property name="SystemFirmwareVersion" value="V4.7.6.10E"/><!--System Firmware版本-->
+    <property name="NIOSFirmwareVersion" value="V3.14.6"/><!--仪器NIOS-II Firmware版本号-->
+    <property name="NIOSFirmwareType" value="Preview"/><!--Firmware 类型-->
+    <property name="NIOSFirmwareBulidDate" value="Mar 13 2017"/><!--Nios-II Firmware编译日期-->
+    <property name="HardwareVersion" value="V3.4"/><!--Hardware版本-->
+    <property name="PCBVersion" value="V3.3"/><!--PCB版本号-->
+    <property name="FluidTimingVersion" value="V4.0.2"/><!--流体时序版本-->
+    <property name="PCBSN" value="123456789"/><!--主板序列号-->
+    <property name="PartFirmwareVersion" value="V4.0.2"/><!--副版本号-->
+  </object>
+  
+  <object name="AutoSample" type="NovoCyteSimulator.Equipment.AutoSample, NovoCyteSimulator">
+    <property name="ConnectStateType" value= "1"/><!--0 AutoSampler不存在; 1 NovoSampler已连接,上电; 2 AutoSampler已连接,断电; 3 NovoSampler Pro已连接,上电-->
+    <property name="CompanyName" value="ACEA Biosciences, Inc."/><!--公司名称-->
+    <property name="SystemName" value="NovoCyte"/><!--仪器名称-->
+    <property name="SystemType" value="3000"/><!--仪器型号-->
+    <property name="SerialNumber" value="451151120437"/><!--仪器序列号-->
+    <property name="ProductionDate" value="2014-10-25"/><!--仪器生产日期-->
+    <property name="FirmwareVersion" value="V4.7.6.10E"/><!--Firmware版本-->
+    <property name="FirmwareType" value="Preview"/><!--Firmware 类型-->
+    <property name="FirmwareBuildDate" value="Mar 13 2017"/><!--Firmware编译日期-->
+    <property name="HardwareVersion" value="V3.4"/><!--Hardware版本-->
+    <property name="PCBVersion" value="V3.4"/><!--PCB版本号-->
+  </object>
+  
+  <object name="Weight" type="NovoCyteSimulator.Equipment.Weight, NovoCyteSimulator">
+    <property name="CompanyName" value="ACEA Biosciences, Inc."/><!--公司名称-->
+    <property name="SystemName" value="NovoCyte"/><!--仪器名称-->
+    <property name="SystemType" value="3000"/><!--仪器型号-->
+    <property name="SerialNumber" value="451151120437"/><!--仪器序列号-->
+    <property name="ProductionDate" value="2014-10-25"/><!--仪器生产日期-->
+    <property name="FirmwareVersion" value="V4.7.6.10E"/><!--Firmware版本-->
+    <property name="FirmwareType" value="Preview"/><!--Firmware 类型-->
+    <property name="FirmwareBuildDate" value="Mar 13 2017"/><!--Firmware编译日期-->
+    <property name="HardwareVersion" value="V3.4"/><!--Hardware版本-->
+    <property name="PCBVersion" value="V3.4"/><!--PCB版本号-->
+  </object>
+
+  <object name="Device" type="NovoCyteSimulator.Equipment.Device, NovoCyteSimulator">
+    <property name="SystemMainWorkMode" value="1"/><!--仪器所处工作模式-->
+    <!--Dictionary-->
+    <property name="SystemWorkModeIntervalDic">
+      <dictionary>
+        <entry key="Power Up Init" value= "WM_PowerUpInit"/><!--系统开机初始化-->
+        <entry key="Idle" value= "WM_Idle"/><!--待机中-->
+        <entry key="Testing" value= "WM_Testing"/><!--测试中-->
+        <entry key="Flow Maintenance" value= "WM_FlowMaintenance"/><!--液路维护中-->
+        <entry key="Debug" value= "WM_Debug"/><!--调试模式中-->
+        <entry key="Error Handle" value= "WM_ErrorHandle"/><!--错误处理中-->
+        <entry key="Motor Running" value= "WM_MotorRunning"/><!--电机运动中-->
+        <entry key="Sleep" value= "WM_Sleep"/><!--休眠中-->
+        <entry key="Shut Down" value= "WM_ShutDown"/><!--关机中-->
+        <entry key="First Priming" value= "WM_FirstPriming"/><!--第一次灌注-->
+        <entry key="Drain" value= "WM_Drain"/><!--排空-->
+        <entry key="Sleep Enter" value= "WM_SleepEnter"/><!--进入休眠-->
+        <entry key="Sleep Quit" value= "WM_SleepQuit"/><!--退出休眠-->
+        <entry key="Decontamination" value= "WM_Decontamination"/><!--消毒-->
+      </dictionary>
+    </property>
+    
+    <!--Dictionary 系统支持功能字典-->
+    <property name="SystemFunctionDic">
+      <dictionary>
+        <entry key="Has_Query" value= "true"/><!--查询所有支持功能-->
+        <entry key="Has_FT" value= "true"/><!--荧光触发-->
+        <entry key="Has_PID" value= "true"/><!--PID功能-->
+        <entry key="Has_AutoResumePressure" value= "true"/><!--压力自动恢复-->
+        <entry key="Has_ShutWithCleanSIP" value= "true"/><!--关机清洗样本针-->
+        <entry key="Has_HeightCheck" value= "true"/><!--托盘及Plate高度检测-->
+        <entry key="Mod1us" value= "true"/><!--节拍为1us-->
+        <entry key="Has_FMIPump" value= "true"/><!--使用PMI泵-->
+        <entry key="Has_Decontaminate" value= "true"/><!--消毒功能-->
+        <entry key="Has_AdjustThresholdRealTime" value= "true"/><!--采集时调节阈值-->
+        <entry key="Has_FLChannelCount" value= "true"/><!--C22 荧光通道个数，不支持则为默认 13-->
+      </dictionary>
+    </property>
+    
+    <property name="MeasState" value="0"/><!--仪器状态-->
+    <property name="WarningNumber" value="0"/><!--当前警告个数-->
+    <property name="ErrorNumber" value="0"/><!--错误个数-->
+    <property name="StartTime" value="0"/><!--开始测试时间(单位：ms)-->
+    <property name="TestSampleSize" value="0"/><!--测试样本量(单位：uL)-->
+    <property name="GravitySensorDetectionEnable" value="0"/><!--重力传感器检测是否使能(0：关闭，1：开启)-->
+    <property name="Ticks" value="0"/><!--流程执行的节拍数-->
+    <property name="TotalTicks" value="0"/> <!--总节拍数-->
+    <property name="AutoSampleConnectStateType" value="1"/><!--AutoSampler联机状态-->
+    <property name="QCStateType" value="0"/><!--QC状态-->
+    <property name="BoostingState" value="0"/><!--子状态-->
+    <property name="TestingState" value="0"/><!--子状态-->
+    <property name="WeightType" value="0"/><!--流体车类型-->
+    <property name="PMT" ref="PMT"/>
+    <property name="Laser">
+      <list>
+        <ref object="Laser1" />
+        <ref object="Laser2" />
+        <ref object="Laser3" />
+        <ref object="Laser4" />
+      </list>
+    </property>
+  </object>
+  <object name="Laser1" type="NovoCyteSimulator.Equipment.LaserParas, NovoCyteSimulator">
+    <property name="Typeis" value="405nm"/> <!--激光器类型-->
+    <property name="AutoStart" value="false"/> <!--开机是否自动出光-->
+    <property name="Mode" value="DIGITAL"/> <!--模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"-->
+    <property name="Power" value="20.0"/> <!--输出功率,单位:mW-->
+  </object>
+  <object name="Laser2" type="NovoCyteSimulator.Equipment.LaserParas, NovoCyteSimulator">
+    <property name="Typeis" value="488nm"/><!--激光器类型-->
+    <property name="AutoStart" value="false"/><!--开机是否自动出光-->
+    <property name="Mode" value="DIGITAL"/><!--模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"-->
+    <property name="Power" value="20.0"/><!--输出功率,单位:mW-->
+  </object>
+  <object name="Laser3" type="NovoCyteSimulator.Equipment.LaserParas, NovoCyteSimulator">
+    <property name="Typeis" value="640nm"/><!--激光器类型-->
+    <property name="AutoStart" value="false"/><!--开机是否自动出光-->
+    <property name="Mode" value="DIGITAL"/><!--模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"-->
+    <property name="Power" value="20.0"/><!--输出功率,单位:mW-->
+  </object>
+  <object name="Laser4" type="NovoCyteSimulator.Equipment.LaserParas, NovoCyteSimulator">
+    <property name="Typeis" value="561nm"/><!--激光器类型-->
+    <property name="AutoStart" value="false"/><!--开机是否自动出光-->
+    <property name="Mode" value="DIGITAL"/><!--模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"-->
+    <property name="Power" value="20.0"/><!--输出功率,单位:mW-->
+  </object>
+  
+  <object name="PMT" type="NovoCyteSimulator.Equipment.PMT, NovoCyteSimulator">
+    <property name="MaskSel" value="63"/>
+    <!--PMT选择码位,bitx对应PMTx使能,0表示未选择,1表示选择-->
+    <property name="Voltage"><!--PMT电压-->
+      <list>
+        <value>5.0</value>
+        <value>5.0</value>
+        <value>5.0</value>
+        <value>5.0</value>
+        <value>5.0</value>
+        <value>5.0</value>
+        <value>5.0</value>
+        <value>5.0</value>
+      </list>
+    </property>
+  </object>
+  
+  <object name="LaserConfig" type="NovoCyteSimulator.Equipment.LaserConfig, NovoCyteSimulator">
+    <!--Dictionary-->
+    <property name="LaserChannelIDDic">
+      <dictionary key-type="NovoCyteSimulator.Equipment.LaserType" value-type="NovoCyteSimulator.Equipment.FLChannel">
+        <entry key="nm405nm488nm640" value-ref="channelID1"/>
+        <entry key="nm405nm561nm488" value-ref="channelID2"/>
+        <entry key="nm488nm561nm640" value-ref="channelID3" />
+      </dictionary>
+    </property>
+  </object>
+  
+  <!--405/488/640 system-->
+  <object name="channelID1" type="NovoCyteSimulator.Equipment.FLChannel, NovoCyteSimulator">
+    <property name="ChannelID">
+      <list>
+        <value>FSC</value>
+        <value>SSC</value>
+        <value>BL1</value>
+        <value>BL2</value>
+        <value>BL3</value>
+        <value>BL4</value>
+        <value>BL5</value>
+        <value>RL1</value>
+        <value>RL2</value>
+        <value>VL1</value>
+        <value>VL2</value>
+        <value>VL3</value>
+        <value>VL4</value>
+        <value>VL5</value>
+        <value>VL6</value>
+      </list>
+    </property>
+  </object>
+  <!--405/561/488 system-->
+  <object name="channelID2" type="NovoCyteSimulator.Equipment.FLChannel, NovoCyteSimulator">
+    <property name="ChannelID">
+      <list>
+        <value>FSC</value>
+        <value>SSC</value>
+        <value>VL1</value>
+        <value>VL3</value>
+        <value>YL1</value>
+        <value>VL5</value>
+        <value>YL3</value>
+        <value>BL4</value>
+        <value>VL6</value>
+        <value>YL4</value>
+        <value>VL2</value>
+        <value>BL1</value>
+        <value>VL4</value>
+        <value>YL2</value>
+        <value>BL3</value>
+      </list>
+    </property>
+  </object>
+  <!--488/561/640 system-->
+  <object name="channelID3" type="NovoCyteSimulator.Equipment.FLChannel, NovoCyteSimulator">
+    <property name="ChannelID">
+      <list>
+        <value>FSC</value>
+        <value>SSC</value>
+        <value>BL2</value>
+        <value>YL1</value>
+        <value>BL3</value>
+        <value>YL2</value>
+        <value>BL6</value>
+        <value>YL5</value>
+        <value>RL3</value>
+        <value>YL4</value>
+        <value>RL2</value>
+        <value>BL1</value>
+        <value>BL4</value>
+        <value>YL3</value>
+        <value>RL1</value>
+      </list>
+    </property>
+  </object> 
+  
+</objects>
