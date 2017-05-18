@@ -182,6 +182,7 @@
     <Compile Include="Protocols\Messages\C03.cs" />
     <Compile Include="Protocols\Messages\C11.cs" />
     <Compile Include="Protocols\Messages\C13.cs" />
+    <Compile Include="Protocols\Messages\C14.cs" />
     <Compile Include="Protocols\Messages\C18.cs" />
     <Compile Include="Protocols\Messages\C20.cs" />
     <Compile Include="Protocols\Messages\C21.cs" />
@@ -190,8 +191,10 @@
     <Compile Include="Protocols\Messages\C25.cs" />
     <Compile Include="Protocols\Messages\C26.cs" />
     <Compile Include="Protocols\Messages\C27.cs" />
+    <Compile Include="Protocols\Messages\C58.cs" />
     <Compile Include="Protocols\Messages\C5D.cs" />
     <Compile Include="Protocols\Messages\C5F.cs" />
+    <Compile Include="Protocols\Messages\C6A.cs" />
     <Compile Include="Protocols\Messages\C78.cs" />
     <Compile Include="Protocols\Messages\CBase.cs" />
     <Compile Include="Equipment\Laser.cs" />
@@ -205,6 +208,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protocols\Messages\CEC.cs" />
+    <Compile Include="Protocols\Messages\CEF.cs" />
     <Compile Include="Res\ExpDoc.Designer.cs" />
     <Compile Include="USBSimulator\RunUSBDevice.cs" />
     <Compile Include="USBSimulator\USBDevice.cs" />

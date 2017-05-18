@@ -25,7 +25,7 @@
   </appender>
 
   <appender name="SendFileAppender" type="log4net.Appender.RollingFileAppender">
-    <file value="./log/Simulator.send" />
+    <file value="./log/Simulator.transfer" />
     <appendToFile value="true" />
     <rollingStyle value="Date" />
     <threshold value="DEBUG"/>

@@ -10,7 +10,7 @@ namespace NovoCyteSimulator.Protocols.Messages
     public class C78 : CBase
     {
         public byte M { set; get; } //上位发来的命令
-        public byte R { private set; get; } //0 不接收,1 接收
+        public byte R { set; get; } //0 不接收,1 接收
 
         public C78(byte message)
         {

@@ -24,7 +24,7 @@ namespace NovoCyteSimulator.Protocols.Messages
             M1[0] = (byte)(workMode);
             M1[1] = (byte)(workMode >> 8);
             M1[2] = (byte)(workMode >> 16);
-            M1[4] = (byte)(workMode >> 24);
+            M1[3] = (byte)(workMode >> 24);
             Array.Copy(M1, 0, param, 0, 4);
 
             byte[] M2 = new byte[4];
@@ -36,14 +36,14 @@ namespace NovoCyteSimulator.Protocols.Messages
                     M2[0] = (byte)(state);
                     M2[1] = (byte)(state >> 8);
                     M2[2] = (byte)(state >> 16);
-                    M2[4] = (byte)(state >> 24);
+                    M2[3] = (byte)(state >> 24);
                     break;
                 case Equipment.Device.ESystemMainWorkMode.WM_FlowMaintenance:
                     state = (int)config.Device.FlowMaintainMode;
                     M2[0] = (byte)(state);
                     M2[1] = (byte)(state >> 8);
                     M2[2] = (byte)(state >> 16);
-                    M2[4] = (byte)(state >> 24);
+                    M2[3] = (byte)(state >> 24);
                     break;
                 case Equipment.Device.ESystemMainWorkMode.WM_FirstPriming:
                 case Equipment.Device.ESystemMainWorkMode.WM_Drain:
@@ -110,7 +110,7 @@ namespace NovoCyteSimulator.Protocols.Messages
                 M3[0] = (byte)(state);
                 M3[1] = (byte)(state >> 8);
                 M3[2] = (byte)(state >> 16);
-                M3[4] = (byte)(state >> 24);
+                M3[3] = (byte)(state >> 24);
             }
             else if (M2State == (int)config.Device.TestingState)
             {
@@ -118,7 +118,7 @@ namespace NovoCyteSimulator.Protocols.Messages
                 M3[0] = (byte)(state);
                 M3[1] = (byte)(state >> 8);
                 M3[2] = (byte)(state >> 16);
-                M3[4] = (byte)(state >> 24);
+                M3[3] = (byte)(state >> 24);
             }
             Array.Copy(M3, 0, param, 31, 4);
             return param;

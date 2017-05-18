@@ -76,7 +76,7 @@ namespace NovoCyteSimulator.Messages
             tempData[tempDatalength - 2] = (byte)(tempCheckSum >> 8);
             tempData[tempDatalength - 1] = 0X0D;
             string readableByte = Util.StringUtil.Byte2ReadableXstring(tempData);
-            LogHelper.GetLogger<CBase>().Debug(string.Format("发送的消息类型为：{0}，消息内容：{1}", Message, readableByte));
+            LogHelper.GetLogger<CBase>().Debug(string.Format("发送的消息类型为：{0}，消息内容：{1}", string.Format("0x{0:X2} ", Message), readableByte));
             return tempData;
         }
 
@@ -113,6 +113,8 @@ namespace NovoCyteSimulator.Messages
                     Array.Copy(data, 7, paradata, 0, paraLength);
                 }
             }
+            string readableByte = Util.StringUtil.Byte2ReadableXstring(data);
+            LogHelper.GetLogger<CBase>().Debug(string.Format("接受的消息类型为：{0}，消息内容：{1}", string.Format("0x{0:X2} ", Message), readableByte));
             return success;
         }
     }

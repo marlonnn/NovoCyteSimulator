@@ -3,6 +3,7 @@ using NovoCyteSimulator.Messages;
 using NovoCyteSimulator.Util;
 using SOFTUSB;
 using SoftUSBLoopbackLib;
+using Summer.System.Log;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,6 +32,7 @@ namespace NovoCyteSimulator.USBSimulator
 
         private const int status = 2;
         private Dictionary<byte, CBase> _decoders;
+        private byte msgType;
         public RunUSBDevice()
         {
         }
@@ -72,22 +74,19 @@ namespace NovoCyteSimulator.USBSimulator
                     {
                         receiveBytes[i] = LoopbackDev.TransData(i);
                     }
-                    //byte[] txBytes = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05};
-                    //stopwatch.Restart();
-                    //byte msgType = receiveBytes[6];
-                    byte msgType = 0x01;
-                    //if (ProcessReceiveData(msgType))
+                    msgType = receiveBytes[6];
+                    if (ProcessReceiveData(msgType))
                     {
                         byte[] txBytes = _decoders[msgType].Encode();
-                        //stopwatch.Stop();
-                        //var time = stopwatch.ElapsedMilliseconds;
                         //string readableByte = Util.StringUtil.Byte2ReadableXstring(txBytes);
                         LoopbackDev.SendData(ref txBytes[0], (uint)txBytes.Length, status, uint.MaxValue);
                     }
                 }
                 catch (Exception ee)
                 {
-                    UnPlugUSB();
+                    LogHelper.GetLogger<RunUSBDevice>().Error(string.Format("消息类型为： {0} 处理异常\n 异常Message： {1}, StackTrace: {2}",
+                        string.Format("0x{0:X2} ", msgType), ee.Message, ee.StackTrace));
+                    //UnPlugUSB();
                 }
             }
 

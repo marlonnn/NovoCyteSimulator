@@ -67,7 +67,7 @@ namespace NovoCyteSimulator
         {
             if (e.Control == true && e.KeyCode == Keys.F7)
             {
-                viewLog(new string[] {"Simulator.log", "Simulator.send"});
+                viewLog(new string[] {"Simulator.log", "Simulator.transfer"});
             }
         }
 
@@ -168,8 +168,8 @@ namespace NovoCyteSimulator
 
         private void MachineStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.txtInstrumentState.Text = this.cbBoxMachineStatus.SelectedItem.ToString();
-            this._config.Device.SystemMainWorkMode = _config.Device.SystemWorkModeIntervalDic[cbBoxMachineStatus.SelectedItem.ToString()];
+           // this.txtInstrumentState.Text = this.cbBoxMachineStatus.SelectedItem.ToString();
+            //this._config.Device.SystemMainWorkMode = _config.Device.SystemWorkModeIntervalDic[cbBoxMachineStatus.SelectedItem.ToString()];
             this.ribbonControl1.Focus();
         }
     }

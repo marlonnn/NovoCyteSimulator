@@ -56,7 +56,7 @@
   </object>
 
   <object name="Device" type="NovoCyteSimulator.Equipment.Device, NovoCyteSimulator">
-    <property name="SystemMainWorkMode" value="1"/><!--仪器所处工作模式-->
+    <property name="SystemMainWorkMode" value="3"/><!--仪器所处工作模式-->
     <!--Dictionary-->
     <property name="SystemWorkModeIntervalDic">
       <dictionary>
@@ -94,7 +94,7 @@
       </dictionary>
     </property>
     
-    <property name="MeasState" value="0"/><!--仪器状态-->
+    <property name="MeasState" value="2"/><!--仪器状态-->
     <property name="WarningNumber" value="0"/><!--当前警告个数-->
     <property name="ErrorNumber" value="0"/><!--错误个数-->
     <property name="StartTime" value="0"/><!--开始测试时间(单位：ms)-->
@@ -104,7 +104,7 @@
     <property name="TotalTicks" value="0"/> <!--总节拍数-->
     <property name="AutoSampleConnectStateType" value="1"/><!--AutoSampler联机状态-->
     <property name="QCStateType" value="0"/><!--QC状态-->
-    <property name="BoostingState" value="0"/><!--子状态-->
+    <property name="BoostingState" value="1"/><!--子状态-->
     <property name="TestingState" value="0"/><!--子状态-->
     <property name="WeightType" value="0"/><!--流体车类型-->
     <property name="PMT" ref="PMT"/>
