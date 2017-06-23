@@ -211,6 +211,12 @@
     <Compile Include="Protocols\Messages\CEC.cs" />
     <Compile Include="Protocols\Messages\CEF.cs" />
     <Compile Include="Res\ExpDoc.Designer.cs" />
+    <Compile Include="SimulatorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimulatorForm.Designer.cs">
+      <DependentUpon>SimulatorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="USBSimulator\RunUSBDevice.cs" />
     <Compile Include="USBSimulator\USBDevice.cs" />
     <Compile Include="Util\JsonFile.cs" />
@@ -230,6 +236,9 @@
     </Compile>
     <EmbeddedResource Include="Res\ExpDoc.resx" />
     <EmbeddedResource Include="Res\ExpDoc.zh-CN.resx" />
+    <EmbeddedResource Include="SimulatorForm.resx">
+      <DependentUpon>SimulatorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Config\simulatorConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

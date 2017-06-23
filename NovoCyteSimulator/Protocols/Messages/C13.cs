@@ -25,6 +25,12 @@ namespace NovoCyteSimulator.Protocols.Messages
             LASER_Type type = LASER_Type.LASER_None;
             switch (waveLenght)
             {
+                case "0":
+                    type = LASER_Type.LASER_None;
+                    break;
+                case "1":
+                    type = LASER_Type.LASER_Exist;
+                    break;
                 case "405nm":
                     type = LASER_Type.LASER_405nm;
                     break;

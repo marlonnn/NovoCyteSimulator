@@ -59,6 +59,9 @@ namespace NovoCyteSimulator.Protocols.Messages
                         param[i] = 0xFF;
                     }
                     break;
+                case (byte)PARA_TYPE.TYPE_LaserFilterAndMirrorInfo:
+                    param = new byte[1] { 0x13};
+                    break;
             }
             return param;
         }

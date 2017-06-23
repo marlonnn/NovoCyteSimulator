@@ -118,7 +118,7 @@
     </property>
   </object>
   <object name="Laser1" type="NovoCyteSimulator.Equipment.LaserParas, NovoCyteSimulator">
-    <property name="Typeis" value="405nm"/> <!--激光器类型-->
+    <property name="Typeis" value="405nm"/><!--激光器类型-->
     <property name="AutoStart" value="false"/> <!--开机是否自动出光-->
     <property name="Mode" value="DIGITAL"/> <!--模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"-->
     <property name="Power" value="20.0"/> <!--输出功率,单位:mW-->

@@ -18,13 +18,14 @@ namespace NovoCyteSimulator
         {
             MiniDump.Init();
             NovoCyteSimulatorForm novoCyteSimulatorForm;
+            SimulatorForm simulatorForm;
             try
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                novoCyteSimulatorForm = SpringHelper.GetObject<NovoCyteSimulatorForm>("novoCyteSimulatorForm");
-
-                Application.Run(novoCyteSimulatorForm);
+                //novoCyteSimulatorForm = SpringHelper.GetObject<NovoCyteSimulatorForm>("novoCyteSimulatorForm");
+                simulatorForm = SpringHelper.GetObject<SimulatorForm>("simulatorForm");
+                Application.Run(simulatorForm);
             }
             catch (Exception ee)
             {

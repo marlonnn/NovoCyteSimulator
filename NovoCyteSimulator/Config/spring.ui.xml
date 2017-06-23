@@ -10,6 +10,11 @@
     <property name="_runUSBDevice" ref="_runUSBDevice"/>
   </object>
 
+  <object name="simulatorForm" type="NovoCyteSimulator.SimulatorForm, NovoCyteSimulator">
+    <constructor-arg ref="config"/>
+    <property name="_runUSBDevice" ref="_runUSBDevice"/>
+  </object>
+  
   <object name="sampleData" type="NovoCyteSimulator.ExpClass.SampleData, NovoCyteSimulator">
   </object>
 </objects>
