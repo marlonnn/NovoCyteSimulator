@@ -12,9 +12,9 @@ namespace NovoCyteSimulator.Protocols.Messages
         public byte Type { set; get; }
         private C78 _c78;
 
-        public C14(byte message)
+        public C14()
         {
-            this.message = message;
+            this.message = 0x14;
         }
 
         public override bool Decode(byte[] buf)

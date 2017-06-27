@@ -12,9 +12,9 @@ namespace NovoCyteSimulator.Protocols.Messages
         public byte M { set; get; } //上位发来的命令
         public byte R { set; get; } //0 不接收,1 接收
 
-        public C78(byte message)
+        public C78()
         {
-            this.message = message;
+            this.message = 0x78;
         }
 
         public override bool Decode(byte[] buf)

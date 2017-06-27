@@ -40,9 +40,9 @@ namespace NovoCyteSimulator.Protocols.Messages
 
         public byte[] Y1 { set; get; }
 
-        public C5F(byte message)
+        public C5F()
         {
-            this.message = message;
+            this.message = 0x5F;
         }
 
         private void CreateAutoSampleInfo()

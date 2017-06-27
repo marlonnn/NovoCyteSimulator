@@ -10,9 +10,9 @@ namespace NovoCyteSimulator.Protocols.Messages
     public class C27 : CBase
     {
         private C78 _c78;//应答命令
-        public C27(byte message)
+        public C27()
         {
-            this.message = message;
+            this.message = 0x27;
         }
 
         public override bool Decode(byte[] buf)

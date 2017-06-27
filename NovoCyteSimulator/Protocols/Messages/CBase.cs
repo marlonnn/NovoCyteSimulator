@@ -8,6 +8,11 @@ namespace NovoCyteSimulator.Messages
     {
         protected Config config;
 
+        public Config Config
+        {
+            set { this.config = value; }
+        }
+
         protected byte message;
         /// <summary>
         /// message

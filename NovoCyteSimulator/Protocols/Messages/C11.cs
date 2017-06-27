@@ -11,9 +11,9 @@ namespace NovoCyteSimulator.Protocols.Messages
     public class C11 : CBase
     {
 
-        public C11(byte message)
+        public C11()
         {
-            this.message = message;
+            this.message = 0x11;
         }
 
         public byte[] CreateDeviceWorkingStateParam()

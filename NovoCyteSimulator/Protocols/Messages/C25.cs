@@ -12,9 +12,9 @@ namespace NovoCyteSimulator.Protocols.Messages
     /// </summary>
     public class C25 : CBase
     {
-        public C25(byte message)
+        public C25()
         {
-            this.message = message;
+            this.message = 0x25;
         }
 
         public override bool Decode(byte[] buf)

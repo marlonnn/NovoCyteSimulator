@@ -38,9 +38,9 @@ namespace NovoCyteSimulator.Protocols.Messages
         public byte Type { set; get; }
         private C78 _c78;
 
-        public CEB(byte message)
+        public CEB()
         {
-            this.message = message;
+            this.message = 0xEB;
         }
 
         public override bool Decode(byte[] buf)

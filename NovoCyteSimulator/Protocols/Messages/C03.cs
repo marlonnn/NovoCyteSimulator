@@ -18,9 +18,9 @@ namespace NovoCyteSimulator.Protocols.Messages
         public Equipment.Device.CheckFunction T { set; get; }
 
         public CheckFunctionResult Result;
-        public C03(byte message)
+        public C03()
         {
-            this.message = message;
+            this.message = 0x03;
         }
 
         private bool AllNotSupport()

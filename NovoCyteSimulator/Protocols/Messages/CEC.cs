@@ -11,9 +11,9 @@ namespace NovoCyteSimulator.Protocols.Messages
     {
         public byte Type { set; get; }
 
-        public CEC(byte message)
+        public CEC()
         {
-            this.message = message;
+            this.message = 0xEC;
         }
 
         public override bool Decode(byte[] buf)

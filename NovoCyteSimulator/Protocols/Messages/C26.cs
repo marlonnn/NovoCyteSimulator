@@ -13,9 +13,9 @@ namespace NovoCyteSimulator.Protocols.Messages
     public class C26 : CBase
     {
         private C78 _c78;//应答命令
-        public C26(byte message)
+        public C26()
         {
-            this.message = message;
+            this.message = 0x26;
         }
 
         public override bool Decode(byte[] buf)

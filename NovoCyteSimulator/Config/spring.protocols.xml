@@ -27,71 +27,49 @@
       </dictionary>
     </constructor-arg>
   </object>
-
-  <object name="abstractDecoder" abstract="true" type="NovoCyteSimulator.Messages.CBase, NovoCyteSimulator" >
-    <property name="config" ref="config"/>
+  
+  <object name="C01" type="NovoCyteSimulator.Protocols.Messages.C01, NovoCyteSimulator">
   </object>
-  <object name="C01" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C01, NovoCyteSimulator">
-    <constructor-arg value="0x01"/>
+  <object name="C03" type="NovoCyteSimulator.Protocols.Messages.C03, NovoCyteSimulator">
   </object>
-  <object name="C03" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C03, NovoCyteSimulator">
-    <constructor-arg value="0x03"/>
+  <object name="C11" type="NovoCyteSimulator.Protocols.Messages.C11, NovoCyteSimulator">
   </object>
-  <object name="C11" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C11, NovoCyteSimulator">
-    <constructor-arg value="0x11"/>
+  <object name="C13" type="NovoCyteSimulator.Protocols.Messages.C13, NovoCyteSimulator">
   </object>
-  <object name="C13" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C13, NovoCyteSimulator">
-    <constructor-arg value="0x13"/>
-  </object>
-  <object name="C14" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C14, NovoCyteSimulator">
-    <constructor-arg value="0x14"/>
+  <object name="C14" type="NovoCyteSimulator.Protocols.Messages.C14, NovoCyteSimulator">
     <property name="_c78" ref="C78"/>
   </object>
-  <object name="C20" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C20, NovoCyteSimulator">
-    <constructor-arg value="0x20"/>
+  <object name="C20" type="NovoCyteSimulator.Protocols.Messages.C20, NovoCyteSimulator">
     <property name="_c78" ref="C78"/>
   </object>
-  <object name="C21" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C21, NovoCyteSimulator">
-    <constructor-arg value="0x21"/>
+  <object name="C21" type="NovoCyteSimulator.Protocols.Messages.C21, NovoCyteSimulator">
     <property name="_c78" ref="C78"/>
   </object>
-  <object name="C22" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C22, NovoCyteSimulator">
-    <constructor-arg value="0x22"/>
+  <object name="C22" type="NovoCyteSimulator.Protocols.Messages.C22, NovoCyteSimulator">
     <property name="_sampleData" ref="sampleData"/>
   </object>
-  <object name="C24" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C24, NovoCyteSimulator">
-    <constructor-arg value="0x24"/>
+  <object name="C24" type="NovoCyteSimulator.Protocols.Messages.C24, NovoCyteSimulator">
     <property name="_c78" ref="C78"/>
   </object>
-  <object name="C25" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C25, NovoCyteSimulator">
-    <constructor-arg value="0x25"/>
+  <object name="C25" type="NovoCyteSimulator.Protocols.Messages.C25, NovoCyteSimulator">
   </object>
-  <object name="C26" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C26, NovoCyteSimulator">
-    <constructor-arg value="0x26"/>
+  <object name="C26" type="NovoCyteSimulator.Protocols.Messages.C26, NovoCyteSimulator">
     <property name="_c78" ref="C78"/>
   </object>
-  <object name="C58" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C58, NovoCyteSimulator">
-    <constructor-arg value="0x58"/>
+  <object name="C58" type="NovoCyteSimulator.Protocols.Messages.C58, NovoCyteSimulator">
   </object>
-  <object name="C5D" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C5D, NovoCyteSimulator">
-    <constructor-arg value="0x5D"/>
+  <object name="C5D" type="NovoCyteSimulator.Protocols.Messages.C5D, NovoCyteSimulator">
   </object>
-  <object name="C5F" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C5F, NovoCyteSimulator">
-    <constructor-arg value="0x5F"/>
+  <object name="C5F" type="NovoCyteSimulator.Protocols.Messages.C5F, NovoCyteSimulator">
   </object>
-  <object name="C6A" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C6A, NovoCyteSimulator">
-    <constructor-arg value="0x6A"/>
+  <object name="C6A" type="NovoCyteSimulator.Protocols.Messages.C6A, NovoCyteSimulator">
   </object>
-  <object name="CEB" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.CEB, NovoCyteSimulator">
-    <constructor-arg value="0xEB"/>
+  <object name="CEB" type="NovoCyteSimulator.Protocols.Messages.CEB, NovoCyteSimulator">
   </object>
-  <object name="CEC" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.CEC, NovoCyteSimulator">
-    <constructor-arg value="0xEC"/>
+  <object name="CEC" type="NovoCyteSimulator.Protocols.Messages.CEC, NovoCyteSimulator">
   </object>
-  <object name="CEF" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.CEF, NovoCyteSimulator">
-    <constructor-arg value="0xEF"/>
+  <object name="CEF" type="NovoCyteSimulator.Protocols.Messages.CEF, NovoCyteSimulator">
   </object>
-  <object name="C78" parent="abstractDecoder" type="NovoCyteSimulator.Protocols.Messages.C78, NovoCyteSimulator">
-    <constructor-arg value="0x78"/>
+  <object name="C78" type="NovoCyteSimulator.Protocols.Messages.C78, NovoCyteSimulator">
   </object>
 </objects>

@@ -15,18 +15,17 @@ namespace NovoCyteSimulator
     public partial class SimulatorForm : Form
     {
         private Config _config;
+        public Config Config
+        {
+            set { this._config = value; }
+            get { return this._config; }
+        }
         private RunUSBDevice _runUSBDevice;
         private Thread RunUSBThread;
+
         public SimulatorForm()
         {
             InitializeComponent();
-        }
-
-        public SimulatorForm(Config config)
-        {
-            InitializeComponent();
-            this._config = config;
-            InitializeMachineStatus();
             this.Load += SimulatorForm_Load;
             this.FormClosing += SimulatorForm_FormClosing;
             this.KeyDown += SimulatorForm_KeyDown;
@@ -57,6 +56,7 @@ namespace NovoCyteSimulator
 
         private void SimulatorForm_Load(object sender, EventArgs e)
         {
+            InitializeMachineStatus();
             StartUSBThread();
         }
 

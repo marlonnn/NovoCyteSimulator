@@ -14,9 +14,9 @@ namespace NovoCyteSimulator.Protocols.Messages
     {
         private C78 _c78;//应答命令
 
-        public C20(byte message)
+        public C20()
         {
-            this.message = message;
+            this.message = 0x20;
         }
 
         public override bool Decode(byte[] buf)

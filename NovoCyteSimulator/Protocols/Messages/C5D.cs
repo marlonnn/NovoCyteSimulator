@@ -40,9 +40,9 @@ namespace NovoCyteSimulator.Protocols.Messages
 
         public byte[] Y1 { set; get; }
 
-        public C5D(byte message)
+        public C5D()
         {
-            this.message = message;
+            this.message = 0x5D;
         }
 
         public override bool Decode(byte[] buf)

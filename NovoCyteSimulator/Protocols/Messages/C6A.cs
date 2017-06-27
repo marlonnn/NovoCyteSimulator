@@ -18,9 +18,9 @@ namespace NovoCyteSimulator.Protocols.Messages
     {
         private byte Y;
 
-        public C6A(byte message)
+        public C6A()
         {
-            this.Message = message;
+            this.Message = 0x6A;
         }
 
         public override bool Decode(byte[] buf)

@@ -47,9 +47,9 @@ namespace NovoCyteSimulator.Protocols.Messages
             return type;
         }
 
-        public C13(byte message)
+        public C13()
         {
-            this.message = message;
+            this.message = 0x13;
         }
 
         /// <summary>

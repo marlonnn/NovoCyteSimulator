@@ -77,9 +77,9 @@ namespace NovoCyteSimulator.Protocols.Messages
         }
 
         public static uint FLChannelCount = 13;
-        public C22(byte message)
+        public C22()
         {
-            this.message = message;
+            this.message = 0x22;
         }
 
         private byte[] CreateStopParam()

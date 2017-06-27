@@ -48,9 +48,9 @@ namespace NovoCyteSimulator.Protocols.Messages
 
         public byte[] Y1 { set; get; }
 
-        public C01(byte message)
+        public C01()
         {
-            this.message = message;
+            this.message = 0x01;
         }
 
         private void CreateSystemInfo()

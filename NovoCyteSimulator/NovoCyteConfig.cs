@@ -1,5 +1,7 @@
 ﻿using NovoCyteSimulator.Equipment;
+using NovoCyteSimulator.Util;
 using System;
+using System.IO;
 
 namespace NovoCyteSimulator
 {
@@ -10,6 +12,22 @@ namespace NovoCyteSimulator
         public NovoCyteConfig(Config Config)
         {
             this.Config = Config;
+        }
+
+        public static NovoCyteConfig novoCyteConfig = null;
+
+        public static NovoCyteConfig GetInstance()
+        {
+            if (novoCyteConfig == null)
+            {
+                string path = string.Format(@"{0}\\{1}", System.Environment.CurrentDirectory, "Config\\novosys_cfg.json");
+                if (File.Exists(path))
+                {
+                    string jsonText = File.ReadAllText(path);
+                    novoCyteConfig = JsonFile.GetNovoCyteConfigFromJsonText(jsonText);
+                }
+            }
+            return novoCyteConfig;
         }
     }
 
