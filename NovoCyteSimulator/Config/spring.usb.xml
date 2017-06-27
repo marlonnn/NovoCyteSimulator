@@ -2,8 +2,8 @@
 <!--复制此文档各种Ioc定义方式到需要的地方-->
 <objects xmlns="http://www.springframework.net">
 
-  <object name="_runUSBDevice" type="NovoCyteSimulator.USBSimulator.RunUSBDevice, NovoCyteSimulator">
-    <property name="_decoders" ref="decoders"/>
+  <object name="usbDevice" type="NovoCyteSimulator.USBSimulator.USBDevice, NovoCyteSimulator">
+    <property name="decoders" ref="decoders"/>
   </object>
 
 </objects>

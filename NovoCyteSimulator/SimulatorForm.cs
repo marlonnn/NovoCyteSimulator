@@ -20,7 +20,7 @@ namespace NovoCyteSimulator
             set { this._config = value; }
             get { return this._config; }
         }
-        private RunUSBDevice _runUSBDevice;
+        private USBDevice usbDevice;
         private Thread RunUSBThread;
 
         public SimulatorForm()
@@ -67,7 +67,7 @@ namespace NovoCyteSimulator
 
         private void StartUSBThread()
         {
-            RunUSBThread = new Thread(new ThreadStart(_runUSBDevice.EnumSimulatedDevices));
+            RunUSBThread = new Thread(new ThreadStart(usbDevice.EnumSimulatedDevices));
             RunUSBThread.IsBackground = true;
             RunUSBThread.Priority = ThreadPriority.Highest;
             RunUSBThread.Start();
@@ -75,9 +75,9 @@ namespace NovoCyteSimulator
 
         private void StopUSBThread()
         {
-            _runUSBDevice.KeepLooping = false;
+            usbDevice.KeepLooping = false;
             RunUSBThread.Abort();
-            _runUSBDevice.UnPlugUSB();
+            usbDevice.UnPlugUSB();
         }
         private void viewLog(string[] logname)
         {

@@ -3,7 +3,7 @@
 <objects xmlns="http://www.springframework.net">
 
   <object name="simulatorForm" type="NovoCyteSimulator.SimulatorForm, NovoCyteSimulator">
-    <property name="_runUSBDevice" ref="_runUSBDevice"/>
+    <property name="usbDevice" ref="usbDevice"/>
   </object>
   
   <object name="sampleData" type="NovoCyteSimulator.ExpClass.SampleData, NovoCyteSimulator">
