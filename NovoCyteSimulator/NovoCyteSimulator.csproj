@@ -128,10 +128,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\Spring.Scheduling.Quartz20.dll</HintPath>
     </Reference>
-    <Reference Include="Summer.System, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\Summer.System.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.94.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -154,10 +150,6 @@
     <Compile Include="ADO\SampleDataDataADO.cs" />
     <Compile Include="ADO\DBADOFactory.cs" />
     <Compile Include="ADO\SqliteConvertor.cs" />
-    <Compile Include="Equipment\DBClass\DBOperate.cs" />
-    <Compile Include="Equipment\DBClass\OleDBOperate.cs" />
-    <Compile Include="Equipment\DBClass\SmrDbProvider.cs" />
-    <Compile Include="Equipment\DBClass\SQLiteOperate.cs" />
     <Compile Include="Equipment\AutoSample.cs" />
     <Compile Include="Equipment\Device.cs" />
     <Compile Include="Equipment\FLChannel.cs" />
@@ -278,6 +270,9 @@
     <Content Include="Lib\Spring.Data.dll" />
     <Content Include="Lib\Spring.Scheduling.Quartz20.dll" />
     <Content Include="Lib\Summer.System.dll" />
+    <Content Include="NCFData\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\FC.ico" />
     <Content Include="Resources\Key.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -290,7 +285,10 @@
     <Content Include="System.Data.SQLite.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NCFData\" />
+    <ProjectReference Include="..\..\..\cii-tech\TimeLapse\TimeLapse\Summer.System\Summer.System.csproj">
+      <Project>{cd89e930-b8ef-48af-9efe-d78efb313c76}</Project>
+      <Name>Summer.System</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="SoftUSBLoopbackLib">

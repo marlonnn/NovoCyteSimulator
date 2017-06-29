@@ -47,7 +47,6 @@ namespace NovoCyteSimulator.USBSimulator
                 LoopbackDev = (LoopbackDevice)obj;
                 LoopbackDSFDev = LoopbackDev.DSFDevice;
                 LoopbackUSBDev = LoopbackDSFDev.Object[IID_ISoftUSBDevice];
-                SetEndpointDiagnostics(LoopbackUSBDev);
                 bus = dsf.HotPlug(LoopbackDSFDev, "USB2.0");
 
                 LoopbackDev.OnProcessingData += LoopbackDev_OnProcessingData;
@@ -92,13 +91,6 @@ namespace NovoCyteSimulator.USBSimulator
             return decoders.ContainsKey(msgType) && decoders[msgType].Decode(receiveBytes);
         }
 
-        private bool keepLooping = true;
-        public bool KeepLooping
-        {
-            get { return this.keepLooping; }
-            set { this.keepLooping = value; }
-        }
-
         public void UnPlugUSB()
         {
             try
@@ -110,43 +102,6 @@ namespace NovoCyteSimulator.USBSimulator
             catch (Exception e)
             {
                 LogHelper.GetLogger<USBDevice>().Error(string.Format("拔出USB异常，异常消息Message： {0}, StackTrace: {1}", e.Message, e.StackTrace));
-            }
-        }
-
-        public void SetEndpointDiagnostics(SoftUSBDevice USBDevice)
-        {
-            string type = "";
-            foreach (SoftUSBConfiguration config in USBDevice.Configurations)
-            {
-                Console.WriteLine(string.Format("Setting endpoint diagnostics for configuration {0}", config.ConfigurationValue));
-                var Interfaces = config.Interfaces;
-                foreach (SoftUSBInterface interf in Interfaces)
-                {
-                    Console.WriteLine(string.Format("Setting endpoint diagnostics for interface {0}, alternate {1}", interf.InterfaceNumber, interf.AlternateSetting));
-                    var Endpoints = interf.Endpoints;
-                    foreach (SoftUSBEndpoint endpoint in Endpoints)
-                    {
-                        var EPNum = endpoint.EndpointAddress & 0x0F;
-                        var EPDir = endpoint.EndpointAddress & 0x80;
-                        var EPType = endpoint.Attributes & 0x03;
-                        switch (EPType)
-                        {
-                            case 0:
-                                type = "Control";
-                                break;
-                            case 1:
-                                type = "Isoch";
-                                break;
-                            case 2:
-                                type = "Bulk";
-                                break;
-                            case 3:
-                                type = "Interrupt";
-                                break;
-                        }
-                        Console.WriteLine(string.Format("Endpoint.SetObjectFlags for {0} {1}, endpoint {2}", type, (EPDir == 0 ? "OUT" : "IN"), EPNum));
-                    }
-                }
             }
         }
     }

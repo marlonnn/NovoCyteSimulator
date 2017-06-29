@@ -1,7 +1,7 @@
 ﻿using NovoCyteSimulator.ADO;
-using NovoCyteSimulator.DBClass;
 using Spring.Data.Common;
 using Spring.Data.Generic;
+using Summer.System.Data;
 using Summer.System.Data.VarietyDb;
 using Summer.System.Security;
 using System;

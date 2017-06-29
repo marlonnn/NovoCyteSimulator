@@ -30,6 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxStatus = new System.Windows.Forms.ComboBox();
+            this.btnNcf = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -49,11 +50,22 @@
             this.comboBoxStatus.Size = new System.Drawing.Size(121, 21);
             this.comboBoxStatus.TabIndex = 10;
             // 
+            // btnNcf
+            // 
+            this.btnNcf.Location = new System.Drawing.Point(271, 41);
+            this.btnNcf.Name = "btnNcf";
+            this.btnNcf.Size = new System.Drawing.Size(75, 23);
+            this.btnNcf.TabIndex = 11;
+            this.btnNcf.Text = "NCF";
+            this.btnNcf.UseVisualStyleBackColor = true;
+            this.btnNcf.Click += new System.EventHandler(this.btnNcf_Click);
+            // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(417, 262);
+            this.Controls.Add(this.btnNcf);
             this.Controls.Add(this.comboBoxStatus);
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
@@ -69,5 +81,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxStatus;
+        private System.Windows.Forms.Button btnNcf;
     }
 }

@@ -4,6 +4,8 @@
 
   <object name="simulatorForm" type="NovoCyteSimulator.SimulatorForm, NovoCyteSimulator">
     <property name="usbDevice" ref="usbDevice"/>
+    <property name="_sampleData" ref="sampleData"/>
+    <!--<property name="_dbADOFactory" ref="dbADOFactory"/>-->
   </object>
   
   <object name="sampleData" type="NovoCyteSimulator.ExpClass.SampleData, NovoCyteSimulator">
