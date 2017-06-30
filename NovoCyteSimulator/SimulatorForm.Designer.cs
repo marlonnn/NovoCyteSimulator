@@ -31,6 +31,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxStatus = new System.Windows.Forms.ComboBox();
             this.btnNcf = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lbDB = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnUSB = new System.Windows.Forms.Button();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -60,11 +64,38 @@
             this.btnNcf.UseVisualStyleBackColor = true;
             this.btnNcf.Click += new System.EventHandler(this.btnNcf_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lbDB});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 109);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(469, 22);
+            this.statusStrip1.TabIndex = 13;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lbDB
+            // 
+            this.lbDB.Name = "lbDB";
+            this.lbDB.Size = new System.Drawing.Size(0, 17);
+            // 
+            // btnUSB
+            // 
+            this.btnUSB.Location = new System.Drawing.Point(371, 41);
+            this.btnUSB.Name = "btnUSB";
+            this.btnUSB.Size = new System.Drawing.Size(75, 23);
+            this.btnUSB.TabIndex = 14;
+            this.btnUSB.Text = "Start";
+            this.btnUSB.UseVisualStyleBackColor = true;
+            this.btnUSB.Click += new System.EventHandler(this.btnUSB_Click);
+            // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(417, 262);
+            this.ClientSize = new System.Drawing.Size(469, 131);
+            this.Controls.Add(this.btnUSB);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnNcf);
             this.Controls.Add(this.comboBoxStatus);
             this.Controls.Add(this.label1);
@@ -72,6 +103,8 @@
             this.KeyPreview = true;
             this.Name = "SimulatorForm";
             this.Text = "SimulatorForm";
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -82,5 +115,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxStatus;
         private System.Windows.Forms.Button btnNcf;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel lbDB;
+        private System.Windows.Forms.Button btnUSB;
     }
 }

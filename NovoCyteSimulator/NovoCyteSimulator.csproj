@@ -74,6 +74,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="C5, Version=1.1.0.0, Culture=neutral, PublicKeyToken=06a1b38866503b69, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -192,6 +195,15 @@
     <Compile Include="SimulatorForm.Designer.cs">
       <DependentUpon>SimulatorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SQLite\Entity\EntityHelper.cs" />
+    <Compile Include="SQLite\Entity\SampleConfig.cs" />
+    <Compile Include="SQLite\Entity\SampleData.cs" />
+    <Compile Include="SQLite\Entity\SampleDataData.cs" />
+    <Compile Include="SQLite\SQLiteConfig.cs" />
+    <Compile Include="SQLite\SQLiteColumn.cs" />
+    <Compile Include="SQLite\SQLiteColumnList.cs" />
+    <Compile Include="SQLite\SQLiteHelper.cs" />
+    <Compile Include="SQLite\SQLiteTable.cs" />
     <Compile Include="USBSimulator\USBDevice.cs" />
     <Compile Include="Util\JsonFile.cs" />
     <Compile Include="Util\StringUtil.cs" />
@@ -301,6 +313,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

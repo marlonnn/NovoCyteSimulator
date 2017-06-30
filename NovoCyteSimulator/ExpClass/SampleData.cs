@@ -1,5 +1,6 @@
 ﻿using NovoCyteSimulator.ADO;
 using NovoCyteSimulator.Equipment;
+using NovoCyteSimulator.SQLite.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,44 @@ namespace NovoCyteSimulator.ExpClass
             private set;
         }
 
+        public void SetParameters(List<object> sampleConfigs)
+        {
+            if (sampleConfigs != null)
+            {
+                foreach (object o in sampleConfigs)
+                {
+                    SampleConfig s = o as SampleConfig;
+                    if (s != null)
+                    {
+                        Parameters = new Parameters(s.ParameterNames, ParaNamesSeparator);
+                    }
+                }
+            }
+        }
+
         public void SetParameters(IList<TSampleConfig> sampleConfigs)
         {
             foreach (var sampleConfig in sampleConfigs)
             {
                 Parameters = new Parameters(sampleConfig.ParameterNames, ParaNamesSeparator);
             }
+        }
+
+        public void SetBytes(List<object> sampleDataDatas)
+        {
+            List<byte[]> datas = new List<byte[]>();
+            if (sampleDataDatas != null)
+            {
+                foreach (object o in sampleDataDatas)
+                {
+                    SampleDataData s = o as SampleDataData;
+                    if (s != null)
+                    {
+                        datas.Add(s.Data);
+                    }
+                }
+            }
+            SetBytes(datas);
         }
 
         public void SetBytes(IEnumerable<byte[]> datas)

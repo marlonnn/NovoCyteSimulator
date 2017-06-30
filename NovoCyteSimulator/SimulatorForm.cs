@@ -1,11 +1,15 @@
 ﻿using NovoCyteSimulator.ADO;
 using NovoCyteSimulator.ExpClass;
+using NovoCyteSimulator.SQLite;
+using NovoCyteSimulator.SQLite.Entity;
 using NovoCyteSimulator.USBSimulator;
+using Summer.System.Core;
 using Summer.System.Log;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -25,7 +29,7 @@ namespace NovoCyteSimulator
 
         private IList<TSampleConfig> _sampleConfigList;
 
-        private SampleData _sampleData;
+        private NovoCyteSimulator.ExpClass.SampleData _sampleData;
 
         private string _connectString;
 
@@ -77,12 +81,13 @@ namespace NovoCyteSimulator
 
         private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //StopUSBThread();
+            StopUSBThread();
         }
 
         private void StartUSBThread()
         {
-            usbThread = new Thread(new ThreadStart(usbDevice.EnumSimulatedDevices));
+            //usbDevice = SpringHelper.GetObject<USBDevice>("usbDevice");
+            usbThread = new Thread(new ThreadStart(usbDevice.RunSimulatedDevices));
             usbThread.IsBackground = true;
             usbThread.Priority = ThreadPriority.Highest;
             usbThread.Start();
@@ -90,8 +95,11 @@ namespace NovoCyteSimulator
 
         private void StopUSBThread()
         {
-            usbThread.Abort();
-            usbDevice.UnPlugUSB();
+            if (usbDevice.IsRunning)
+            {
+                usbThread.Abort();
+                usbDevice.UnPlugUSB();
+            }
         }
         private void viewLog(string[] logname)
         {
@@ -126,22 +134,61 @@ namespace NovoCyteSimulator
                 _connectString = string.Format("Data Source={0}; Version=3", fileName);
                 try
                 {
-                    _dbADOFactory = new DBADOFactory(_connectString);
-                    _sampleDataList = _dbADOFactory.QueryAllSampleData();
-
-                    _sampleDataDataList = _dbADOFactory.QueryAllSampleDataData();
-
-                    var v = _dbADOFactory.QuerySampleDataData(2);
-
-                    _sampleConfigList = _dbADOFactory.QueryAllSampleConfig();
-
-                    _sampleData.SetParameters(_sampleConfigList);
-                    _sampleData.SetBytes(v);
+                    SQLiteConfig.DatabaseFile = openFileDialog1.FileName;
+                    this.lbDB.Text = SQLiteConfig.DataSource;
+                    InitializeSampleData();
                 }
                 catch (Exception ee)
                 {
                     LogHelper.GetLogger<SimulatorForm>().Debug(ee.Message);
                 }
+            }
+        }
+
+        private void InitializeSampleData()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(SQLiteConfig.DataSource))
+            {
+                using (SQLiteCommand cmd = new SQLiteCommand())
+                {
+                    cmd.Connection = conn;
+                    conn.Open();
+                    SQLiteHelper sh = new SQLiteHelper(cmd);
+                    try
+                    {
+
+                        string sampleConfigSql = "Select * from SampleConfig";
+                        DataTable sampleConfigDt = sh.Select(sampleConfigSql);
+                        List<object> sampleConfigs = EntityHelper.DataTableToList(sampleConfigDt, "SampleConfig");
+                        _sampleData.SetParameters(sampleConfigs);
+
+                        string sampleDataDataSql = string.Format(
+                            "Select Data from SampleDataData where SD_ID = {0} Order by [Order]", 2);
+                        DataTable sampleDataDataDt = sh.Select(sampleDataDataSql);
+                        List<object> sampleDataDatas = EntityHelper.DataTableToList(sampleDataDataDt, "SampleDataData");
+                        _sampleData.SetBytes(sampleDataDatas);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.GetLogger<SimulatorForm>().Error(ex.Message);
+                        LogHelper.GetLogger<SimulatorForm>().Error(ex.StackTrace);
+                    }
+                    conn.Close();
+                }
+            }
+        }
+
+        private void btnUSB_Click(object sender, EventArgs e)
+        {
+            if (usbDevice.IsRunning)
+            {
+                this.btnUSB.Text = "Start";
+                StopUSBThread();
+            }
+            else
+            {
+                StartUSBThread();
+                this.btnUSB.Text = "Stop";
             }
         }
     }

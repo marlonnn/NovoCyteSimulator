@@ -33,28 +33,32 @@ namespace NovoCyteSimulator.USBSimulator
         private const int status = 2;
         private Dictionary<byte, CBase> decoders;
         private byte msgType;
+
+        public bool IsRunning { set; get; }
+
         public USBDevice()
         {
+            IsRunning = false;
         }
 
-        public void EnumSimulatedDevices()
+        public void RunSimulatedDevices()
         {
             try
             {
                 dsf = new DSF.DSF();
-
                 object obj = Activator.CreateInstance(Type.GetTypeFromProgID("SoftUSBLoopback.LoopbackDevice"));
                 LoopbackDev = (LoopbackDevice)obj;
                 LoopbackDSFDev = LoopbackDev.DSFDevice;
                 LoopbackUSBDev = LoopbackDSFDev.Object[IID_ISoftUSBDevice];
                 bus = dsf.HotPlug(LoopbackDSFDev, "USB2.0");
-
+                IsRunning = true;
                 LoopbackDev.OnProcessingData += LoopbackDev_OnProcessingData;
                 LoopbackDev.DoPolledLoopback(100);
             }
             catch (Exception ee)
             {
                 UnPlugUSB();
+                LogHelper.GetLogger<USBDevice>().Error(string.Format("Run simulate USB device error. Error message is : {0} \n {1}", ee.Message, ee.StackTrace));
             }
         }
         private Stopwatch stopwatch = new Stopwatch();
@@ -98,6 +102,7 @@ namespace NovoCyteSimulator.USBSimulator
                 bus.Unplug(LoopbackDSFDev);
                 if (LoopbackUSBDev != null)
                     LoopbackUSBDev.Destroy();
+                IsRunning = false;
             }
             catch (Exception e)
             {
