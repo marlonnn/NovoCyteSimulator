@@ -148,11 +148,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADO\SampleConfigADO.cs" />
-    <Compile Include="ADO\SampleDataADO.cs" />
-    <Compile Include="ADO\SampleDataDataADO.cs" />
-    <Compile Include="ADO\DBADOFactory.cs" />
-    <Compile Include="ADO\SqliteConvertor.cs" />
     <Compile Include="Equipment\AutoSample.cs" />
     <Compile Include="Equipment\Device.cs" />
     <Compile Include="Equipment\FLChannel.cs" />
@@ -242,15 +237,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Config\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Config\spring.protocols.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\log4net.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Config\spring.db.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>

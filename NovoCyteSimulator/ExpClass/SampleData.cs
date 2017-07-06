@@ -1,5 +1,4 @@
-﻿using NovoCyteSimulator.ADO;
-using NovoCyteSimulator.Equipment;
+﻿using NovoCyteSimulator.Equipment;
 using NovoCyteSimulator.SQLite.Entity;
 using System;
 using System.Collections.Generic;
@@ -36,14 +35,6 @@ namespace NovoCyteSimulator.ExpClass
                         Parameters = new Parameters(s.ParameterNames, ParaNamesSeparator);
                     }
                 }
-            }
-        }
-
-        public void SetParameters(IList<TSampleConfig> sampleConfigs)
-        {
-            foreach (var sampleConfig in sampleConfigs)
-            {
-                Parameters = new Parameters(sampleConfig.ParameterNames, ParaNamesSeparator);
             }
         }
 

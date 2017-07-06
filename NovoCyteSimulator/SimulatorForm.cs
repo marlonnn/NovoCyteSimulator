@@ -1,5 +1,4 @@
-﻿using NovoCyteSimulator.ADO;
-using NovoCyteSimulator.ExpClass;
+﻿using NovoCyteSimulator.ExpClass;
 using NovoCyteSimulator.SQLite;
 using NovoCyteSimulator.SQLite.Entity;
 using NovoCyteSimulator.USBSimulator;
@@ -21,14 +20,6 @@ namespace NovoCyteSimulator
 {
     public partial class SimulatorForm : Form
     {
-        private DBADOFactory _dbADOFactory;
-
-        private IList<TSampleData> _sampleDataList;
-
-        private IList<TSampleDataData> _sampleDataDataList;
-
-        private IList<TSampleConfig> _sampleConfigList;
-
         private NovoCyteSimulator.ExpClass.SampleData _sampleData;
 
         private string _connectString;
@@ -76,7 +67,7 @@ namespace NovoCyteSimulator
         private void SimulatorForm_Load(object sender, EventArgs e)
         {
             InitializeMachineStatus();
-            //StartUSBThread();
+            StartUSBThread();
         }
 
         private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -175,20 +166,6 @@ namespace NovoCyteSimulator
                     }
                     conn.Close();
                 }
-            }
-        }
-
-        private void btnUSB_Click(object sender, EventArgs e)
-        {
-            if (usbDevice.IsRunning)
-            {
-                this.btnUSB.Text = "Start";
-                StopUSBThread();
-            }
-            else
-            {
-                StartUSBThread();
-                this.btnUSB.Text = "Stop";
             }
         }
     }
