@@ -33,6 +33,7 @@
             this.btnNcf = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lbDB = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +67,8 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lbDB});
+            this.lbDB,
+            this.toolStripStatus});
             this.statusStrip1.Location = new System.Drawing.Point(0, 109);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(469, 22);
@@ -77,6 +79,12 @@
             // 
             this.lbDB.Name = "lbDB";
             this.lbDB.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolStripStatus
+            // 
+            this.toolStripStatus.Name = "toolStripStatus";
+            this.toolStripStatus.Size = new System.Drawing.Size(87, 17);
+            this.toolStripStatus.Text = "Status: Start Up";
             // 
             // SimulatorForm
             // 
@@ -105,5 +113,6 @@
         private System.Windows.Forms.Button btnNcf;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lbDB;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatus;
     }
 }

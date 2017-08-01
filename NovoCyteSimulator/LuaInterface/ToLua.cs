@@ -141,9 +141,9 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         }
         public ToLua()
         {
-            this.stateto = (int)WorkState.WORK_IDLE;
-            this.subref1 = (int)WorkState.WORK_SLEEP;
-            this.subref2 = (int)WorkState.WORK_SLEEP;
+            this.stateto = (int)WorkState.WORK_STARTUP;
+            this.subref1 = 1;
+            this.subref2 = 0;
 
             //设置默认样本量和推样速度
             size = 100;

@@ -27,23 +27,23 @@ namespace NovoCyteSimulator
             SimulatorForm simulatorForm;
             try
             {
-                Console.WriteLine("--->> C#中执行Lua脚本");
-                //C#中执行lua脚本文件
-                Lua lua = new Lua();
-                lua.DoFile("LuaScript\\work.lua");
-                Console.ReadKey();
-                //Application.EnableVisualStyles();
-                //Application.SetCompatibleTextRenderingDefault(false);
-                ////novoCyteSimulatorForm = SpringHelper.GetObject<NovoCyteSimulatorForm>("novoCyteSimulatorForm");
-                //simulatorForm = SpringHelper.GetObject<SimulatorForm>("simulatorForm");
-                //Config config = NovoCyteConfig.GetInstance().Config;
-                //simulatorForm.Config = config;
-                //Dictionary<byte, CBase> decoders = SpringHelper.GetObject<Dictionary<System.Byte, NovoCyteSimulator.Messages.CBase>>("decoders");
-                //foreach (var decoder in decoders.Values)
-                //{
-                //    decoder.Config = config;
-                //}
-                //Application.Run(simulatorForm);
+                //Console.WriteLine("--->> C#中执行Lua脚本");
+                ////C#中执行lua脚本文件
+                //Lua lua = new Lua();
+                //lua.DoFile("LuaScript\\work.lua");
+                //Console.ReadKey();
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                //novoCyteSimulatorForm = SpringHelper.GetObject<NovoCyteSimulatorForm>("novoCyteSimulatorForm");
+                simulatorForm = SpringHelper.GetObject<SimulatorForm>("simulatorForm");
+                Config config = NovoCyteConfig.GetInstance().Config;
+                simulatorForm.Config = config;
+                Dictionary<byte, CBase> decoders = SpringHelper.GetObject<Dictionary<System.Byte, NovoCyteSimulator.Messages.CBase>>("decoders");
+                foreach (var decoder in decoders.Values)
+                {
+                    decoder.Config = config;
+                }
+                Application.Run(simulatorForm);
             }
             catch (Exception ee)
             {

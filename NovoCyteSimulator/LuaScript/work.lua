@@ -315,13 +315,22 @@ function work:timecalc()
   return ticks
 end
 
-work.stateTo = TimingConst.WORK_STARTUP                 -- 默认设置为开机初始化状态
+function work:setstate()
+	work.stateTo = subwork.ToLua.Stateto
+	logger:info(work.stateTo)
+	work:select()
+	return true
+end
+
+return work
+
+--work.stateTo = TimingConst.WORK_STARTUP                 -- 默认设置为开机初始化状态
 --work.stateTo = TimingConst.WORK_MAINTAIN
 --work.stateTo = TimingConst.WORK_MEASURE;
 --work.maintainTo = TimingConst.MAINTAIN_DEBUBBLE
 --work.stateTo = TimingConst.WORK_IDLE
-logger:info(work.stateTo)
-work:select()
+--logger:info(work.stateTo)
+--work:select()
 --[[
 local work_prompt = "  [1]: Startup\r\n  [2]: Idle\r\n  [3]: Measure\r\n  [4]: Maintain\r\n  [5]: Error\r\n  [6]: Sleep\r\n  [7]: Shutdown\r\n  [8]: InitPriming\r\n  [9]: Drain\r\n  [0]: Exit\r\n"
 local maintain_prompt = "  [1]: Debubble\r\n  [2]: Cleaning\r\n  [3]: Rinse\r\n  [4]: ExtRinse\r\n  [5]: Priming\r\n  [6]: Unclog\r\n  [7]: Backflush\r\n  [0]: Exit\r\n"

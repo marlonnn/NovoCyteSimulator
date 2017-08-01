@@ -1,4 +1,6 @@
-﻿using NovoCyteSimulator.ExpClass;
+﻿using LuaInterface;
+using NovoCyteSimulator.ExpClass;
+using NovoCyteSimulator.LuaScript.LuaInterface;
 using NovoCyteSimulator.SQLite;
 using NovoCyteSimulator.SQLite.Entity;
 using NovoCyteSimulator.USBSimulator;
@@ -33,17 +35,16 @@ namespace NovoCyteSimulator
         private USBDevice usbDevice;
         private Thread usbThread;
 
+        private Lua lua;
+
         public SimulatorForm()
         {
             InitializeComponent();
+            InitializeLuaInterface();
             this.Load += SimulatorForm_Load;
             this.FormClosing += SimulatorForm_FormClosing;
             this.KeyDown += SimulatorForm_KeyDown;
             this.comboBoxStatus.SelectedIndexChanged += ComboBoxStatus_SelectedIndexChanged;
-        }
-
-        private void ComboBoxStatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
         }
 
         private void SimulatorForm_KeyDown(object sender, KeyEventArgs e)
@@ -54,20 +55,45 @@ namespace NovoCyteSimulator
             }
         }
 
+        private void InitializeLuaInterface()
+        {
+            lua = new Lua();
+            lua.DoFile("LuaScript\\work.lua");
+        }
+
         private void InitializeMachineStatus()
         {
-            foreach (var item in _config.Device.SystemWorkModeIntervalDic.Keys)
-            {
-                this.comboBoxStatus.Items.Add(item);
-            }
-            this.comboBoxStatus.SelectedIndex = 1;
-            this._config.Device.SystemMainWorkMode = _config.Device.SystemWorkModeIntervalDic[comboBoxStatus.SelectedItem.ToString()];
+            string[] status = new string[] { "Start Up", "Measure", "Maintain", "Sleep" };
+            this.comboBoxStatus.Items.AddRange(status);
+            this.comboBoxStatus.SelectedIndex = 0;
         }
 
         private void SimulatorForm_Load(object sender, EventArgs e)
         {
             InitializeMachineStatus();
+            //Select((int)WorkState.WORK_STARTUP, 1, 1);
             StartUSBThread();
+        }
+
+        private void ComboBoxStatus_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            string status = this.comboBoxStatus.SelectedItem.ToString();
+            switch (status)
+            {
+                case "Start Up":
+                    Select((int)WorkState.WORK_STARTUP, 1, 1);
+                    break;
+                case "Measure":
+                    Select((int)WorkState.WORK_MEASURE, 1, 1);
+                    break;
+                case "Maintain":
+                    Select((int)WorkState.WORK_MAINTAIN, 1, 1);
+                    break;
+                case "Sleep":
+                    Select((int)WorkState.WORK_SLEEP, 1, 1);
+                    break;
+            }
+            this.toolStripStatus.Text = string.Format("Status: {0}", status);
         }
 
         private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -167,6 +193,18 @@ namespace NovoCyteSimulator
                     conn.Close();
                 }
             }
+        }
+
+        public void Select(int stateto, int subref1, int subref2)
+        {
+            SubWork subwork = SubWork.GetSubWork();
+            subwork.ToLua.Stateto = stateto;
+            subwork.ToLua.Subref1 = subref1;
+            subwork.ToLua.Subref2 = subref2;
+
+            LuaTable table = lua.GetTable("work");
+            LuaFunction function = (LuaFunction)table["setstate"];
+            function.Call();
         }
     }
 }

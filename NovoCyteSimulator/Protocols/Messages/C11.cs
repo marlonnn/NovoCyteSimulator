@@ -1,4 +1,5 @@
-﻿using NovoCyteSimulator.Messages;
+﻿using NovoCyteSimulator.LuaScript.LuaInterface;
+using NovoCyteSimulator.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace NovoCyteSimulator.Protocols.Messages
     //读取仪器状态
     public class C11 : CBase
     {
+        private SubWork subwork = SubWork.GetSubWork();
 
         public C11()
         {
@@ -20,7 +22,7 @@ namespace NovoCyteSimulator.Protocols.Messages
         {
             byte[] param = new byte[35];
             byte[] M1 = new byte[4];
-            int workMode = (int)config.Device.SystemMainWorkMode;
+            int workMode = (int)subwork.FromLua.State;
             M1[0] = (byte)(workMode);
             M1[1] = (byte)(workMode >> 8);
             M1[2] = (byte)(workMode >> 16);
@@ -28,42 +30,46 @@ namespace NovoCyteSimulator.Protocols.Messages
             Array.Copy(M1, 0, param, 0, 4);
 
             byte[] M2 = new byte[4];
-            int state = 0;
-            switch (config.Device.SystemMainWorkMode)
-            {
-                case Equipment.Device.ESystemMainWorkMode.WM_Testing:
-                    state = (int)config.Device.MeasState;
-                    M2[0] = (byte)(state);
-                    M2[1] = (byte)(state >> 8);
-                    M2[2] = (byte)(state >> 16);
-                    M2[3] = (byte)(state >> 24);
-                    break;
-                case Equipment.Device.ESystemMainWorkMode.WM_FlowMaintenance:
-                    state = (int)config.Device.FlowMaintainMode;
-                    M2[0] = (byte)(state);
-                    M2[1] = (byte)(state >> 8);
-                    M2[2] = (byte)(state >> 16);
-                    M2[3] = (byte)(state >> 24);
-                    break;
-                case Equipment.Device.ESystemMainWorkMode.WM_FirstPriming:
-                case Equipment.Device.ESystemMainWorkMode.WM_Drain:
-                    //M2 - H | M2 - L
-                    //INT16U | INT16U
-                    //M2 - H为M2的高字节,0表示执行完成,1表示执行中
-                    //M2 - L为M2的低字节,表示执行的步骤
-                    //M2 = 0表示等待上位机命令
-                    break;
-                case Equipment.Device.ESystemMainWorkMode.WM_ErrorHandle:
-                    //M2为错误代码值，表示正在执行的错误处理
-                    break;
-                case Equipment.Device.ESystemMainWorkMode.WM_ShutDown:
-                    //M2 - H | M2 - L
-                    //INT16U | INT16U
-                    //M2 - H为M2的高字节,0表示执行完成,1表示执行中
-                    //M2 - L为M2的低字节,表示执行的步骤
-                    //M2 = 0表示正常关机流程
-                    break;
-            }
+            int state = subwork.FromLua.Ref1;
+            M2[0] = (byte)(state);
+            M2[1] = (byte)(state >> 8);
+            M2[2] = (byte)(state >> 16);
+            M2[3] = (byte)(state >> 24);
+            //switch (config.Device.SystemMainWorkMode)
+            //{
+            //    case Equipment.Device.ESystemMainWorkMode.WM_Testing:
+            //        state = (int)config.Device.MeasState;
+            //        M2[0] = (byte)(state);
+            //        M2[1] = (byte)(state >> 8);
+            //        M2[2] = (byte)(state >> 16);
+            //        M2[3] = (byte)(state >> 24);
+            //        break;
+            //    case Equipment.Device.ESystemMainWorkMode.WM_FlowMaintenance:
+            //        state = (int)config.Device.FlowMaintainMode;
+            //        M2[0] = (byte)(state);
+            //        M2[1] = (byte)(state >> 8);
+            //        M2[2] = (byte)(state >> 16);
+            //        M2[3] = (byte)(state >> 24);
+            //        break;
+            //    case Equipment.Device.ESystemMainWorkMode.WM_FirstPriming:
+            //    case Equipment.Device.ESystemMainWorkMode.WM_Drain:
+            //        //M2 - H | M2 - L
+            //        //INT16U | INT16U
+            //        //M2 - H为M2的高字节,0表示执行完成,1表示执行中
+            //        //M2 - L为M2的低字节,表示执行的步骤
+            //        //M2 = 0表示等待上位机命令
+            //        break;
+            //    case Equipment.Device.ESystemMainWorkMode.WM_ErrorHandle:
+            //        //M2为错误代码值，表示正在执行的错误处理
+            //        break;
+            //    case Equipment.Device.ESystemMainWorkMode.WM_ShutDown:
+            //        //M2 - H | M2 - L
+            //        //INT16U | INT16U
+            //        //M2 - H为M2的高字节,0表示执行完成,1表示执行中
+            //        //M2 - L为M2的低字节,表示执行的步骤
+            //        //M2 = 0表示正常关机流程
+            //        break;
+            //}
             Array.Copy(M2, 0, param, 4, 4);
 
             //当前警告数
