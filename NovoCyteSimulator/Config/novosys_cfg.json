@@ -18,7 +18,7 @@
       "PartFirmwareVersion": "V4.0.2" // 副版本号
     },
     "AutoSample": {
-      "ConnectStateType": 1, // 0 AutoSampler不存在; 1 NovoSampler已连接,上电; 2 AutoSampler已连接,断电; 3 NovoSampler Pro已连接,上电
+      "ConnectStateType": 0, // 0 AutoSampler不存在; 1 NovoSampler已连接,上电; 2 AutoSampler已连接,断电; 3 NovoSampler Pro已连接,上电
       "CompanyName": "ACEA Biosciences, Inc.", //公司名称
       "SystemName": "NovoCyte", //仪器名称
       "SystemType": "3000", //仪器型号
@@ -82,7 +82,7 @@
       "GravitySensorDetectionEnable": 0, //重力传感器检测是否使能(0：关闭，1：开启)
       "Ticks": 0, //流程执行的节拍数
       "TotalTicks": 0, //总节拍数
-      "AutoSampleConnectStateType": 1, //AutoSampler联机状态
+      "AutoSampleConnectStateType": 0, //AutoSampler联机状态
       "QCStateType": 0, //QC状态
       "BoostingState": 0, //子状态
       "TestingState": 0, //子状态

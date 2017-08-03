@@ -16,9 +16,12 @@
         <entry key="0x24" value-ref="C24" />
         <entry key="0x25" value-ref="C25" />
         <entry key="0x26" value-ref="C26" />
+        <entry key="0x2D" value-ref="C2D" />
         <entry key="0x58" value-ref="C58" />
         <entry key="0x5D" value-ref="C5D" />
         <entry key="0x5F" value-ref="C5F" />
+        <entry key="0x64" value-ref="C64" />
+        <entry key="0x68" value-ref="C68" />
         <entry key="0x6A" value-ref="C6A" />
         <entry key="0xEB" value-ref="CEB" />
         <entry key="0xEC" value-ref="CEC" />
@@ -56,11 +59,18 @@
   <object name="C26" type="NovoCyteSimulator.Protocols.Messages.C26, NovoCyteSimulator">
     <property name="_c78" ref="C78"/>
   </object>
+  <object name="C2D" type="NovoCyteSimulator.Protocols.Messages.C2D, NovoCyteSimulator">
+    <property name="_c78" ref="C78"/>
+  </object>
   <object name="C58" type="NovoCyteSimulator.Protocols.Messages.C58, NovoCyteSimulator">
   </object>
   <object name="C5D" type="NovoCyteSimulator.Protocols.Messages.C5D, NovoCyteSimulator">
   </object>
   <object name="C5F" type="NovoCyteSimulator.Protocols.Messages.C5F, NovoCyteSimulator">
+  </object>
+  <object name="C64" type="NovoCyteSimulator.Protocols.Messages.C64, NovoCyteSimulator">
+  </object>
+  <object name="C68" type="NovoCyteSimulator.Protocols.Messages.C68, NovoCyteSimulator">
   </object>
   <object name="C6A" type="NovoCyteSimulator.Protocols.Messages.C6A, NovoCyteSimulator">
   </object>

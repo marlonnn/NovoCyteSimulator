@@ -29,7 +29,7 @@
   </object>
   
   <object name="AutoSample" type="NovoCyteSimulator.Equipment.AutoSample, NovoCyteSimulator">
-    <property name="ConnectStateType" value= "1"/><!--0 AutoSampler不存在; 1 NovoSampler已连接,上电; 2 AutoSampler已连接,断电; 3 NovoSampler Pro已连接,上电-->
+    <property name="ConnectStateType" value= "0"/><!--0 AutoSampler不存在; 1 NovoSampler已连接,上电; 2 AutoSampler已连接,断电; 3 NovoSampler Pro已连接,上电-->
     <property name="CompanyName" value="ACEA Biosciences, Inc."/><!--公司名称-->
     <property name="SystemName" value="NovoCyte"/><!--仪器名称-->
     <property name="SystemType" value="3000"/><!--仪器型号-->
@@ -102,7 +102,7 @@
     <property name="GravitySensorDetectionEnable" value="0"/><!--重力传感器检测是否使能(0：关闭，1：开启)-->
     <property name="Ticks" value="0"/><!--流程执行的节拍数-->
     <property name="TotalTicks" value="0"/> <!--总节拍数-->
-    <property name="AutoSampleConnectStateType" value="1"/><!--AutoSampler联机状态-->
+    <property name="AutoSampleConnectStateType" value="0"/><!--AutoSampler联机状态-->
     <property name="QCStateType" value="0"/><!--QC状态-->
     <property name="BoostingState" value="1"/><!--子状态-->
     <property name="TestingState" value="0"/><!--子状态-->

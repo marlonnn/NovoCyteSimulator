@@ -80,6 +80,10 @@ namespace NovoCyteSimulator.USBSimulator
                         //string readableByte = Util.StringUtil.Byte2ReadableXstring(txBytes);
                         LoopbackDev.SendData(ref txBytes[0], (uint)txBytes.Length, status, uint.MaxValue);
                     }
+                    else
+                    {
+                        LogHelper.GetLogger<USBDevice>().Error(string.Format("消息类型为：{0} 不存在，或者解析错误"));
+                    }
                 }
                 catch (Exception ee)
                 {

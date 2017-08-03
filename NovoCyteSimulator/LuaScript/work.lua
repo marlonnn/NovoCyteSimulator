@@ -317,6 +317,7 @@ end
 
 function work:setstate()
 	work.stateTo = subwork.ToLua.Stateto
+	logger:info("state to: ------------------->")
 	logger:info(work.stateTo)
 	work:select()
 	return true

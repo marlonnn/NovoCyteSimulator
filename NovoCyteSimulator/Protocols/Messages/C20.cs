@@ -1,4 +1,5 @@
-﻿using NovoCyteSimulator.Messages;
+﻿using NovoCyteSimulator.LuaScript.LuaInterface;
+using NovoCyteSimulator.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,12 @@ namespace NovoCyteSimulator.Protocols.Messages
         {
             if (this.Decode(message, buf, out parameter))
             {
-                config.Device.Cell.Time = BitConverter.ToUInt16(parameter, 0);
-                config.Device.Cell.Points = BitConverter.ToUInt32(parameter, 2);
-                config.Device.Cell.Size = BitConverter.ToUInt16(parameter, 6);
+                var Time = BitConverter.ToUInt16(parameter, 0);
+                var Points = BitConverter.ToUInt32(parameter, 2);
+                var Size = BitConverter.ToUInt16(parameter, 6);
+                SubWork.GetSubWork().ToLua.Size = Size;
                 _c78.M = this.message;
+                _c78.R = 0x01;
                 return true;
             }
             else

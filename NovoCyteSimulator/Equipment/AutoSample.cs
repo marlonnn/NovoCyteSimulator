@@ -9,7 +9,7 @@ namespace NovoCyteSimulator.Equipment
     [Serializable]
     public class AutoSample
     {
-        public enum AS_CONNECT_STATE_Type : byte
+        public enum AS_CONNECT_STATE_Type : int
         {
             CST_Nonexistent = 0, // AutoSampler 不存在
             CST_PowerUp, // NovoSampler 已连接,上电

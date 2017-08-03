@@ -1,6 +1,8 @@
 ﻿using LuaInterface;
 using NovoCyteSimulator.ExpClass;
 using NovoCyteSimulator.LuaScript.LuaInterface;
+using NovoCyteSimulator.Messages;
+using NovoCyteSimulator.Protocols.Messages;
 using NovoCyteSimulator.SQLite;
 using NovoCyteSimulator.SQLite.Entity;
 using NovoCyteSimulator.USBSimulator;
@@ -37,6 +39,8 @@ namespace NovoCyteSimulator
 
         private Lua lua;
 
+        private Dictionary<byte, CBase> decoders;
+
         public SimulatorForm()
         {
             InitializeComponent();
@@ -65,14 +69,28 @@ namespace NovoCyteSimulator
         {
             string[] status = new string[] { "Start Up", "Measure", "Maintain", "Sleep" };
             this.comboBoxStatus.Items.AddRange(status);
-            this.comboBoxStatus.SelectedIndex = 0;
+            this.comboBoxStatus.SelectedIndex = 1;
         }
 
         private void SimulatorForm_Load(object sender, EventArgs e)
         {
             InitializeMachineStatus();
-            //Select((int)WorkState.WORK_STARTUP, 1, 1);
             StartUSBThread();
+            SetCommandHandler();
+        }
+
+        private void SetCommandHandler()
+        {
+            C2D c2d = decoders[0x2D] as C2D;
+            if (c2d != null)
+            {
+                c2d.UpdateStateHandler += UpdateStateHandler;
+            }
+        }
+
+        private void UpdateStateHandler()
+        {
+            Select((int)WorkState.WORK_SLEEPEXIT, 1, 1);
         }
 
         private void ComboBoxStatus_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -205,6 +223,13 @@ namespace NovoCyteSimulator
             LuaTable table = lua.GetTable("work");
             LuaFunction function = (LuaFunction)table["setstate"];
             function.Call();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SubWork subwork = SubWork.GetSubWork();
+            var state = subwork.ToLua.Stateto;
+            var fromState = subwork.FromLua.State;
         }
     }
 }

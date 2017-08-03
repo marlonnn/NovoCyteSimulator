@@ -11,7 +11,7 @@ namespace NovoCyteSimulator.Protocols.Messages
     //读取仪器状态
     public class C11 : CBase
     {
-        private SubWork subwork = SubWork.GetSubWork();
+        private SubWork subwork;
 
         public C11()
         {
@@ -22,6 +22,7 @@ namespace NovoCyteSimulator.Protocols.Messages
         {
             byte[] param = new byte[35];
             byte[] M1 = new byte[4];
+            subwork = SubWork.GetSubWork();
             int workMode = (int)subwork.FromLua.State;
             M1[0] = (byte)(workMode);
             M1[1] = (byte)(workMode >> 8);

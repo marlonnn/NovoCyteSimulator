@@ -182,9 +182,12 @@
     <Compile Include="Protocols\Messages\C25.cs" />
     <Compile Include="Protocols\Messages\C26.cs" />
     <Compile Include="Protocols\Messages\C27.cs" />
+    <Compile Include="Protocols\Messages\C2D.cs" />
     <Compile Include="Protocols\Messages\C58.cs" />
     <Compile Include="Protocols\Messages\C5D.cs" />
     <Compile Include="Protocols\Messages\C5F.cs" />
+    <Compile Include="Protocols\Messages\C64.cs" />
+    <Compile Include="Protocols\Messages\C68.cs" />
     <Compile Include="Protocols\Messages\C6A.cs" />
     <Compile Include="Protocols\Messages\C78.cs" />
     <Compile Include="Protocols\Messages\CBase.cs" />
@@ -338,7 +341,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\spring.system.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\spring.usb.xml">
