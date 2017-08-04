@@ -7,6 +7,7 @@ using NovoCyteSimulator.Util;
 using Summer.System.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,8 +31,11 @@ namespace NovoCyteSimulator
                 //Console.WriteLine("--->> C#中执行Lua脚本");
                 ////C#中执行lua脚本文件
                 //Lua lua = new Lua();
-                //lua.DoFile("LuaScript\\work.lua");
+                //lua.DoFile("LuaScript\\timer.lua");
+                //lua.DoFile("LuaScript\\subwork.lua");
+                //lua.DoFile("LuaScript\\logtest.lua");
                 //Console.ReadKey();
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 //novoCyteSimulatorForm = SpringHelper.GetObject<NovoCyteSimulatorForm>("novoCyteSimulatorForm");

@@ -9,46 +9,35 @@
 
 require "LuaScript\\TimingConst"
 
-work_maintain = work_maintain or {
-  maintainTo = 0
+work_error_handle = work_error_handle or {}
+
+local error_resume_list = {
+  [ErrorConst.HandleErrorConst.SIPCOLLISION]      = resume_sipcollision,
+  [TimingConst.ERROR_RESUME_PRESSURE]             = resume_pressure,
+  [TimingConst.ERROR_RESUME_PRESSUREEXT]          = resume_pressureext,
+  [TimingConst.ERROR_RESUME_SIPABNORMAL]          = resume_sipabnormal
 }
 
-require "LuaScript\\maintain_debubble"
-require "LuaScript\\maintain_cleaning"
-require "LuaScript\\maintain_priming"
-require "LuaScript\\maintain_unclog"
-
-local maintain_list = {
-  [TimingConst.MAINTAIN_DEBUBBLE]   = maintain_debubble,
-  [TimingConst.MAINTAIN_CLEANING]   = maintain_cleaning,
-  [TimingConst.MAINTAIN_PRIMING]    = maintain_priming,
-  [TimingConst.MAINTAIN_UNCLOG]     = maintain_unclog
-}
---[[
-setmetatable(maintain_list, {__index = function (t, k)
-  return rawget(t, "__default")
-end})
-]]--
-function work_maintain:select(sel)
-  local subprocess = maintain_list[sel]
+function work_error_handle:select(sel)
+  local subprocess = error_resume_list[sel]
   if subprocess ~= nil then
     subprocess:process()
   end
 end
 
-function work_maintain:init ()
-  logger:info("work maintain: init")
+function work_error_handle:init ()
+  logger:info("work error: init")
   logger:info("StateTo: ", self.stateTo)
 end
 
-function work_maintain:run ()
-  logger:info("work maintain: run")
+function work_error_handle:run ()
+  logger:info("work error: run")
   self.maintainTo = self.subref1
   self:select(self.maintainTo)
 end
 
-function work_maintain:quit ()
-  logger:info("work maintain: quit")
+function work_error_handle:quit ()
+  logger:info("work error: quit")
   if self.quittype ~= TimingConst.WORK_QUIT_AbortShutdown then
     self.stateTo = TimingConst.WORK_IDLE
   else 
@@ -59,7 +48,7 @@ function work_maintain:quit ()
   end
 end
 
-function work_maintain:process ()
+function work_error_handle:process ()
   self:init()
   self:run()
   self:quit()
@@ -67,9 +56,9 @@ function work_maintain:process ()
   return self.stateTo
 end
 
-setmetatable(work_maintain, {__index = work, __newindex = work})    -- 继承自work表
+setmetatable(work_error_handle, {__index = work, __newindex = work})    -- 继承自work表
 
-return work_maintain
+return work_error_handle
 
 --******************************************************************************
 -- No More!

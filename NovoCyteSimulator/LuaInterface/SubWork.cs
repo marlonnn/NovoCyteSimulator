@@ -1,16 +1,19 @@
-﻿using LuaInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
 
 namespace NovoCyteSimulator.LuaScript.LuaInterface
 {
+    public enum WOEK_QUIT : int
+    {
+        WORK_QUIT_Wait = 0, //等待时序节点
+        WORK_QUIT_Next = 1, //下一个时序节点
+        WORK_QUIT_Normal = 2,//正常退出
+        WORK_QUIT_Abort = 3,// 异常中断退出
+    }
     public class SubWork
     {
+        public WOEK_QUIT workQuit;
         private ToLua toLua;
-
         public ToLua ToLua
         {
             get
@@ -31,10 +34,13 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
 
         public static SubWork subwork;
 
+        private Stopwatch stopwatch;
+
         public SubWork()
         {
             toLua = new ToLua();
             fromLua = new FromLua();
+            stopwatch = new Stopwatch();
         }
         public static SubWork GetSubWork()
         {
@@ -83,21 +89,56 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         // nticks: alarm定时节拍数
         public void alarmstart(int nticks)
         {
-
+            stopwatch.Reset();
+            stopwatch.Start();
         }
 
         // 关闭alarm
         public void alarmstop()
         {
-
+            stopwatch.Stop();
         }
 
         // 等待一个时序节点的执行
-        // awake: 等待过程中每隔awake个节拍唤醒查询一些相关信息,0表示不唤醒
+        // awake: 等待过程中每隔awake个节拍唤醒查询一些相关信息,0表示不唤醒 awake 节拍数
         // result: 等待结果取值为`WORK_QUIT_Wait`、`WORK_QUIT_Next`、`WORK_QUIT_Normal`、`WORK_QUIT_Abort`
-        public void alarmwait(int awake)
+        public int alarmwait(double awake)
         {
+            int state = (int)WOEK_QUIT.WORK_QUIT_Wait;
+            if (awake != 0)
+            {
+                double ticks = stopwatch.Elapsed.Ticks / 50000;
+                if (CompareDoubleTicks(ticks, awake))
+                {
+                    state = (int)WOEK_QUIT.WORK_QUIT_Next;
+                }
+            }
+            return state;
+        }
 
+        /// <summary>
+        /// 判断上位机是否发送命令在ticks时间范围
+        /// 有：WORK_QUIT_Normal
+        /// 默认：WORK_QUIT_Wait
+        /// </summary>
+        /// <param name="ticks"></param>
+        /// <returns></returns>
+        public int idlewait(double ticks)
+        {
+            //To do
+            return (int)WOEK_QUIT.WORK_QUIT_Normal;
+        }
+
+        private bool CompareDoubleTicks(double ticks, double awake)
+        {
+            if (System.Math.Abs(ticks - awake) >= 0 || System.Math.Abs(ticks - awake) <= 5)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // pid控制
@@ -118,6 +159,17 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         {
             size = toLua.Size;
             rate = toLua.Rate;
+        }
+
+        //配置细胞采集模块
+        public void cellconfig()
+        {
+
+        }
+
+        public void Print(object obj)
+        {
+            Console.WriteLine("------------------------->" + obj.ToString());
         }
     }
 }

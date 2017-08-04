@@ -1,4 +1,5 @@
-﻿using NovoCyteSimulator.Messages;
+﻿using NovoCyteSimulator.LuaScript.LuaInterface;
+using NovoCyteSimulator.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,9 @@ namespace NovoCyteSimulator.Protocols.Messages
             if (this.Decode(message, buf, out parameter))
             {
                 //样本流速(单位uL/min),范围5~120
-                config.Device.Cell.SampleVelocity = BitConverter.ToUInt16(parameter, 0);
+                SubWork.GetSubWork().ToLua.Rate = BitConverter.ToUInt16(parameter, 0);
+                //config.Device.Cell.SampleVelocity = BitConverter.ToUInt16(parameter, 0);
+                _c78.R = 0x01;
                 _c78.M = this.message;
                 return true;
             }

@@ -10,7 +10,6 @@
 ----require "work_maintain"
 
 maintain_unclog = maintain_unclog or {}
-setmetatable(maintain_unclog, {__index = work_maintain})
 
 function maintain_unclog:init ()
   self.timingName = "maintain_unclog"
@@ -22,7 +21,7 @@ function maintain_unclog:init ()
   self.sub = nil
   local tstart = tmr.systicks()
   local ttotal = self:timecalc()
-  subwork:stateset(self.stateTo, 0, 0)
+  subwork:stateset(self.stateTo, self.subref1, 0)
   subwork:timeset(tstart, ttotal)
   logger:info("work unclog: init, ttotal: ", ttotal)
   logger:info("StateTo: ", self.stateTo)
@@ -35,7 +34,16 @@ end
 
 function maintain_unclog:quit ()
   logger:info("work unclog: quit")
-  self.stateTo = TimingConst.WORK_IDLE
+  --[[
+  if self.quittype ~= TimingConst.WORK_QUIT_AbortShutdown then
+    self.stateTo = TimingConst.WORK_IDLE
+  else 
+    local ctrlTo, ref1, ref2 = subwork.ctrlto()
+    self.stateTo = ctrlTo
+    self.subref1 = ref1
+    self.subref2 = ref2
+  end
+  --]]
 end
 
 function maintain_unclog:process ()
@@ -45,6 +53,8 @@ function maintain_unclog:process ()
   logger:info("StateTo: ", self.stateTo)
   return self.stateTo
 end
+
+setmetatable(maintain_unclog, {__index = work_maintain, __newindex = work_maintain})    -- 继承自work_maintain表
 
 return maintain_unclog
 

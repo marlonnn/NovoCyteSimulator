@@ -1,4 +1,5 @@
-﻿using NovoCyteSimulator.Messages;
+﻿using NovoCyteSimulator.LuaScript.LuaInterface;
+using NovoCyteSimulator.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,15 @@ namespace NovoCyteSimulator.Protocols.Messages
         {
             if (this.Decode(message, buf, out parameter))
             {
-                config.Device.Cell.StartStopCellCollection = parameter[0];
-                config.Device.Cell.Version = parameter[1];
-                config.Device.Cell.CleaningTimes = parameter[2];
-                config.Device.Cell.TestSel = (Equipment.Device.TEST_Sel)parameter[3];
+                SubWork.GetSubWork().ToLua.Numclean = parameter[2];
+                SubWork.GetSubWork().ToLua.Testsel = parameter[3];
+                SubWork.GetSubWork().ToLua.Isextdata = false;
+                var StartStopCellCollection = parameter[0];
+                var Version = parameter[1];
+                var CleaningTimes = parameter[2];
+                var TestSel = (Equipment.Device.TEST_Sel)parameter[3];
                 _c78.M = this.message;
+                _c78.R = 0x01;
                 return true;
             }
             else

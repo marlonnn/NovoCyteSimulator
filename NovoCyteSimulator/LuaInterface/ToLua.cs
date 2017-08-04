@@ -23,6 +23,18 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
     }
     public class ToLua
     {
+        private double ticks;
+        public double Ticks
+        {
+            get
+            {
+                return ticks;
+            }
+            set
+            {
+                this.ticks = value;
+            }
+        }
         //取值为`WORK_STARTUP`、`WORK_IDLE`、`WORK_MEASURE`、`WORK_MAINTAIN`、`WORK_ERROR`、
         //`WORK_SLEEP`、`WORK_SHUTDOWN`、`WORK_INITPRIMING`、`WORK_DRAIN`、`WORK_SLEEPENTER`、`WORK_SLEEPEXIT`、
         //`WORK_DECONTAMINATION`,表示执行的流程

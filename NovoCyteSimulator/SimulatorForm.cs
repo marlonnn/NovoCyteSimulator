@@ -69,7 +69,7 @@ namespace NovoCyteSimulator
         {
             string[] status = new string[] { "Start Up", "Measure", "Maintain", "Sleep" };
             this.comboBoxStatus.Items.AddRange(status);
-            this.comboBoxStatus.SelectedIndex = 1;
+            this.comboBoxStatus.SelectedIndex = 3;
         }
 
         private void SimulatorForm_Load(object sender, EventArgs e)

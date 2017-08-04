@@ -8,7 +8,6 @@
 --******************************************************************************
 
 work_shutdown = work_shutdown or {}
-setmetatable(work_shutdown, {__index = work})
 
 function work_shutdown:init ()
   self.timingName = "shutdown"
@@ -28,12 +27,13 @@ end
 
 function work_shutdown:run ()
   logger:info("work shutdown: run")
-  self:grpTimingProcess()
+  --self:grpTimingProcess()
 end
 
 function work_shutdown:quit ()
   logger:info("work shutdown: quit")
   self.stateTo = TimingConst.WORK_IDLE
+  misc.poweroff()
 end
 
 function work_shutdown:process ()
@@ -43,6 +43,8 @@ function work_shutdown:process ()
   logger:info("StateTo: ", self.stateTo)
   return self.stateTo
 end
+
+setmetatable(work_shutdown, {__index = work, __newindex = work})    -- 继承自work表
 
 return work_shutdown
 

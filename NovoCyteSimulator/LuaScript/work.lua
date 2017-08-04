@@ -7,38 +7,59 @@
 --
 --******************************************************************************
 
-work = work or {}         -- 创建顶层work表
+work = work or {}                         -- 创建顶层work表
 
-require "LuaScript\\TimingConst"   -- 导入常量表
+require "LuaScript\\TimingConst"                     -- 导入常量表
 require "LuaScript\\config"
-require "LuaScript\\timing"        -- 导入时序表
-require "LuaScript\\logging"       -- 导入log模块
+require "LuaScript\\timing"                          -- 导入时序表
+require "LuaScript\\logging"                         -- 导入log模块
+require "LuaScript\\work_record"                     -- 导入状态步骤记录模块
+require "LuaScript\\novoerror"                       -- 导入错误类型判断模块
+require "LuaScript\\work_startup"                    -- 导入开机初始化流程控制表
+require "LuaScript\\work_idle"                       -- 导入待机流程控制表
+require "LuaScript\\work_measure"                    -- 导入测试流程控制表
+require "LuaScript\\work_maintain"                   -- 导入维护流程控制表
+require "LuaScript\\work_shutdown"                   -- 导入关机流程控制表
+require "LuaScript\\work_initpriming"                -- 导入首次灌注控制表
+require "LuaScript\\work_drain"                      -- 导入排空流程控制表
+require "LuaScript\\work_decontamination"            -- 导入消毒流程控制表
+require "LuaScript\\work_error_handle"               -- 导入错误自动处理流程控制表
+require "LuaScript\\work_error_diagnosis"            -- 导入故障诊断流程控制表
+require "LuaScript\\work_sleepenter"                 -- 导入进入休眠控制表
+require "LuaScript\\work_sleep"                      -- 导入休眠控制表
+require "LuaScript\\work_sleepexit"                  -- 导入退出休眠控制表
+require "LuaScript\\work_motorgohome"                -- 导入复位流程控制表
+require "LuaScript\\motor"  
+require "LuaScript\\valve"  
+require "LuaScript\\subwork"  
+require "LuaScript\\timer"  
 
-require "LuaScript\\work_startup"  -- 导入开机初始化流程控制表
-require "LuaScript\\work_idle"     -- 导入待机流程控制表
-require "LuaScript\\work_measure"
-require "LuaScript\\work_maintain"
-require "LuaScript\\work_error"
-require "LuaScript\\work_initpriming"
-require "LuaScript\\work_drain"
-require "LuaScript\\work_decontamination"
-require "LuaScript\\motor"         -- 导入motor控制模块
-require "LuaScript\\valve"         -- 导入valve控制模块
-require "LuaScript\\tmr"
-require "LuaScript\\subwork"
 
 logger = logging:console("%level %message\r\n")
-logger:setLevel(logging.DEBUG)
-
-local work_list = {     -- 创建时序控制转换表
-  [TimingConst.WORK_STARTUP]          = work_startup,   -- 对应开机执行流程
-  [TimingConst.WORK_IDLE]             = work_idle,      -- 对应待机流程
-  [TimingConst.WORK_MEASURE]          = work_measure,
-  [TimingConst.WORK_MAINTAIN]         = work_maintain,
-  [TimingConst.WORK_ERROR]            = work_error,
-  [TimingConst.WORK_INITPRIMING]      = work_initpriming,
-  [TimingConst.WORK_DRAIN]            = work_drain,
-  [TimingConst.WORK_DECONTAMINATION]  = work_decontamination,
+logger:setLevel(logging.DEBUG)            -- 设置调试级别
+--subwork:timingversionset(timing.version)  -- 设置当前跑的流体时序版本
+logger:info("--------------------------------------------")
+logger:info(subwork)
+logger:info(tmr)
+logger:info("--------------------------------------------")
+--tmr = subwork.GetTimer()
+subwork:Print(tmr)
+local work_list = {                       -- 创建时序控制转换表
+  [TimingConst.WORK_STARTUP]          = work_startup,         -- 对应开机执行流程
+  [TimingConst.WORK_IDLE]             = work_idle,            -- 对应待机流程
+  [TimingConst.WORK_MEASURE]          = work_measure,         -- 对应测试流程
+  [TimingConst.WORK_MAINTAIN]         = work_maintain,        -- 对应维护流程
+  [TimingConst.WORK_SHUTDOWN]         = work_shutdown,        -- 对应关机流程
+  [TimingConst.WORK_ERRORHANDLE]      = work_error_handle,    -- 对应错误处理流程
+  [TimingConst.WORK_ERRORDIAGNOSIS]   = work_error_diagnosis, -- 对应故障诊断流程
+  [TimingConst.WORK_INITPRIMING]      = work_initpriming,     -- 对应首次灌注流程
+  [TimingConst.WORK_DRAIN]            = work_drain,           -- 对应排空流程
+  [TimingConst.WORK_DECONTAMINATION]  = work_decontamination, -- 对应消毒流程
+  [TimingConst.WORK_SLEEPENTER]       = work_sleepenter,      -- 对应进入休眠
+  [TimingConst.WORK_SLEEP]            = work_sleep,           -- 对应休眠
+  [TimingConst.WORK_SLEEPEXIT]        = work_sleepexit,       -- 对应退出休眠
+  [TimingConst.WORK_MOTORGOHOME]      = work_motorgohome,     -- 对应复位流程
+  [TimingConst.WORK_STOP]             = work_stop,            -- 对应无法工作流程
   __default                           = work_idle
 }
 setmetatable(work_list, {__index = function (t, k)
@@ -221,30 +242,47 @@ end
 function work:subTimingRun()                            -- sub时序流程执行
   local sub = self.sub                                  -- 获取当前sub时序流程
   local idx = 1                                         -- sub时序节点计数器
+  local ret
   if sub.idx then
   logger:info("subTimingRun: ", sub.sub.name, sub.idx.name)
   else
   logger:info("subTimingRun: ", sub.sub.name)
   end
-  while true do
+  repeat
     local item = self:itemGet()                         -- 从sub时序流程中获得一个节点
-    if not item then break end                          -- 如果获得的节点为nil,也就是说到了时序结尾,则退出
+    if not item then
+      self.quittype = TimingConst.WORK_QUIT_Normal
+      break
+    end                          -- 如果获得的节点为nil,也就是说到了时序结尾,则退出
+    if item.beginhook then
+      item.beginhook(self, item)
+    end
+    item.ticks = math.ceil(item.ticks)
     if sub.idx then
     logger:info(string.format("-> idx:%3d[0x%02x], ticks:%4d", idx, sub.idx[idx], item.ticks))
     else
     logger:info(string.format("-> idx:%3d[0x%02x], ticks:%4d", idx, idx, item.ticks))
     end
-    if item.beginhook then
-      item.beginhook(self, item)
-    end
     self:itemRun(item)                                  -- 执行获得的节点
     subwork:alarmstart(item.ticks)
-    subwork:alarmwait(0)
+    while true do
+      ret = subwork:alarmwait(item.awaketicks or 0)
+      if ret == TimingConst.WORK_QUIT_Abort then 
+        self.quittype = ret
+        return self.quittype                            -- 若出现异常，结束当前流程
+      end
+      if ret ~= TimingConst.WORK_QUIT_Wait then break end
+      if item.awakehook then
+        ret = item.awakehook(self)
+        if ret ~= TimingConst.WORK_QUIT_Wait then break end
+      end
+    end
+    self.quittype = ret
     if item.endhook then
       item.endhook(self, item)
     end
     idx = idx + 1                                       -- 下一个节点
-  end
+  until ret ~= TimingConst.WORK_QUIT_Next
 end
 
 function work:subTimingQuit()                           -- sub时序流程退出
@@ -260,9 +298,6 @@ end
 
 function work:grpTimingInit()                           -- grp时序流程控制初始化
   logger:info("grpTimingInit")
-  --self.grp = timing[self.timingName]                    -- 根据时序名获得grp时序引用
-  --self.grpIdx = 1
-  --self.grpCnt = 1
   if self.grpBeginHook then self:grpBeginHook() end     -- 是否需要初始化回调
 end
 
@@ -273,6 +308,9 @@ function work:grpTimingRun()                            -- grp时序流程执行
     self.sub = grp[self.grpIdx]                         -- 获得当前的sub时序
 
     self:subTimingProcess()                             -- 执行sub时序流程
+    if self.quittype ~= TimingConst.WORK_QUIT_Normal then break end
+
+    if self.sub.ishand then break end
 
     self.grpIdx = self.grpIdx + 1                       -- 下一个sub
     self.grpCnt = self.grpCnt + 1
@@ -282,6 +320,11 @@ end
 function work:grpTimingQuit()                           -- grp时序流程退出
   if self.grpEndHook then self:grpEndHook() end         -- 是否需要退出回调
   logger:info("grpTimingQuit")
+  --logger:warn("quittype: ", self.quittype)
+
+  if self.quittype ~= TimingConst.WORK_QUIT_Normal then
+    self:itemRun(timing.allstop[1])
+  end
 end
 
 function work:grpTimingProcess()                        -- 整个grp时序流程的执行过程
@@ -296,7 +339,8 @@ function work:timecalc()
   local index, subIdx
   local item
   local ticks = 0
-  
+
+  self.istimecalc = true
   while grpIdx <= #grp do
     local sub = grp[grpIdx]
     subIdx = 1
@@ -305,14 +349,24 @@ function work:timecalc()
       subIdx = subIdx + 1
       if sub.idx then index = sub.idx[index] end        -- 获取节点索引
       item = sub.sub[index]                             -- 获取时序表中的节点
-      -- todo add shadow ticks
-      if item then ticks = ticks + item.ticks
+      if item then
+        if item.beginhook then
+          item.beginhook(self, item)
+        end
+        ticks = ticks + item.ticks
       else break end
     end
     if sub.ishand then break end
     grpIdx = grpIdx + 1
   end
+  self.istimecalc = false
+
   return ticks
+end
+
+function work.Step(step, set)
+  --return (set<<16)|step     --INT16U,多步交互流程,高字节0表示执行完成,1表示执行中;低字节表示执行的步骤
+    return math.ldexp(set, 16)      --INT16U,多步交互流程,高字节0表示执行完成,1表示执行中;低字节表示执行的步骤
 end
 
 function work:setstate()
@@ -325,13 +379,14 @@ end
 
 return work
 
---work.stateTo = TimingConst.WORK_STARTUP                 -- 默认设置为开机初始化状态
---work.stateTo = TimingConst.WORK_MAINTAIN
---work.stateTo = TimingConst.WORK_MEASURE;
---work.maintainTo = TimingConst.MAINTAIN_DEBUBBLE
---work.stateTo = TimingConst.WORK_IDLE
---logger:info(work.stateTo)
---work:select()
+--work.stateTo, work.subref1, work.subref2, work.isrecordnil = work_record:stateget()
+--work.stateTo, work.subref1, work.subref2 = subwork.ctrlto()
+--work.stateTo = TimingConst.WORK_STARTUP
+--while true do
+  --work:select()
+--end
+
+-- work.stateTo = TimingConst.WORK_STARTUP                 -- 默认设置为开机初始化状态
 --[[
 local work_prompt = "  [1]: Startup\r\n  [2]: Idle\r\n  [3]: Measure\r\n  [4]: Maintain\r\n  [5]: Error\r\n  [6]: Sleep\r\n  [7]: Shutdown\r\n  [8]: InitPriming\r\n  [9]: Drain\r\n  [0]: Exit\r\n"
 local maintain_prompt = "  [1]: Debubble\r\n  [2]: Cleaning\r\n  [3]: Rinse\r\n  [4]: ExtRinse\r\n  [5]: Priming\r\n  [6]: Unclog\r\n  [7]: Backflush\r\n  [0]: Exit\r\n"
@@ -384,7 +439,8 @@ while true do
       end
     end
   elseif input==5 then
-    work.stateTo = TimingConst.WORK_ERROR
+  elseif input==5 then
+    work.stateTo = TimingConst.WORK_ERRORHANDLE
   elseif input==6 then
     work.stateTo = TimingConst.WORK_SLEEP
   elseif input==7 then

@@ -1,39 +1,37 @@
 #!/usr/local/bin/lua
 --******************************************************************************
--- maintain_debubble.lua
+-- pressureext_diagnosis.lua
 --
 --   Copyright (C) 2010-2016 ACEA Biosciences, Inc. All rights reserved.
 --   Author: AlexShi <shiweining123@163.com>
 --
 --******************************************************************************
 
---require "work_maintain"
+pressureext_diagnosis = pressureext_diagnosis or {}
 
-maintain_debubble = maintain_debubble or {}
-
-function maintain_debubble:init ()
-  self.timingName = "maintain_debubble"
+function pressureext_diagnosis:init ()
+  self.timingName = "pressureext_diagnosis"
   self.grpIdx = 1
   self.subIdx = 1
   self.grpCnt = 1
   self.subCnt = 1
-  self.grp = timing[self.timingName]            -- æ ¹æ®æ—¶åºåè·å¾—grpæ—¶åºå¼•ç”¨
+  self.grp = timing[self.timingName]            -- ¸ù¾İÊ±ĞòÃû»ñµÃgrpÊ±ĞòÒıÓÃ
   self.sub = nil
   local tstart = tmr.systicks()
   local ttotal = self:timecalc()
-  subwork:stateset(self.stateTo, self.subref1, 0)
-  subwork:timeset(tstart, ttotal)
-  logger:info("work debubble: init, ttotal: ", ttotal)
+  subwork.stateset(self.stateTo, self.subref1, 0)
+  subwork.timeset(tstart, ttotal)
+  logger:info("work pressureext diagnosis: init, ttotal: ", ttotal)
   logger:info("StateTo: ", self.stateTo)
 end
 
-function maintain_debubble:run ()
-  logger:info("work debubble: run")
+function pressureext_diagnosis:run ()
+  logger:info("work pressureext diagnosis: run")
   self:grpTimingProcess()
 end
 
-function maintain_debubble:quit ()
-  logger:info("work debubble: quit")
+function pressureext_diagnosis:quit ()
+  logger:info("work pressureext diagnosis: quit")
   --[[
   if self.quittype ~= TimingConst.WORK_QUIT_AbortShutdown then
     self.stateTo = TimingConst.WORK_IDLE
@@ -46,7 +44,7 @@ function maintain_debubble:quit ()
   --]]
 end
 
-function maintain_debubble:process ()
+function pressureext_diagnosis:process ()
   self:init()
   self:run()
   self:quit()
@@ -54,9 +52,9 @@ function maintain_debubble:process ()
   return self.stateTo
 end
 
-setmetatable(maintain_debubble, {__index = work_maintain, __newindex = work_maintain})    -- ç»§æ‰¿è‡ªwork_maintainè¡¨
+setmetatable(pressureext_diagnosis, {__index = work_error_handle, __newindex = work_error_handle})    -- ¼Ì³Ğ×Ôwork_error±í
 
-return maintain_debubble
+return pressureext_diagnosis
 
 --******************************************************************************
 -- No More!
