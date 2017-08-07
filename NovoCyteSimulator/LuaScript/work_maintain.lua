@@ -52,7 +52,7 @@ function work_maintain:quit ()
   if self.quittype ~= TimingConst.WORK_QUIT_AbortShutdown then
     self.stateTo = TimingConst.WORK_IDLE
   else 
-    local ctrlTo, ref1, ref2 = subwork.ctrlto()
+    local _, ctrlTo, ref1, ref2 = subwork:ctrlto()
     self.stateTo = ctrlTo
     self.subref1 = ref1
     self.subref2 = ref2

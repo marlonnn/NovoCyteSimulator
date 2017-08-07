@@ -41,10 +41,11 @@ namespace NovoCyteSimulator
 
         private Dictionary<byte, CBase> decoders;
 
+        private Thread luaThread;
         public SimulatorForm()
         {
             InitializeComponent();
-            InitializeLuaInterface();
+            //InitializeLuaInterface();
             this.Load += SimulatorForm_Load;
             this.FormClosing += SimulatorForm_FormClosing;
             this.KeyDown += SimulatorForm_KeyDown;
@@ -67,14 +68,15 @@ namespace NovoCyteSimulator
 
         private void InitializeMachineStatus()
         {
-            string[] status = new string[] { "Start Up", "Measure", "Maintain", "Sleep" };
+            string[] status = new string[] { "Start Up", "Idle", "Measure", "Maintain", "Sleep" };
             this.comboBoxStatus.Items.AddRange(status);
-            this.comboBoxStatus.SelectedIndex = 3;
+            //this.comboBoxStatus.SelectedIndex = 3;
         }
 
         private void SimulatorForm_Load(object sender, EventArgs e)
         {
             InitializeMachineStatus();
+            StartLuaThread();
             StartUSBThread();
             SetCommandHandler();
         }
@@ -101,6 +103,9 @@ namespace NovoCyteSimulator
                 case "Start Up":
                     Select((int)WorkState.WORK_STARTUP, 1, 1);
                     break;
+                case "Idle":
+                    Select((int)WorkState.WORK_IDLE, 1, 1);
+                    break;
                 case "Measure":
                     Select((int)WorkState.WORK_MEASURE, 1, 1);
                     break;
@@ -117,6 +122,7 @@ namespace NovoCyteSimulator
         private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopUSBThread();
+            StopLuaThread();
         }
 
         private void StartUSBThread()
@@ -136,6 +142,32 @@ namespace NovoCyteSimulator
                 usbDevice.UnPlugUSB();
             }
         }
+
+        public void StartLuaThread()
+        {
+            try
+            {
+                luaThread = new Thread(new ThreadStart(InitializeLuaInterface));
+                luaThread.IsBackground = true;
+                luaThread.Priority = ThreadPriority.Highest;
+                luaThread.Start();
+            }
+            catch (Exception ee)
+            {
+            }
+        }
+
+        public void StopLuaThread()
+        {
+            try
+            {
+                luaThread.Abort();
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
         private void viewLog(string[] logname)
         {
             string logView = string.Format("{0}\\Resources\\LogView.exe", System.Environment.CurrentDirectory);

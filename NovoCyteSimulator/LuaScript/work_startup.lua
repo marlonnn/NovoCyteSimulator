@@ -26,10 +26,12 @@ function work_startup:init ()                   -- startup初始化
   motor.config(TimingConst.PMOTOR,  16, 0.40)
   logger:info("work startup: init, ttotal: ", ttotal)
   logger:info("StateTo: ", self.stateTo)
+  subwork:print("work startup: init");
 end
 
 function work_startup:run ()                    -- 执行startup
   logger:info("work startup: run")
+  subwork:print("work startup: run")
   self:grpTimingProcess()                       -- 执行时序流程
 end
 
@@ -38,6 +40,7 @@ function work_startup:quit ()                   -- 退出startup
   motor.config(TimingConst.IMOTOR, 256, 0.10)
   motor.config(TimingConst.PMOTOR,  16, 0.10)
   logger:info("work startup: quit")
+  subwork:print("work startup: quit");
   if self.quittype ~= TimingConst.WORK_QUIT_AbortShutdown then
     self.stateTo = TimingConst.WORK_IDLE        -- 状态切换到IDLE
   else 

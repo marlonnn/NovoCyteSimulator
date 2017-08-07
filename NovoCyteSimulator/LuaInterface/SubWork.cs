@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace NovoCyteSimulator.LuaScript.LuaInterface
 {
@@ -35,6 +36,37 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         public static SubWork subwork;
 
         private Stopwatch stopwatch;
+
+        private int itemTicks;
+        public int ItemTicks
+        {
+            get
+            {
+                return itemTicks;
+            }
+            set
+            {
+                if (value != itemTicks)
+                {
+                    itemTicks = value;
+                    currentTicks += itemTicks;
+                }
+            }
+        }
+
+        private double currentTicks;
+
+        public double Ticks
+        {
+            get
+            {
+                return currentTicks;
+            }
+            set
+            {
+                currentTicks = value;
+            }
+        }
 
         public SubWork()
         {
@@ -83,12 +115,15 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         {
             fromLua.Tstart = tstart;
             fromLua.Ttotal = ttotal;
+            Console.WriteLine("--------->tstart:" + tstart);
+            Console.WriteLine("--------->Ttotal:" + ttotal);
         }
 
         // 启动一个alarm
         // nticks: alarm定时节拍数
         public void alarmstart(int nticks)
         {
+            ItemTicks = nticks;
             stopwatch.Reset();
             stopwatch.Start();
         }
@@ -107,10 +142,14 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             int state = (int)WOEK_QUIT.WORK_QUIT_Wait;
             if (awake != 0)
             {
+                Thread.Sleep((int)awake * 5);
                 double ticks = stopwatch.Elapsed.Ticks / 50000;
-                if (CompareDoubleTicks(ticks, awake))
+                if (CompareDoubleTicks(ticks, itemTicks))
                 {
                     state = (int)WOEK_QUIT.WORK_QUIT_Next;
+                    
+                    Console.WriteLine("==============work quit next=============");
+                    alarmstop();
                 }
             }
             return state;
@@ -129,9 +168,11 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             return (int)WOEK_QUIT.WORK_QUIT_Normal;
         }
 
-        private bool CompareDoubleTicks(double ticks, double awake)
+        private bool CompareDoubleTicks(double ticks, double itemTicks)
         {
-            if (System.Math.Abs(ticks - awake) >= 0 || System.Math.Abs(ticks - awake) <= 5)
+            Console.WriteLine("--------->ticks:" + ticks);
+            Console.WriteLine("--------->itemTicks:" + itemTicks);
+            if (ticks - itemTicks > 0 && ticks - itemTicks <= 100)
             {
                 return true;
             }
@@ -169,7 +210,15 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
 
         public void Print(object obj)
         {
-            Console.WriteLine("------------------------->" + obj.ToString());
+            if (obj != null)
+            {
+                Console.WriteLine("------------------------->" + obj.ToString());
+            }
+            else
+            {
+                Console.WriteLine("------------------------->: this object is null" );
+            }
+
         }
     }
 }

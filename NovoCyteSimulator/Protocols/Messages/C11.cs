@@ -87,6 +87,11 @@ namespace NovoCyteSimulator.Protocols.Messages
 
             //测试样本量
             byte[] V = new byte[4];
+            int volum = (int)SubWork.GetSubWork().ToLua.Size;
+            V[0] = (byte)(volum);
+            V[1] = (byte)(volum >> 8);
+            V[2] = (byte)(volum >> 16);
+            V[3] = (byte)(volum >> 24);
             Array.Copy(V, 0, param, 16, 4);
 
             //重力传感器检测是否使能(0：关闭，1：开启)
@@ -95,10 +100,22 @@ namespace NovoCyteSimulator.Protocols.Messages
 
             //流程执行的节拍数
             byte[] t1 = new byte[4];
+            int ticks = (int)SubWork.GetSubWork().Ticks;
+            t1[0] = (byte)(ticks);
+            t1[1] = (byte)(ticks >> 8);
+            t1[2] = (byte)(ticks >> 16);
+            t1[3] = (byte)(ticks >> 24);
+            Console.WriteLine("----------ticks------->" + ticks);
             Array.Copy(t1, 0, param, 21, 4);
 
             //总节拍数
             byte[] t2 = new byte[4];
+            int TotalTicks = subwork.FromLua.Ttotal;
+            t2[0] = (byte)(TotalTicks);
+            t2[1] = (byte)(TotalTicks >> 8);
+            t2[2] = (byte)(TotalTicks >> 16);
+            t2[3] = (byte)(TotalTicks >> 24);
+            Console.WriteLine("----------Total ticks------->" + TotalTicks);
             Array.Copy(t2, 0, param, 25, 4);
 
             //AutoSampler联机状态

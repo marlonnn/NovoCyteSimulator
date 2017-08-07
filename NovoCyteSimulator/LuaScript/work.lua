@@ -38,12 +38,7 @@ require "LuaScript\\timer"
 logger = logging:console("%level %message\r\n")
 logger:setLevel(logging.DEBUG)            -- 设置调试级别
 --subwork:timingversionset(timing.version)  -- 设置当前跑的流体时序版本
-logger:info("--------------------------------------------")
-logger:info(subwork)
-logger:info(tmr)
-logger:info("--------------------------------------------")
 --tmr = subwork.GetTimer()
-subwork:Print(tmr)
 local work_list = {                       -- 创建时序控制转换表
   [TimingConst.WORK_STARTUP]          = work_startup,         -- 对应开机执行流程
   [TimingConst.WORK_IDLE]             = work_idle,            -- 对应待机流程
@@ -266,7 +261,7 @@ function work:subTimingRun()                            -- sub时序流程执行
     self:itemRun(item)                                  -- 执行获得的节点
     subwork:alarmstart(item.ticks)
     while true do
-      ret = subwork:alarmwait(item.awaketicks or 0)
+      ret = subwork:alarmwait(item.awaketicks or 100)
       if ret == TimingConst.WORK_QUIT_Abort then 
         self.quittype = ret
         return self.quittype                            -- 若出现异常，结束当前流程
@@ -305,7 +300,7 @@ function work:grpTimingRun()                            -- grp时序流程执行
   local grp = self.grp
   logger:info("grpTimingRun: ", grp.name)
   while self.grpIdx <= #grp do                          -- 循环grp里每一个sub时序
-    self.sub = grp[self.grpIdx]                         -- 获得当前的sub时序
+	self.sub = grp[self.grpIdx]                         -- 获得当前的sub时序
 
     self:subTimingProcess()                             -- 执行sub时序流程
     if self.quittype ~= TimingConst.WORK_QUIT_Normal then break end
@@ -319,6 +314,7 @@ end
 
 function work:grpTimingQuit()                           -- grp时序流程退出
   if self.grpEndHook then self:grpEndHook() end         -- 是否需要退出回调
+  subwork:print("work: grpTimingQuit")
   logger:info("grpTimingQuit")
   --logger:warn("quittype: ", self.quittype)
 
@@ -366,7 +362,8 @@ end
 
 function work.Step(step, set)
   --return (set<<16)|step     --INT16U,多步交互流程,高字节0表示执行完成,1表示执行中;低字节表示执行的步骤
-    return math.ldexp(set, 16)      --INT16U,多步交互流程,高字节0表示执行完成,1表示执行中;低字节表示执行的步骤
+    --return math.ldexp(set, 16) + set     --INT16U,多步交互流程,高字节0表示执行完成,1表示执行中;低字节表示执行的步骤
+	return set * 2^16 + set 
 end
 
 function work:setstate()
