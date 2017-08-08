@@ -77,7 +77,7 @@ namespace NovoCyteSimulator
         {
             InitializeMachineStatus();
             StartLuaThread();
-            StartUSBThread();
+            //StartUSBThread();
             SetCommandHandler();
         }
 
@@ -121,7 +121,7 @@ namespace NovoCyteSimulator
 
         private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            StopUSBThread();
+            //StopUSBThread();
             StopLuaThread();
         }
 

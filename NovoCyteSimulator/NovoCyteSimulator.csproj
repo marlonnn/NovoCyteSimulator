@@ -165,6 +165,8 @@
     <Compile Include="ExpClass\Parameters.cs" />
     <Compile Include="ExpClass\SampleData.cs" />
     <Compile Include="LuaInterface\FromLua.cs" />
+    <Compile Include="LuaInterface\Motor.cs" />
+    <Compile Include="LuaInterface\MotorManager.cs" />
     <Compile Include="LuaInterface\MTimer.cs" />
     <Compile Include="LuaInterface\SubWork.cs" />
     <Compile Include="LuaInterface\ToLua.cs" />

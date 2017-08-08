@@ -15,13 +15,13 @@ local stateTo
 
 function work_idle:check()
   logger:info("work_idle_check:check whether motor at home")
-  local smotor_hs
-  local imotor_hs
-  _, _, smotor_hs = motor.optstate(TimingConst.SMOTOR)              -- 检查样本针是否停在光耦中
-  _, _, imotor_hs = motor.optstate(TimingConst.IMOTOR)              -- 检查注射器是否停在光耦中
-  pmotor_ht       = motor.optstate(TimingConst.PMOTOR)              -- 检查注射器是否停在光耦中
-  
-  if not smotor_hs or not imotor_hs or not pmotor_hs then
+  --local smotor_hs
+  --local imotor_hs
+  --_, _, smotor_hs = motor.optstate(TimingConst.SMOTOR)              -- 检查样本针是否停在光耦中
+  --_, _, imotor_hs = motor.optstate(TimingConst.IMOTOR)              -- 检查注射器是否停在光耦中
+  --pmotor_ht       = motor.optstate(TimingConst.PMOTOR)              -- 检查注射器是否停在光耦中
+  --
+  --if not smotor_hs or not imotor_hs or not pmotor_hs then
     self.stateTo = TimingConst.WORK_MOTORGOHOME
     work:select()
   else return
@@ -37,8 +37,8 @@ function work_idle:init ()                  -- idle初始化
   self.subCnt = 1
   self.grp = nil
   self.sub = nil
-  subwork.stateset(TimingConst.WORK_IDLE, 0, 0)
-  subwork.timeset(0, 0)
+  subwork:stateset(TimingConst.WORK_IDLE, 0, 0)
+  subwork:timeset(0, 0)
   motor.config(TimingConst.SMOTOR, 256, 0.65)
   motor.config(TimingConst.IMOTOR, 256, 0.10)
   motor.config(TimingConst.PMOTOR,  16, 0.10)
@@ -52,13 +52,13 @@ function work_idle:run ()                   -- 执行idle
   local tstart = tmr.systicks()                                                   --查询系统当前时间节点
   local idleduration = 0
   while true do
-    ret = subwork.idlewait(200)
+    ret = subwork:idlewait(200)
     idleduration = tmr.systicks() - tstart
     if ret == TimingConst.WORK_QUIT_Wait and idleduration >= sleeptime then       --判断仪器空闲时间长度是否达到休眠时间
       stateTo =  TimingConst.WORK_SLEEPENTER
       break
     elseif ret ~= TimingConst.WORK_QUIT_Wait and ret ~= TimingConst.WORK_QUIT_AbortOthers then
-      ctrlTo, ref1, ref2 = subwork.ctrlto()
+      ctrlTo, ref1, ref2 = subwork:ctrlto()
       stateTo = ctrlTo
       self.subref1 = ref1
       self.subref2 = ref2

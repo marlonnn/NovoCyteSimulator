@@ -151,6 +151,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
                 rate = value;
             }
         }
+ 
         public ToLua()
         {
             this.stateto = (int)WorkState.WORK_STARTUP;
