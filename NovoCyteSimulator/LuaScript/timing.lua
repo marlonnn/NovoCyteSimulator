@@ -683,7 +683,7 @@ local TIMING_SUB_AbsSampleAcquisition = {
     self.ref1 = TimingConst.MEASURE_Boosting    -- set state to boosting
     self.ref2 = TimingConst.BOOSTING_Step1      -- set step to step1
     self.idr  = 0
-    local hasAutoSampler, rounds = subwork:samplerounds()
+    local void, hasAutoSampler, rounds = subwork:samplerounds()
     if hasAutoSampler then 
       item.smotor.rounds = rounds
     else 
@@ -708,11 +708,11 @@ local TIMING_SUB_AbsSampleAcquisition = {
 --0x03 吸入样本
   {
   beginhook = function (self, item)
-    local size = subwork:sampleinfo()
+    local void, size = subwork:sampleinfo()
     local extsize = config.compensation[TimingConst.TEST_IS_ABS].size
     local omega = math.abs(item.imotor.omega)
-    --local extticks = omega / item.imotor.alpha * 2 * tmr.tickspersec() + 20
-    --item.ticks = (size + extsize) * (tmr.tickspermin()/config.imotor.volumperround)/omega + extticks;
+    --local extticks = omega / item.imotor.alpha * 2 * tmr:tickspersec() + 20
+    --item.ticks = (size + extsize) * (tmr:tickspermin()/config.imotor.volumperround)/omega + extticks;
     item.imotor.rounds = (size + extsize)/config.imotor.volumperround
     self.idr = self.idr + PULL * item.imotor.rounds
   end,
@@ -723,7 +723,7 @@ local TIMING_SUB_AbsSampleAcquisition = {
 --0x04 外置样本针上行
   {
   beginhook = function (self, item)
-    local hasAutoSampler, rounds = subwork:samplerounds()
+    local void, hasAutoSampler, rounds = subwork:samplerounds()
     if hasAutoSampler then 
       item.smotor.rounds = rounds - 0.4
     else 
@@ -771,7 +771,7 @@ local TIMING_SUB_AbsSampleAcquisition = {
     else
       t = 2 * math.sqrt(r * 60 / alpha)
     end
-    item.ticks = t * tmr.tickspersec() + 10
+    item.ticks = t * tmr:tickspersec() + 10
 
     self.idr = self.idr + PUSH * item.imotor.rounds
   end,
@@ -791,11 +791,11 @@ local TIMING_SUB_AbsSampleAcquisition = {
 --0x09 boost后,进入流量稳定期,注射器流量与用户设定的样本流量相同
   {
   beginhook = function (self, item)
-    local _, rate = subwork:sampleinfo()
+    local void, void, rate = subwork:sampleinfo()
     local coef = config.compensation[TimingConst.TEST_IS_ABS].coef[config.instrumenttype]
     item.imotor.omega = PUSH * rate * coef / config.imotor.volumperround
     subwork:pidcontrol(TimingConst.PID_Stop)
-    subwork:pmtreset()
+    --subwork:pmtreset()
   end,
   ticks     = 200,          -- 200ticks = 1s
   valve     = {6, 9},
@@ -805,17 +805,17 @@ local TIMING_SUB_AbsSampleAcquisition = {
 --0x0A 正式测试,开始采集数据
   {
   beginhook = function (self, item)
-    local size, rate = subwork:sampleinfo()
+    local void, size, rate = subwork:sampleinfo()
     local coef = config.compensation[TimingConst.TEST_IS_ABS].coef[config.instrumenttype]
     self.samplesize, self.samplerate = size, rate
     item.imotor.omega = PUSH * rate * coef / config.imotor.volumperround
     size = size * coef
-    item.ticks = tmr.tickspermin() * size / TimingConst.SAMPLE_MIN_SPEED
-    --item.ticks = tmr.tickspermin() * size / rate + 100
+    item.ticks = tmr:tickspermin() * size / TimingConst.SAMPLE_MIN_SPEED
+    --item.ticks = tmr:tickspermin() * size / rate + 100
     local irounds = size / config.imotor.volumperround
     self.isamplerounds, item.imotor.rounds = irounds, irounds
 
-    self.teststart = tmr.systicks()
+    self.teststart = tmr:systicks()
     self.ref1 = TimingConst.MEASURE_Testing     -- set state to testing
     self.ref2 = 0                               -- set step to 0
     subwork:stateset(self.stateTo, self.ref1, self.ref2)
@@ -829,9 +829,9 @@ local TIMING_SUB_AbsSampleAcquisition = {
       self.shadowCall = function (self)
         return {
           beginhook = function (self, item)
-            local runrounds = motor.status(TimingConst.IMOTOR)
+            local void, runrounds = motor:status(TimingConst.IMOTOR)
             local remainrounds = self.isamplerounds - runrounds
-            item.ticks = remainrounds * tmr.tickspermin() / config.imotor.drainomega
+            item.ticks = remainrounds * tmr:tickspermin() / config.imotor.drainomega
             item.imotor.rounds = remainrounds
             self.ref1 = TimingConst.MEASURE_Resetting     -- set state to resetting
             self.ref2 = 0                                 -- set step to 0
@@ -879,7 +879,7 @@ local TIMING_SUB_AbsSampleAcquisition = {
       else
         t = 2 * math.sqrt(r * 60 / alpha)
       end
-      item.ticks = t * tmr.tickspersec()
+      item.ticks = t * tmr:tickspersec()
     else
       item.ticks = 100
       item.imotor.op = TimingConst.MOTOR_STOP
@@ -899,7 +899,7 @@ local TIMING_SUB_NoAbsSampleAcquisition = {
     self.ref1 = TimingConst.MEASURE_Boosting    -- set state to boosting
     self.ref2 = TimingConst.BOOSTING_Step1      -- set step to step1
     self.idr  = 0
-    local hasAutoSampler, rounds = subwork:samplerounds()
+    local void, hasAutoSampler, rounds = subwork:samplerounds()
     if hasAutoSampler then 
       item.smotor.rounds = rounds
     else 
@@ -924,11 +924,11 @@ local TIMING_SUB_NoAbsSampleAcquisition = {
 --0x03 吸入样本
   {
   beginhook = function (self, item)
-    local size = subwork:sampleinfo()
+    local void, size = subwork:sampleinfo()
     local extsize = config.compensation[TimingConst.TEST_IS_NOABS].size
     local omega = math.abs(item.imotor.omega)
-    --local extticks = omega / item.imotor.alpha * 2 * tmr.tickspersec() + 20
-    --item.ticks = (size + extsize) * (tmr.tickspermin()/config.imotor.volumperround)/omega + extticks;
+    --local extticks = omega / item.imotor.alpha * 2 * tmr:tickspersec() + 20
+    --item.ticks = (size + extsize) * (tmr:tickspermin()/config.imotor.volumperround)/omega + extticks;
     item.imotor.rounds = (size + extsize)/config.imotor.volumperround
     self.idr = self.idr + PULL * item.imotor.rounds
   end,
@@ -939,7 +939,7 @@ local TIMING_SUB_NoAbsSampleAcquisition = {
 --0x04 外置样本针上行
   {
   beginhook = function (self, item)
-    local hasAutoSampler, rounds = subwork:samplerounds()
+    local void, hasAutoSampler, rounds = subwork:samplerounds()
     if hasAutoSampler then 
       item.smotor.rounds = rounds - 0.4
     else 
@@ -987,7 +987,7 @@ local TIMING_SUB_NoAbsSampleAcquisition = {
     else
       t = 2 * math.sqrt(r * 60 / alpha)
     end
-    item.ticks = t * tmr.tickspersec() + 10
+    item.ticks = t * tmr:tickspersec() + 10
 
     self.idr = self.idr + PUSH * item.imotor.rounds
   end,
@@ -1007,11 +1007,11 @@ local TIMING_SUB_NoAbsSampleAcquisition = {
 --0x09 boost后,进入流量稳定期,注射器流量与用户设定的样本流量相同
   {
   beginhook = function (self, item)
-    local _, rate = subwork:sampleinfo()
+    local void, void, rate = subwork:sampleinfo()
     local coef = config.compensation[TimingConst.TEST_IS_NOABS].coef[config.instrumenttype]
     item.imotor.omega = PUSH * rate * coef / config.imotor.volumperround
     subwork:pidcontrol(TimingConst.PID_Stop)
-    subwork:pmtreset()
+    --subwork:pmtreset()
   end,
   ticks     = 200,          -- 200ticks = 1s
   valve     = {6, 9},
@@ -1021,17 +1021,17 @@ local TIMING_SUB_NoAbsSampleAcquisition = {
 --0x0A 正式测试,开始采集数据
   {
   beginhook = function (self, item)
-    local size, rate = subwork:sampleinfo()
+    local void, size, rate = subwork:sampleinfo()
     local coef = config.compensation[TimingConst.TEST_IS_NOABS].coef[config.instrumenttype]
     self.samplesize, self.samplerate = size, rate
     item.imotor.omega = PUSH * rate * coef / config.imotor.volumperround
     size = size * coef
-    item.ticks = tmr.tickspermin() * size / TimingConst.SAMPLE_MIN_SPEED
-    --item.ticks = tmr.tickspermin() * size / rate + 100
+    item.ticks = tmr:tickspermin() * size / TimingConst.SAMPLE_MIN_SPEED
+    --item.ticks = tmr:tickspermin() * size / rate + 100
     local irounds = size / config.imotor.volumperround
     self.isamplerounds, item.imotor.rounds = irounds, irounds
 
-    self.teststart = tmr.systicks()
+    self.teststart = tmr:systicks()
     self.ref1 = TimingConst.MEASURE_Testing     -- set state to testing
     self.ref2 = 0                               -- set step to 0
     subwork:stateset(self.stateTo, self.ref1, self.ref2)
@@ -1045,9 +1045,9 @@ local TIMING_SUB_NoAbsSampleAcquisition = {
       self.shadowCall = function (self)
         return {
           beginhook = function (self, item)
-            local runrounds = motor.status(TimingConst.IMOTOR)
+            local void, runrounds = motor:status(TimingConst.IMOTOR)
             local remainrounds = self.isamplerounds - runrounds
-            item.ticks = remainrounds * tmr.tickspermin() / config.imotor.drainomega
+            item.ticks = remainrounds * tmr:tickspermin() / config.imotor.drainomega
             item.imotor.rounds = remainrounds
             self.ref1 = TimingConst.MEASURE_Resetting     -- set state to resetting
             self.ref2 = 0                                 -- set step to 0
@@ -1095,7 +1095,7 @@ local TIMING_SUB_NoAbsSampleAcquisition = {
       else
         t = 2 * math.sqrt(r * 60 / alpha)
       end
-      item.ticks = t * tmr.tickspersec()
+      item.ticks = t * tmr:tickspersec()
     else
       item.ticks = 100
       item.imotor.op = TimingConst.MOTOR_STOP

@@ -172,6 +172,7 @@
     <Compile Include="LuaInterface\ToLua.cs" />
     <Compile Include="MiniDump.cs" />
     <Compile Include="NovoCyteConfig.cs" />
+    <Compile Include="Protocols\Messages\CA8.cs" />
     <Compile Include="Protocols\Messages\C01.cs" />
     <Compile Include="Protocols\Messages\C03.cs" />
     <Compile Include="Protocols\Messages\C11.cs" />
@@ -277,9 +278,6 @@
     <None Include="LuaScript\maintain_unclog.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="LuaScript\motor.lua">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="LuaScript\novoerror.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -295,13 +293,16 @@
     <None Include="LuaScript\record_file.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="LuaScript\subwork.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="LuaScript\Test.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="LuaScript\timer.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="LuaScript\subwork.lua">
+    <None Include="LuaScript\motor.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="LuaScript\timing.lua">

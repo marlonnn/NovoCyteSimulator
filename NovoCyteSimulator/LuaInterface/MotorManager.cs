@@ -16,12 +16,14 @@ namespace NovoCyteSimulator.LuaInterface
     public class MotorManager
     {
         public static MotorManager motor;
-        private ToLua toLua;
 
         private List<Motor> motors;
+        public List<Motor> Motors
+        {
+            get { return motors; }
+        }
         public MotorManager()
         {
-            toLua = new ToLua();
             InitializeMotors();
         }
 
@@ -33,7 +35,7 @@ namespace NovoCyteSimulator.LuaInterface
             motors.Add(new Motor((int)MOTOR.PMOTOR));
         }
 
-        public static MotorManager GetMotor()
+        public static MotorManager GetMotorManager()
         {
             if (motor == null)
             {
@@ -108,6 +110,11 @@ namespace NovoCyteSimulator.LuaInterface
         public void stop(int id)
         {
             motors[id].stop();
+        }
+
+        public void reset(int id)
+        {
+            motors[id].reset();
         }
     }
 }

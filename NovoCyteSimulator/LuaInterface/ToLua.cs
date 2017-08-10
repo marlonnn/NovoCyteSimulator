@@ -151,16 +151,46 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
                 rate = value;
             }
         }
- 
+
+        private bool hasAutoSampler;
+        public bool HasAutoSampler
+        {
+            get
+            {
+                return this.hasAutoSampler;
+            }
+            set
+            {
+                this.hasAutoSampler = value;
+            }
+        }
+
+        private int lowrounds;
+
+        public int Lowrounds
+        {
+            get
+            {
+                return this.lowrounds;
+            }
+            set
+            {
+                this.lowrounds = value;
+            }
+        }
         public ToLua()
         {
-            this.stateto = (int)WorkState.WORK_STARTUP;
+            this.stateto = (int)WorkState.WORK_IDLE;
             this.subref1 = 1;
             this.subref2 = 0;
 
+            this.hasAutoSampler = false;
+            this.lowrounds = 10;
             //设置默认样本量和推样速度
             size = 100;
             rate = 100;
+
+            numclean = 0;
         }
     }
 }

@@ -74,6 +74,7 @@ namespace NovoCyteSimulator.LuaInterface
         private double totalTime;
         public Motor(int id)
         {
+            InitializeTimer();
             this.id = id;
             //电机加速度,默认值为`4800rpm/s`
             this.alpha = 4800;
@@ -159,7 +160,7 @@ namespace NovoCyteSimulator.LuaInterface
         public void run(double round, double speed)
         {
             this.totalRound = round;
-            this.constantSpeed = speed;
+            this.constantSpeed = speed < 0 ? -speed : speed;
             double time = this.constantSpeed / this.alpha;
             double constantRound = this.constantSpeed * time / 2;
             if (constantRound > round)
@@ -172,10 +173,10 @@ namespace NovoCyteSimulator.LuaInterface
             else
             {
                 //先匀加速，匀速，再匀减速运动
-                var t1 = speed / this.alpha;//匀加速时间
-                var s = speed * t1;//匀加速和匀减速的圈数
+                var t1 = this.constantSpeed / this.alpha;//匀加速时间
+                var s = this.constantSpeed * t1;//匀加速和匀减速的圈数
                 var s1 = round - s;//匀速的圈数
-                var t2 = s1 / speed;
+                var t2 = s1 / this.constantSpeed;
                 this.totalTime = 2 * t1 + t2;
                 this.motorMode = new MotorMode("Trapezpoid", 2* t1, t2);
             }
@@ -222,11 +223,23 @@ namespace NovoCyteSimulator.LuaInterface
         {
             isStop = true;
             this.timer.Enabled = false;
+            this.currentTime = 0;
+            this.speed = 0;
+            this.round = 0;
         }
 
         public bool isstop()
         {
             return isStop;
+        }
+
+        public void reset()
+        {
+            //this.timer.Enabled = false;
+            this.isStop = true;
+            this.speed = 0;
+            this.round = 0;
+            this.currentTime = 0;
         }
     }
 }

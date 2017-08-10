@@ -21,9 +21,9 @@ function work_startup:init ()                   -- startup初始化
   local ttotal = self:timecalc()
   subwork:stateset(self.stateTo, 0, 0)
   subwork:timeset(tstart, ttotal)
-  motor.config(TimingConst.SMOTOR, 256, 0.65)
-  motor.config(TimingConst.IMOTOR, 256, 0.30)
-  motor.config(TimingConst.PMOTOR,  16, 0.40)
+  motor:config(TimingConst.SMOTOR, 256, 0.65)
+  motor:config(TimingConst.IMOTOR, 256, 0.30)
+  motor:config(TimingConst.PMOTOR,  16, 0.40)
   logger:info("work startup: init, ttotal: ", ttotal)
   logger:info("StateTo: ", self.stateTo)
   subwork:print("work startup: init");
@@ -36,9 +36,9 @@ function work_startup:run ()                    -- 执行startup
 end
 
 function work_startup:quit ()                   -- 退出startup
-  motor.config(TimingConst.SMOTOR, 256, 0.65)
-  motor.config(TimingConst.IMOTOR, 256, 0.10)
-  motor.config(TimingConst.PMOTOR,  16, 0.10)
+  motor:config(TimingConst.SMOTOR, 256, 0.65)
+  motor:config(TimingConst.IMOTOR, 256, 0.10)
+  motor:config(TimingConst.PMOTOR,  16, 0.10)
   logger:info("work startup: quit")
   subwork:print("work startup: quit");
   if self.quittype ~= TimingConst.WORK_QUIT_AbortShutdown then
@@ -49,6 +49,8 @@ function work_startup:quit ()                   -- 退出startup
     self.subref1 = ref1
     self.subref2 = ref2
   end
+  subwork:print(self.stateTo);
+  subwork.FromLua.State = self.stateTo
 end
 
 function work_startup:process ()                -- startup状态下的控制流程

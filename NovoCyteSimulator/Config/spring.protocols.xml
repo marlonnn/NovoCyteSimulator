@@ -5,6 +5,7 @@
   <object name="decoders" type="System.Collections.Generic.Dictionary&lt;System.Byte, NovoCyteSimulator.Messages.CBase>">
     <constructor-arg>
       <dictionary>
+        <entry key="0xA8" value-ref="CA8" />
         <entry key="0x01" value-ref="C01" />
         <entry key="0x03" value-ref="C03" />
         <entry key="0x11" value-ref="C11" />
@@ -30,7 +31,9 @@
       </dictionary>
     </constructor-arg>
   </object>
-  
+
+  <object name="CA8" type="NovoCyteSimulator.Protocols.Messages.CA8, NovoCyteSimulator">
+  </object>
   <object name="C01" type="NovoCyteSimulator.Protocols.Messages.C01, NovoCyteSimulator">
   </object>
   <object name="C03" type="NovoCyteSimulator.Protocols.Messages.C03, NovoCyteSimulator">

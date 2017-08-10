@@ -21,9 +21,9 @@ function work_sleep:init ()
   self.sub = nil
   subwork:stateset(self.stateTo, 0, 0)
   subwork:timeset(0, 0)
-  motor.config(TimingConst.SMOTOR, 256, 0.65)
-  motor.config(TimingConst.IMOTOR, 256, 0.10)
-  motor.config(TimingConst.PMOTOR,  16, 0.10)
+  motor:config(TimingConst.SMOTOR, 256, 0.65)
+  motor:config(TimingConst.IMOTOR, 256, 0.10)
+  motor:config(TimingConst.PMOTOR,  16, 0.10)
 end
 
 function work_sleep:run ()
@@ -44,9 +44,9 @@ function work_sleep:run ()
 end
 
 function work_sleep:quit ()
-  motor.config(TimingConst.SMOTOR, 256, 0.65)
-  motor.config(TimingConst.IMOTOR, 256, 0.30)
-  motor.config(TimingConst.PMOTOR,  16, 0.40)
+  motor:config(TimingConst.SMOTOR, 256, 0.65)
+  motor:config(TimingConst.IMOTOR, 256, 0.30)
+  motor:config(TimingConst.PMOTOR,  16, 0.40)
   logger:info("work sleep: quit")
   subwork:print("work sleep: quit")
 end

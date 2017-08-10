@@ -19,6 +19,10 @@ namespace NovoCyteSimulator.Protocols.Messages
             this.message = 0x21;
         }
 
+        public delegate void UpdateCellCollectionState(int state);
+
+        public UpdateCellCollectionState UpdateCellCollectionStateHandler;
+
         public override bool Decode(byte[] buf)
         {
             if (this.Decode(message, buf, out parameter))
@@ -27,6 +31,7 @@ namespace NovoCyteSimulator.Protocols.Messages
                 SubWork.GetSubWork().ToLua.Testsel = parameter[3];
                 SubWork.GetSubWork().ToLua.Isextdata = false;
                 var StartStopCellCollection = parameter[0];
+                UpdateCellCollectionStateHandler?.Invoke(StartStopCellCollection);
                 var Version = parameter[1];
                 var CleaningTimes = parameter[2];
                 var TestSel = (Equipment.Device.TEST_Sel)parameter[3];

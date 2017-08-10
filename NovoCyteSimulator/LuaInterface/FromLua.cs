@@ -20,10 +20,17 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             }
             set
             {
-                this.state = value;
+                if (value != this.state)
+                {
+                    this.state = value;
+                    Console.WriteLine("FromLua state to:" + state);
+                    StateChangeHandler?.Invoke();
+                }
             }
         }
 
+        public delegate void StateChange();
+        public StateChange StateChangeHandler;
         //表示一级子状态
         private int ref1;
         public int Ref1
@@ -93,9 +100,35 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
                 opt = value;
             }
         }
+
+        private int testsecs;
+        public int Testsecs
+        {
+            get
+            {
+                return testsecs;
+            }
+            set
+            {
+                testsecs = value;
+            }
+        }
+
+        private int testsize;
+        public int Testsize
+        {
+            get
+            {
+                return testsize;
+            }
+            set
+            {
+                testsize = value;
+            }
+        }
         public FromLua()
         {
-
+            this.state = (int)WorkState.WORK_IDLE;
         }
     }
 }

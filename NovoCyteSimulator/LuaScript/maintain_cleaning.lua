@@ -19,7 +19,7 @@ function maintain_cleaning:init ()
   self.subCnt = 1
   self.grp = timing[self.timingName]            -- 根据时序名获得grp时序引用
   self.sub = nil
-  local tstart = tmr.systicks()
+  local tstart = tmr:systicks()
   local ttotal = self:timecalc()
   subwork:stateset(self.stateTo, self.subref1, 0)
   subwork:timeset(tstart, ttotal)

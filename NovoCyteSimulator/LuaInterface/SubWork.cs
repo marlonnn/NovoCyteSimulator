@@ -172,7 +172,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         {
             Console.WriteLine("--------->ticks:" + ticks);
             Console.WriteLine("--------->itemTicks:" + itemTicks);
-            if (ticks - itemTicks > 0 && ticks - itemTicks <= 100)
+            if (ticks - itemTicks > 0 && ticks - itemTicks <= 500)
             {
                 return true;
             }
@@ -196,6 +196,12 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             numclean = toLua.Numclean;
         }
 
+        public void testinfoset(int testsecs, int testsize)
+        {
+            fromLua.Testsecs = testsecs;
+            fromLua.Testsize = testsize;
+        }
+
         public void sampleinfo(out int size, out int rate)
         {
             size = toLua.Size;
@@ -206,6 +212,31 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         public void cellconfig()
         {
 
+        }
+
+        /// <summary>
+        /// 启动细胞参数采集
+        /// </summary>
+        /// <returns></returns>
+        public bool cellstart()
+        {
+            return true;
+        }
+
+        public void cellstop(int stopway)
+        {
+
+        }
+
+        public bool cellisstop()
+        {
+            return true;
+        }
+
+        public void samplerounds(out bool hasAutoSampler, out int lowrounds )
+        {
+            hasAutoSampler = toLua.HasAutoSampler;
+            lowrounds = toLua.Lowrounds;
         }
 
         public void Print(object obj)

@@ -104,7 +104,7 @@ function work:itemRun(item)       -- 运行时序节点
   local xmotor
   local omega
   local info
-
+  --subwork:print(motor.Motors[1]:reset())
   -- 阀控制
   info = "[VALVES]: "
   if item.valve then              -- 判断当前节点valve值是否为nil
@@ -128,7 +128,7 @@ function work:itemRun(item)       -- 运行时序节点
         error("SMOTOR missing parameter")
         end
         info = info .. string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega) -- 打印相应参数信息,有助于调试
-        motor.run(TimingConst.SMOTOR, xmotor.rounds, omega)    -- 执行run动作
+        motor:run(TimingConst.SMOTOR, xmotor.rounds, omega)    -- 执行run动作
       elseif xmotor.op == TimingConst.MOTOR_CHSPEED then-- 如果执行的是变速操作
         if xmotor.omega then
         omega = xmotor.omega
@@ -136,13 +136,13 @@ function work:itemRun(item)       -- 运行时序节点
         error("SMOTOR missing parameter")
         end
         info = info .. string.format("<CHSPEED> %.2frpm", omega)
-        motor.chspeed(TimingConst.SMOTOR, omega)        -- 执行变速动作
+        motor:chspeed(TimingConst.SMOTOR, omega)        -- 执行变速动作
       elseif xmotor.op == TimingConst.MOTOR_RESET then  -- 如果执行的是复位操作
         info = info .. "<RESET>"
-        motor.reset(TimingConst.SMOTOR)                 -- 执行复位动作
+        motor:reset(TimingConst.SMOTOR)                 -- 执行复位动作
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
-        motor.stop(TimingConst.SMOTOR)                  -- 执行停止动作
+        motor:stop(TimingConst.SMOTOR)                  -- 执行停止动作
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"
@@ -165,7 +165,7 @@ function work:itemRun(item)       -- 运行时序节点
         error("IMOTOR missing parameter")
         end
         info = info .. string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega)
-        motor.run(TimingConst.IMOTOR, xmotor.rounds, omega)    -- 执行run动作
+        motor:run(TimingConst.IMOTOR, xmotor.rounds, omega)    -- 执行run动作
       elseif xmotor.op == TimingConst.MOTOR_CHSPEED then-- 如果执行的是变速操作
         if xmotor.omega then
         omega = xmotor.omega
@@ -173,13 +173,13 @@ function work:itemRun(item)       -- 运行时序节点
         error("IMOTOR missing parameter")
         end
         info = info .. string.format("<CHSPEED> %.2frpm", omega)
-        motor.chspeed(TimingConst.IMOTOR, omega)        -- 执行变速动作
+        motor:chspeed(TimingConst.IMOTOR, omega)        -- 执行变速动作
       elseif xmotor.op == TimingConst.MOTOR_RESET then  -- 如果执行的是复位操作
         info = info .. "<RESET>"
-        motor.reset(TimingConst.IMOTOR)                 -- 执行复位动作
+        motor:reset(TimingConst.IMOTOR)                 -- 执行复位动作
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
-        motor.stop(TimingConst.IMOTOR)                  -- 执行停止动作
+        motor:stop(TimingConst.IMOTOR)                  -- 执行停止动作
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"
@@ -202,7 +202,7 @@ function work:itemRun(item)       -- 运行时序节点
         error("PMOTOR missing parameter")
         end
         info = info .. string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega)
-        motor.run(TimingConst.PMOTOR, xmotor.rounds, omega)    -- 执行run动作
+		motor:run(TimingConst.PMOTOR, xmotor.rounds, omega)    -- 执行run动作
       elseif xmotor.op == TimingConst.MOTOR_CHSPEED then-- 如果执行的是变速操作
         if xmotor.omega then
         omega = xmotor.omega
@@ -210,13 +210,13 @@ function work:itemRun(item)       -- 运行时序节点
         error("PMOTOR missing parameter")
         end
         info = info .. string.format("<CHSPEED> %.2frpm", omega)
-        motor.chspeed(TimingConst.PMOTOR, omega)        -- 执行变速动作
+        motor:chspeed(TimingConst.PMOTOR, omega)        -- 执行变速动作
       elseif xmotor.op == TimingConst.MOTOR_RESET then  -- 如果执行的是复位操作
         info = info .. "<RESET>"
-        motor.reset(TimingConst.PMOTOR)                 -- 执行复位动作
+        motor:reset(TimingConst.PMOTOR)                 -- 执行复位动作
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
-        motor.stop(TimingConst.PMOTOR)                  -- 执行停止动作
+        motor:stop(TimingConst.PMOTOR)                  -- 执行停止动作
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"
@@ -298,6 +298,7 @@ end
 
 function work:grpTimingRun()                            -- grp时序流程执行
   local grp = self.grp
+  subwork:print(grp)
   logger:info("grpTimingRun: ", grp.name)
   while self.grpIdx <= #grp do                          -- 循环grp里每一个sub时序
 	self.sub = grp[self.grpIdx]                         -- 获得当前的sub时序

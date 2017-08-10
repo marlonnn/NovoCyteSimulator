@@ -26,16 +26,16 @@ local work_measure_list = {
 }
 
 function work_measure:init ()
-  self.testsel, self.isextdata = subwork:testinfoget()
+  void, self.testsel, self.isextdata = subwork:testinfoget()
   self.timingName = work_measure_list[self.testsel]
   self.grpIdx = 1
   self.subIdx = 1
   self.grpCnt = 1
   self.subCnt = 1
   self.grp = timing[self.timingName]            -- 根据时序名获得grp时序引用
+  subwork:print("work measure init")
+  subwork:print(self.grp)
   self.sub = nil
-  logger:info("tmr-------------------->")
-  logger:info(tmr)
   local tstart = tmr:systicks()
   subwork:stateset(self.stateTo, 0, 0)
   subwork:timeset(tstart, 0)
@@ -49,7 +49,6 @@ end
 
 function work_measure:clean()
   local iscontinue = false
-
   if self.cleancnt < self.cleannums then
     self.cleancnt = self.cleancnt + 1
     if self.cleancnt == 1 then
@@ -83,8 +82,8 @@ function work_measure:clean()
 end
 
 function work_measure:awakehook()
-  local runrounds = motor.status(TimingConst.IMOTOR)
-  local testsecs = (tmr.systicks() - self.teststart) * 1000 / tmr.tickspersec()
+  local void, runrounds = motor:status(TimingConst.IMOTOR)
+  local testsecs = (tmr:systicks() - self.teststart) * 1000 / tmr:tickspersec()
   local factor = config.compensation[self.testsel].coef[config.instrumenttype]
   local testsize = runrounds * config.imotor.volumperround / factor
   --logger:warn(string.format("runrounds:%.2f, testsecs:%d, testsize:%.2f", runrounds, testsecs, testsize))
@@ -109,7 +108,7 @@ function work_measure:awakehook()
     local remainsize = remainrounds * config.imotor.volumperround
     if remainsize > 5.0 then
       self.samplerate = rate
-      motor.chspeed(TimingConst.IMOTOR, rate*factor/config.imotor.volumperround)
+      motor:chspeed(TimingConst.IMOTOR, rate*factor/config.imotor.volumperround)
     end
   end
 
@@ -125,7 +124,7 @@ function work_measure:run ()
   self:grpTimingProcess()
 
   if self.quittype == TimingConst.WORK_QUIT_Normal then
-    _, _, self.cleannums = subwork:testinfoget()
+    void, _, _, self.cleannums = subwork:testinfoget()
     while self:clean() do
       self:grpTimingProcess()
     end
@@ -142,6 +141,8 @@ function work_measure:quit ()
     self.subref1 = ref1
     self.subref2 = ref2
   end
+  subwork:print("---work measure quit---")
+  subwork.FromLua.State = self.stateTo
 end
 
 function work_measure:process ()

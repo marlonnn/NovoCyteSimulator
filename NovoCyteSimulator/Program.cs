@@ -1,4 +1,5 @@
 ﻿using LuaInterface;
+using NovoCyteSimulator.LuaInterface;
 using NovoCyteSimulator.LuaScript;
 using NovoCyteSimulator.Messages;
 using NovoCyteSimulator.Protocols;
@@ -28,11 +29,13 @@ namespace NovoCyteSimulator
             SimulatorForm simulatorForm;
             try
             {
+                //MotorManager motor = MotorManager.GetMotorManager();
+                //motor.run(2, 40, -450);
                 //Console.WriteLine("--->> C#中执行Lua脚本");
                 ////C#中执行lua脚本文件
                 //Lua lua = new Lua();
-                //lua.DoFile("LuaScript\\timer.lua");
                 //lua.DoFile("LuaScript\\subwork.lua");
+                //lua.DoFile("LuaScript\\motor.lua");
                 //lua.DoFile("LuaScript\\logtest.lua");
                 //Console.ReadKey();
 
