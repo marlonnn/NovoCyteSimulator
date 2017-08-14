@@ -74,6 +74,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             fromLua = new FromLua();
             stopwatch = new Stopwatch();
         }
+
         public static SubWork GetSubWork()
         {
             if (subwork == null)
@@ -170,8 +171,8 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
 
         private bool CompareDoubleTicks(double ticks, double itemTicks)
         {
-            Console.WriteLine("--------->ticks:" + ticks);
-            Console.WriteLine("--------->itemTicks:" + itemTicks);
+            //Console.WriteLine("--------->ticks:" + ticks);
+            //Console.WriteLine("--------->itemTicks:" + itemTicks);
             if (ticks - itemTicks > 0 && ticks - itemTicks <= 500)
             {
                 return true;
@@ -196,7 +197,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             numclean = toLua.Numclean;
         }
 
-        public void testinfoset(int testsecs, int testsize)
+        public void testinfoset(int testsecs, double testsize)
         {
             fromLua.Testsecs = testsecs;
             fromLua.Testsize = testsize;
@@ -220,17 +221,26 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         /// <returns></returns>
         public bool cellstart()
         {
+            startTime = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             return true;
+        }
+
+        private double startTime;
+        public double StartTime
+        {
+            get
+            {
+                return startTime;
+            }
         }
 
         public void cellstop(int stopway)
         {
-
         }
 
         public bool cellisstop()
         {
-            return true;
+            return false;
         }
 
         public void samplerounds(out bool hasAutoSampler, out int lowrounds )

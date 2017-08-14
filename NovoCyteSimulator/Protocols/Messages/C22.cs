@@ -89,46 +89,58 @@ namespace NovoCyteSimulator.Protocols.Messages
 
         private byte[] CreateTransferParam(int length)
         {
-            byte[] param = new byte[22 + length * 142];
+            length = 0;
+            byte[] param = new byte[3 + length * 144];
             //Y1=1表示采集的细胞数据还未传输结束
-            param[0] = y1;
+            param[0] = 0x01;
 
             //细胞数据个数
             y2 = (ushort)length;
             param[1] = (byte)y2;
             param[2] = (byte)(y2 >> 8);
 
-            for (int i = 0; i < length; i++) 
-            {
-                byte[] Temp = new byte[142];
-                //Index
-                byte[] index = BitConverter.GetBytes(Index);
-                Array.Copy(index, 0, Temp, 0, 4);
-                //Time
-                float time = GetValue("Time", Index);
-                byte[] Times = BitConverter.GetBytes(time);
-                Array.Copy(Times, 0, Temp, 4, 4);
-                //width
-                float width = GetValue("Width", Index);
-                byte[] Widths = BitConverter.GetBytes(width);
-                Array.Copy(Widths, 2, Temp, 8, 2);
-                for (int j = 0; j < 3; j++)
-                {
-                    Temp[10 + j] = 0;
-                }
-                for (int j = 0; j < 15; j++)
-                {
-                    float area = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
-                    float height = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
-                    byte[] Areas = BitConverter.GetBytes(area);
-                    Array.Copy(Areas, 0, Temp, 13 + j * 8, 4);
+            //for (int i = 0; i < length; i++) 
+            //{
+            //    byte[] Temp = new byte[144];
+            //    //Index
+            //    byte[] index = BitConverter.GetBytes(Index);
+            //    Array.Copy(index, 0, Temp, 0, 4);
+            //    //Time
+            //    float time = GetValue("Time", Index);
+            //    byte[] Times = BitConverter.GetBytes(time);
+            //    Array.Copy(Times, 0, Temp, 4, 4);
+            //    //width
+            //    float width = GetValue("Width", Index);
+            //    byte[] Widths = BitConverter.GetBytes(width);
+            //    Array.Copy(Widths, 0, Temp, 8, 4);
+            //    for (int j = 0; j < 3; j++)
+            //    {
+            //        Temp[12 + j * 4] = 0;
+            //    }
+            //    for (int j=0; j<2; j++)
+            //    {
+            //        float area = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
+            //        float height = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
+            //        byte[] Heights = BitConverter.GetBytes(height);
+            //        Array.Copy(Heights, 0, Temp, 24 + j * 4, 4);
 
-                    byte[] Heights = BitConverter.GetBytes(height);
-                    Array.Copy(Heights, 0, Temp, 17 + j * 8, 4);
-                }
-                Array.Copy(Temp, 0, param, 3 + i * 142, 142);
-                Index++;
-            }
+            //        byte[] Areas = BitConverter.GetBytes(area);
+            //        Array.Copy(Areas, 0, Temp, 28 + j * 4, 4);
+            //    }
+            //    for (int j = 0; j < 13; j++)
+            //    {
+            //        float area = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
+            //        float height = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
+
+            //        byte[] Heights = BitConverter.GetBytes(height);
+            //        Array.Copy(Heights, 0, Temp, 32 + j * 4, 4);
+
+            //        byte[] Areas = BitConverter.GetBytes(area);
+            //        Array.Copy(Areas, 0, Temp, 36 + j * 4, 4);
+            //    }
+            //    Array.Copy(Temp, 0, param, 3 + i * 144, 144);
+            //    Index++;
+            //}
 
             return param;
         }
@@ -178,25 +190,22 @@ namespace NovoCyteSimulator.Protocols.Messages
         public override byte[] Encode()
         {
             byte[] param = null;
-            if (Completed)
+            int remain = _sampleData.Data["Time"].Count - Index;
+            if (remain >= 500)
             {
-                param = new byte[2] { 0x00, 0x02};
-                return param;
+                param = CreateTransferParam(500);
+            }
+            else if (remain != 0)
+            {
+                param = CreateTransferParam(remain);
+                Index = 0;
             }
             else
             {
-                int remain = _sampleData.Data["Time"].Count - Index;
-                if (remain >= 500)
-                {
-                    param = CreateTransferParam(500);
-                }
-                else if (remain != 0)
-                {
-                    param = CreateTransferParam(remain);
-                    Index = 0;
-                }
+                param = new byte[2] { 0x00, 0x02 };
                 return this.Encode(message, param);
             }
+            return this.Encode(message, param);
         }
     }
 }

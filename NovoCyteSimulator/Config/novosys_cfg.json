@@ -119,67 +119,67 @@
           "power": 20.0 // 输出功率,单位:mW
         }
       ],
-      "LaserConfig": {
-        "LaserChannelIDDic": {
-          "nm405nm488nm640": {
-            "ChannelID": [
-              "FSC",
-              "SSC",
-              "BL1",
-              "BL2",
-              "BL3",
-              "BL4",
-              "BL5",
-              "RL1",
-              "RL2",
-              "VL1",
-              "VL2",
-              "VL3",
-              "VL4",
-              "VL5",
-              "VL6"
-            ]
-          },
-          "nm405nm561nm488": {
-            "ChannelID": [
-              "FSC",
-              "SSC",
-              "VL1",
-              "VL3",
-              "YL1",
-              "VL5",
-              "YL3",
-              "BL4",
-              "VL6",
-              "YL4",
-              "VL2",
-              "BL1",
-              "VL4",
-              "YL2",
-              "BL3"
-            ]
-          },
-          "nm488nm561nm640": {
-            "ChannelID": [
-              "FSC",
-              "SSC",
-              "BL2",
-              "YL1",
-              "BL3",
-              "YL2",
-              "BL6",
-              "YL5",
-              "RL3",
-              "YL4",
-              "RL2",
-              "BL1",
-              "BL4",
-              "YL3",
-              "RL1"
-            ]
-          }
+        "LaserConfig": {
+            "LaserChannelIDDic": {
+                "nm405nm488nm640": {
+                    "ChannelID": [
+                        "FSC",
+                        "SSC",
+                        "BL1",
+                        "BL2",
+                        "BL3",
+                        "BL4",
+                        "BL5",
+                        "RL1",
+                        "RL2",
+                        "VL1",
+                        "VL2",
+                        "VL3",
+                        "VL4",
+                        "VL5",
+                        "VL6"
+                    ]
+                },
+                "nm405nm561nm488": {
+                    "ChannelID": [
+                        "FSC",
+                        "SSC",
+                        "VL1",
+                        "VL3",
+                        "YL1",
+                        "VL5",
+                        "YL3",
+                        "BL4",
+                        "VL6",
+                        "YL4",
+                        "VL2",
+                        "BL1",
+                        "VL4",
+                        "YL2",
+                        "BL3"
+                    ]
+                },
+                "nm488nm561nm640": {
+                    "ChannelID": [
+                        "FSC",
+                        "SSC",
+                        "BL2",
+                        "YL1",
+                        "BL3",
+                        "YL2",
+                        "BL6",
+                        "YL5",
+                        "RL3",
+                        "YL4",
+                        "RL2",
+                        "BL1",
+                        "BL4",
+                        "YL3",
+                        "RL1"
+                    ]
+                }
+            }
         }
-      }
     }
   }
 }

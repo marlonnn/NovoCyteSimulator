@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace NovoCyteSimulator.LuaInterface
 {
@@ -52,103 +53,182 @@ namespace NovoCyteSimulator.LuaInterface
         private double round;
         public double Round
         {
-            get { return round; }
-            set { round = value; }
+            get
+            {
+                lock (this)
+                    return round;
+            }
+            set
+            {
+                lock (this)
+                {
+                    round = value;
+                }
+            }
         }
 
         private double totalRound;
+        public double TotalRound
+        {
+            get
+            {
+                lock (this)
+                    return totalRound;
+            }
+            set
+            {
+                lock (this)
+                {
+                    totalRound = value;
+                }
+            }
+        }
 
         //当前转速(单位:`rpm`)
         private double speed;
         public double Speed
         {
-            get { return speed; }
-            set { speed = value; }
+            get
+            {
+                lock (this)
+                    return speed;
+            }
+            set
+            {
+                lock (this)
+                {
+                    speed = value;
+                }
+            }
         }
 
         private bool isStop;
 
         private double constantSpeed;
-        private Timer timer;
+        public double ConstantSpeed
+        {
+            get
+            {
+                lock (this)
+                    return constantSpeed;
+            }
+            set
+            {
+                lock (this)
+                {
+                    constantSpeed = value;
+                }
+            }
+        }
 
         private double totalTime;
+        public double TotalTime
+        {
+            get
+            {
+                lock (this)
+                    return totalTime;
+            }
+            set
+            {
+                lock (this)
+                {
+                    totalTime = value;
+                }
+            }
+        }
         public Motor(int id)
         {
-            InitializeTimer();
             this.id = id;
             //电机加速度,默认值为`4800rpm/s`
             this.alpha = 4800;
             isStop = true;
+            InitializeTimer();
+            //InitializeMotorThread();
         }
 
-        private void InitializeTimer()
+        private void InitializeMotorThread()
         {
-            timer = new Timer();
-            timer.Interval = 100;
-            timer.Enabled = false;
-            timer.Tick += Timer_Tick;
+            motorThread = new Thread(new ThreadStart(Run));
+            motorThread.IsBackground = true;
+            //motorThread.Start();
         }
 
         private double currentTime;
-
-        private void Timer_Tick(object sender, EventArgs e)
+        public double CurrentTime
         {
-            currentTime += 0.1;
-            switch (this.motorMode.Mode)
+            get
             {
-                case "Triangle":
-                    if (currentTime - this.motorMode.AccTime > 0)
-                    {
-                        this.timer.Enabled = false;
-                        this.isStop = true;
-                        this.speed = 0;
-                        this.round = 0;
-                        currentTime = 0;
-                    }
-                    else if (currentTime < this.motorMode.AccTime / 2)//匀加速
-                    {
-                        this.isStop = false;
-                        this.speed = this.alpha * currentTime;
-                        this.round = this.speed * currentTime / 2;
-                    }
-                    else if (currentTime > this.motorMode.AccTime / 2)//匀减速
-                    {
-                        this.isStop = false;
-                        this.speed = this.alpha * this.motorMode.AccTime / 2 - (currentTime - this.motorMode.AccTime / 2) * this.alpha;
-                        this.round = 2 * this.alpha * Math.Pow((this.motorMode.AccTime / 2), 2) - this.speed * (currentTime - this.motorMode.AccTime / 2) / 2;
-                    }
-                    break;
-                case "Trapezpoid":
-                    if (currentTime - this.motorMode.AccTime - this.motorMode .ConstTime> 0)
-                    {
-                        this.timer.Enabled = false;
-                        this.isStop = true;
-                        this.speed = 0;
-                        this.round = 0;
-                        currentTime = 0;
-                    }
-                    else if (currentTime < this.motorMode.AccTime / 2)
-                    {
-                        //先匀加速
-                        this.isStop = false;
-                        this.speed = this.alpha * currentTime;
-                        this.round = this.speed * currentTime / 2;
-                    }
-                    else if (currentTime > this.motorMode.AccTime / 2 && currentTime < this.motorMode.AccTime / 2 + this.motorMode.ConstTime)
-                    {
-                        //匀速
-                        this.isStop = false;
-                        this.speed = this.constantSpeed;
-                        this.round = this.speed * this.motorMode.AccTime / 4 + this.speed * (currentTime - this.motorMode.AccTime / 2);
-                    }
-                    else if (currentTime > this.motorMode.AccTime / 2 + this.motorMode.ConstTime && currentTime < this.motorMode.AccTime + this.motorMode.ConstTime)
-                    {
-                        //匀减速
-                        this.isStop = false;
-                        this.speed = this.constantSpeed - (currentTime - this.motorMode.AccTime / 2 - this.motorMode.ConstTime) * this.alpha;
-                        this.round = this.constantSpeed * this.motorMode.AccTime / 2 + this.constantSpeed * this.motorMode.ConstTime - this.speed * (this.motorMode.AccTime + this.motorMode.ConstTime - currentTime) / 2;
-                    }
-                    break;
+                lock (this)
+                {
+                    return currentTime;
+                }
+            }
+            set
+            {
+                lock(this)
+                {
+                    this.currentTime = value;
+                }
+            }
+        }
+        private Thread motorThread;
+
+        private void Run()
+        {
+            this.Speed = this.ConstantSpeed * 600;
+            this.Round = this.ConstantSpeed * this.CurrentTime;
+            if (this.CurrentTime - this.TotalTime > 0)
+            {
+                stop();
+            }
+            this.CurrentTime += 100;
+            //Console.WriteLine("---motor id: " + id);
+            //Console.WriteLine("---time tick round: " + round);
+            //Console.WriteLine("---time tick speed: " + speed);
+        }
+
+        private System.Threading.Timer stateTimer;
+        private AutoResetEvent autoEvent;
+        private void InitializeTimer()
+        {
+            autoEvent = new AutoResetEvent(false);
+
+            Console.WriteLine("{0:h:mm:ss.fff} id: {1} Creating timer.\n",
+                              DateTime.Now, id);
+            stateTimer = new System.Threading.Timer(CheckStatus,
+                                   autoEvent, 0, 100);
+        }
+        private int invokeCount = 0;
+
+        // This method is called by the timer delegate.
+        public void CheckStatus(Object stateInfo)
+        {
+            if (!isStop)
+            {
+                AutoResetEvent autoEvent = (AutoResetEvent)stateInfo;
+                //Console.WriteLine("id: {0},  {1} Checking status {2,3}.",
+                //    id, DateTime.Now.ToString("h:mm:ss.fff"),
+                //    (++invokeCount).ToString());
+                this.Speed = this.ConstantSpeed * 600;//转/毫秒
+                this.Round = this.ConstantSpeed * this.CurrentTime / 1000;
+                //Console.WriteLine("id: {0}, Speed: {1} ", id, Speed);
+                //Console.WriteLine("id: {0}, Round: {1} ", id, Round);
+                if (this.CurrentTime - this.TotalTime > 0)
+                {
+                    // Reset the counter and signal the waiting thread.
+                    isStop = true;
+                    this.currentTime = 0;
+                    this.totalTime = 0;
+                    this.speed = 0;
+                    this.round = 0;
+                    autoEvent.Set();
+                }
+                this.CurrentTime += 100;
+            }
+            else
+            {
+                autoEvent.Set();
             }
         }
 
@@ -159,59 +239,15 @@ namespace NovoCyteSimulator.LuaInterface
         /// <param name="speed">转速,带方向(单位:`rpm`)</param>
         public void run(double round, double speed)
         {
-            this.totalRound = round;
-            this.constantSpeed = speed < 0 ? -speed : speed;
-            double time = this.constantSpeed / this.alpha;
-            double constantRound = this.constantSpeed * time / 2;
-            if (constantRound > round)
-            {
-                //未达到speed前就匀减速运动
-                var value = (4 * this.totalRound) / this.alpha;
-                this.totalTime = Math.Sqrt(value);
-                this.motorMode = new MotorMode("Triangle", this.totalTime, 0d);
-            }
-            else
-            {
-                //先匀加速，匀速，再匀减速运动
-                var t1 = this.constantSpeed / this.alpha;//匀加速时间
-                var s = this.constantSpeed * t1;//匀加速和匀减速的圈数
-                var s1 = round - s;//匀速的圈数
-                var t2 = s1 / this.constantSpeed;
-                this.totalTime = 2 * t1 + t2;
-                this.motorMode = new MotorMode("Trapezpoid", 2* t1, t2);
-            }
-
-            timer.Enabled = true;
-        }
-        private MotorMode motorMode;
-        public class MotorMode
-        {
-            private string mode;
-            public string Mode
-            {
-                get { return mode; }
-                set { mode = value; }
-            }
-            //匀加速、匀减速时间
-            private double accTime;
-            public double AccTime
-            {
-                get { return accTime; }
-                set { this.accTime = value; }
-            }
-            //匀速运动时间
-            private double constTime;
-            public double ConstTime
-            {
-                get { return constTime; }
-                set { constTime = value; }
-            }
-            public MotorMode(string mode, double accTime, double constTime)
-            {
-                this.mode = mode;
-                this.accTime = accTime;
-                this.constTime = constTime;
-            }
+            isStop = true;
+            this.TotalRound = round;
+            this.ConstantSpeed = speed < 0 ? -speed / 600 : speed / 600; //转/分 --> 转/100毫秒
+            this.TotalTime = (round / this.ConstantSpeed) * 1000;//需要运行的时间
+            this.CurrentTime = 0;
+            //Console.WriteLine("id: {0}, round:{1}, speed:{2}, totalTime:{2} ms ", id, round, TotalTime);
+            isStop = false;
+            autoEvent.WaitOne();
+            
         }
 
         public void chspeed(int newspeed)
@@ -222,8 +258,8 @@ namespace NovoCyteSimulator.LuaInterface
         public void stop()
         {
             isStop = true;
-            this.timer.Enabled = false;
             this.currentTime = 0;
+            this.totalTime = 0;
             this.speed = 0;
             this.round = 0;
         }
@@ -235,11 +271,11 @@ namespace NovoCyteSimulator.LuaInterface
 
         public void reset()
         {
-            //this.timer.Enabled = false;
             this.isStop = true;
             this.speed = 0;
             this.round = 0;
             this.currentTime = 0;
+            this.totalTime = 0;
         }
     }
 }

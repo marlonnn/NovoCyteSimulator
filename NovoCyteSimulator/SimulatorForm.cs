@@ -193,7 +193,7 @@ namespace NovoCyteSimulator
 
         private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            StopLuaThread();
+            StopUSBThread();
         }
 
         private void StartUSBThread()
@@ -210,17 +210,6 @@ namespace NovoCyteSimulator
             {
                 usbThread.Abort();
                 usbDevice.UnPlugUSB();
-            }
-        }
-
-        public void StopLuaThread()
-        {
-            try
-            {
-                luaThread.Abort();
-            }
-            catch (Exception e)
-            {
             }
         }
 
@@ -318,6 +307,11 @@ namespace NovoCyteSimulator
             SubWork subwork = SubWork.GetSubWork();
             var state = subwork.ToLua.Stateto;
             var fromState = subwork.FromLua.State;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

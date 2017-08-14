@@ -9,6 +9,12 @@ namespace NovoCyteSimulator
     public class NovoCyteConfig
     {
         public Config Config { get; set; }
+
+        //public NovoCyteConfig()
+        //{
+        //    this.Config = new Config();
+        //}
+
         public NovoCyteConfig(Config Config)
         {
             this.Config = Config;

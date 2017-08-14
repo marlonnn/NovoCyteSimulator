@@ -29,6 +29,9 @@ namespace NovoCyteSimulator
             SimulatorForm simulatorForm;
             try
             {
+                //var v = NovoCyteConfig.GetInstance().Config.LaserConfig;
+                //var vv = NovoCyteConfig.GetInstance().Config.LaserConfig.LaserChannelIDDic[Equipment.LaserType.nm405nm488nm640];
+                //var startTime = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
                 //MotorManager motor = MotorManager.GetMotorManager();
                 //motor.run(2, 40, -450);
                 //Console.WriteLine("--->> C#中执行Lua脚本");
@@ -44,7 +47,13 @@ namespace NovoCyteSimulator
                 //novoCyteSimulatorForm = SpringHelper.GetObject<NovoCyteSimulatorForm>("novoCyteSimulatorForm");
                 simulatorForm = SpringHelper.GetObject<SimulatorForm>("simulatorForm");
                 Config config = NovoCyteConfig.GetInstance().Config;
+                var vv = NovoCyteConfig.GetInstance();
+                vv.Config = new Config();
+                Equipment.LaserConfig c = new Equipment.LaserConfig();
+                vv.Config.LaserConfig = c;
+                config.LaserConfig = c;
                 simulatorForm.Config = config;
+                var s = JsonFile.GetJsonTextFromNovoCyteConfig(vv);
                 Dictionary<byte, CBase> decoders = SpringHelper.GetObject<Dictionary<System.Byte, NovoCyteSimulator.Messages.CBase>>("decoders");
                 foreach (var decoder in decoders.Values)
                 {

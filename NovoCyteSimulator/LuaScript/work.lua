@@ -143,6 +143,7 @@ function work:itemRun(item)       -- 运行时序节点
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
         motor:stop(TimingConst.SMOTOR)                  -- 执行停止动作
+		subwork:print("----work SMOTOR motor stop----")
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"
@@ -180,6 +181,7 @@ function work:itemRun(item)       -- 运行时序节点
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
         motor:stop(TimingConst.IMOTOR)                  -- 执行停止动作
+		subwork:print("----work IMOTOR motor stop----")
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"
@@ -217,6 +219,7 @@ function work:itemRun(item)       -- 运行时序节点
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
         motor:stop(TimingConst.PMOTOR)                  -- 执行停止动作
+		subwork:print("----work PMOTOR motor stop----")
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"

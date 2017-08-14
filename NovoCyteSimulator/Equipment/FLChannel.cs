@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NovoCyteSimulator.Equipment
 {
+    [Serializable]
     public class FLChannel
     {
         public List<string> ChannelID { set; get; }

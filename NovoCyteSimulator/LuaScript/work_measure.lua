@@ -83,10 +83,18 @@ end
 
 function work_measure:awakehook()
   local void, runrounds = motor:status(TimingConst.IMOTOR)
+  subwork:print("----work measure rounds----------");
+  subwork:print(runrounds);
   local testsecs = (tmr:systicks() - self.teststart) * 1000 / tmr:tickspersec()
   local factor = config.compensation[self.testsel].coef[config.instrumenttype]
   local testsize = runrounds * config.imotor.volumperround / factor
   --logger:warn(string.format("runrounds:%.2f, testsecs:%d, testsize:%.2f", runrounds, testsecs, testsize))
+  
+  subwork:print("----work measure testsecs----------");
+  subwork:print(testsecs);
+  subwork:print("----work measure testsize----------");
+  subwork:print(testsize);
+
   subwork:testinfoset(testsecs, testsize)
 
   local _, ref1 = subwork:ctrlto()

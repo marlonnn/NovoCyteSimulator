@@ -114,8 +114,8 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             }
         }
 
-        private int testsize;
-        public int Testsize
+        private double testsize;
+        public double Testsize
         {
             get
             {

@@ -21,7 +21,7 @@ namespace NovoCyteSimulator.Protocols.Messages
 
         public override byte[] Encode()
         {
-            byte[] param = new byte[8];
+            byte[] param = new byte[29];
             return this.Encode(message, param);
         }
     }
