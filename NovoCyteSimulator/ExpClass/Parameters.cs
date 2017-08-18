@@ -83,6 +83,7 @@ namespace NovoCyteSimulator.ExpClass
         }
     }
 
+    [Serializable]
     public class Parameters : List<Parameter>
     {
         public Parameter this[string paraName]

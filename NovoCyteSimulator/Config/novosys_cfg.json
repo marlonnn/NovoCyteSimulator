@@ -1,185 +1,218 @@
 {
-  "config": {
-    "SystemInfo": {
-      "CompanyName": "ACEA Biosciences, Inc.", //公司名称
-      "SystemName": "NovoCyte", //仪器名称
-      "SystemType": "3000", //仪器型号
-      "SerialNumber": "451151120437", //仪器序列号
-      "ProductionDate": "2014-10-25", //仪器生产日期
-      "FPGAFirmwareVersion": "Ver05.13.40.13", //FPGA版本
-      "SystemFirmwareVersion": "V4.7.6.10E", //System Firmware版本
-      "NIOSFirmwareVersion": "V3.14.6", //仪器NIOS-II Firmware版本号
-      "NIOSFirmwareType": "Preview", // Firmware 类型
-      "NIOSFirmwareBulidDate": "Mar 13 2017", //Nios-II Firmware编译日期
-      "HardwareVersion": "V3.4", //Hardware版本
-      "PCBVersion": "V3.3", //PCB版本号
-      "FluidTimingVersion": "V4.0.2", // 流体时序版本
-      "PCBSN": "123456789", //主板序列号
-      "PartFirmwareVersion": "V4.0.2" // 副版本号
-    },
-    "AutoSample": {
-      "ConnectStateType": 0, // 0 AutoSampler不存在; 1 NovoSampler已连接,上电; 2 AutoSampler已连接,断电; 3 NovoSampler Pro已连接,上电
-      "CompanyName": "ACEA Biosciences, Inc.", //公司名称
-      "SystemName": "NovoCyte", //仪器名称
-      "SystemType": "3000", //仪器型号
-      "SerialNumber": "451151120437", //仪器序列号
-      "ProductionDate": "2014-10-25", //仪器生产日期
-      "FirmwareVersion": "V4.7.6.10E", //Firmware版本
-      "FirmwareType": "Preview", //Firmware 类型
-      "FirmwareBuildDate": "Mar 13 2017", //Firmware编译日期
-      "HardwareVersion": "V3.4", //Hardware版本
-      "PCBVersion": "V3.4" //PCB版本号
-    },
-    "Weight": {
-      "CompanyName": "ACEA Biosciences, Inc.", //公司名称
-      "SystemName": "NovoCyte", //仪器名称
-      "SystemType": "3000", //仪器型号
-      "SerialNumber": "451151120437", //仪器序列号
-      "ProductionDate": "2014-10-25", //仪器生产日期
-      "FirmwareVersion": "V4.7.6.10E", //Firmware版本
-      "FirmwareType": "Preview", //Firmware 类型
-      "FirmwareBuildDate": "Mar 13 2017", //Firmware编译日期
-      "HardwareVersion": "V3.4", //Hardware版本
-      "PCBVersion": "V3.4" //PCB版本号
-    },
-    "Device": {
-      "SystemMainWorkMode": 8, //仪器所处工作模式
-      "SystemWorkModeIntervalDic": {
-        "Power Up Init": 1,
-        "Idle": 2,
-        "Testing": 3,
-        "Flow Maintenance": 4,
-        "Debug": 5,
-        "Error Handle": 6,
-        "Motor Running": 7,
-        "Sleep": 8,
-        "Shut Down": 9,
-        "First Priming": 10,
-        "Drain": 11,
-        "Sleep Enter": 12,
-        "Sleep Quit": 13,
-        "Decontamination": 14
-      },
-      "SystemFunctionDic": {
-        "Has_Query": true,
-        "Has_FT": true,
-        "Mod1us": true,
-        "Has_AdjustThresholdRealTime": true,
-        "Has_AutoResumePressure": true,
-        "Has_Decontaminate": true,
-        "Has_FLChannelCount": true,
-        "Has_FMIPump": true,
-        "Has_HeightCheck": true,
-        "Has_PID": true,
-        "Has_ShutWithCleanSIP": true
-      },
-      "MeasState": 0, //仪器状态
-      "FlowMaintainMode": 0,
-      "WarningNumber": 0, //当前警告个数
-      "ErrorNumber": 0, //错误个数
-      "StartTime": 0, //开始测试时间(单位：ms)
-      "TestSampleSize": 0, //测试样本量(单位：uL)
-      "GravitySensorDetectionEnable": 0, //重力传感器检测是否使能(0：关闭，1：开启)
-      "Ticks": 0, //流程执行的节拍数
-      "TotalTicks": 0, //总节拍数
-      "AutoSampleConnectStateType": 0, //AutoSampler联机状态
-      "QCStateType": 0, //QC状态
-      "BoostingState": 0, //子状态
-      "TestingState": 0, //子状态
-
-      "WeightType": 0, // 流体车类型
-      "pmt": { // PMT相关参数
-        "masksel": 63, // PMT选择码位,bitx对应PMTx使能,0表示未选择,1表示选择
-        //  PMT1 PMT2 PMT3 PMT4 PMT5 PMT6 PMT7 PMT8
-        "voltage": [ 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0 ] // SBoard-1 PMT电压
-      },
-      "laser": [ // laser相关配置参数
-        { // Laser 1
-          "typeis": "405nm", // 激光器类型
-          "autostart": false, // 开机是否自动出光
-          "mode": "DIGITAL", // 模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"
-          "power": 20.0 // 输出功率,单位:mW
+    "Config": {
+        "SystemInfo": {
+            "CompanyName": "ACEA Biosciences, Inc.",
+            "SystemName": "NovoCyte",
+            "SystemType": "3000",
+            "SerialNumber": "451151120437",
+            "ProductionDate": "2014-10-25",
+            "FPGAFirmwareVersion": "Ver05.13.40.13",
+            "SystemFirmwareVersion": "V4.7.6.10E",
+            "NIOSFirmwareVersion": "V3.14.6",
+            "NIOSFirmwareType": "Preview",
+            "NIOSFirmwareBulidDate": "Mar 13 2017",
+            "HardwareVersion": "V3.4",
+            "PCBVersion": "V3.3",
+            "FluidTimingVersion": "V4.0.2",
+            "PCBSN": "123456789",
+            "PartFirmwareVersion": "V4.0.2"
         },
-        { // Laser 2
-          "typeis": "488nm", // 激光器类型
-          "autostart": false, // 开机是否自动出光
-          "mode": "DIGITAL", // 模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"
-          "power": 20.0 // 输出功率,单位:mW
+        "AutoSample": {
+            "ConnectStateType": 0,
+            "CompanyName": "ACEA Biosciences, Inc.",
+            "SystemName": "NovoCyte",
+            "SystemType": "3000",
+            "SerialNumber": "451151120437",
+            "ProductionDate": "2014-10-25",
+            "FirmwareVersion": "V4.7.6.10E",
+            "FirmwareType": "Preview",
+            "FirmwareBuildDate": "Mar 13 2017",
+            "HardwareVersion": "V3.4",
+            "PCBVersion": "V3.4"
         },
-        { // Laser 3
-          "typeis": "640nm", // 激光器类型
-          "autostart": false, // 开机是否自动出光
-          "mode": "DIGITAL", // 模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"
-          "power": 20.0 // 输出功率,单位:mW
+        "Weight": {
+            "CompanyName": "ACEA Biosciences, Inc.",
+            "SystemName": "NovoCyte",
+            "SystemType": "3000",
+            "SerialNumber": "451151120437",
+            "ProductionDate": "2014-10-25",
+            "FirmwareVersion": "V4.7.6.10E",
+            "FirmwareType": "Preview",
+            "FirmwareBuildDate": "Mar 13 2017",
+            "HardwareVersion": "V3.4",
+            "PCBVersion": "V3.4"
         },
-        { // Laser 4
-          "typeis": "561nm", // 激光器类型
-          "autostart": false, // 开机是否自动出光
-          "mode": "DIGITAL", // 模式,取值为"CWC"、"CWP"、"DIGITAL"、"ANALOG"、"MIXED"
-          "power": 20.0 // 输出功率,单位:mW
-        }
-      ],
-        "LaserConfig": {
-            "LaserChannelIDDic": {
-                "nm405nm488nm640": {
-                    "ChannelID": [
-                        "FSC",
-                        "SSC",
-                        "BL1",
-                        "BL2",
-                        "BL3",
-                        "BL4",
-                        "BL5",
-                        "RL1",
-                        "RL2",
-                        "VL1",
-                        "VL2",
-                        "VL3",
-                        "VL4",
-                        "VL5",
-                        "VL6"
-                    ]
+        "Device": {
+            "SystemMainWorkMode": 8,
+            "SystemWorkModeIntervalDic": {
+                "Power Up Init": 1,
+                "Idle": 2,
+                "Testing": 3,
+                "Flow Maintenance": 4,
+                "Debug": 5,
+                "Error Handle": 6,
+                "Motor Running": 7,
+                "Sleep": 8,
+                "Shut Down": 9,
+                "First Priming": 10,
+                "Drain": 11,
+                "Sleep Enter": 12,
+                "Sleep Quit": 13,
+                "Decontamination": 14
+            },
+            "SystemFunctionDic": {
+                "Has_Query": true,
+                "Has_FT": true,
+                "Mod1us": true,
+                "Has_AdjustThresholdRealTime": true,
+                "Has_AutoResumePressure": true,
+                "Has_Decontaminate": true,
+                "Has_FLChannelCount": true,
+                "Has_FMIPump": true,
+                "Has_HeightCheck": true,
+                "Has_PID": true,
+                "Has_ShutWithCleanSIP": true
+            },
+            "MeasState": 0,
+            "FlowMaintainMode": 0,
+            "WarningNumber": 0,
+            "ErrorNumber": 0,
+            "StartTime": 0,
+            "TestSampleSize": 0.0,
+            "GravitySensorDetectionEnable": 0,
+            "Ticks": 0,
+            "TotalTicks": 0,
+            "AutoSampleConnectStateType": 0,
+            "QCStateType": 0,
+            "BoostingState": 0,
+            "TestingState": 0,
+            "WeightType": 0,
+            "PMT": {
+                "MaskSel": 63,
+                "Voltage": [
+                    5.0,
+                    5.0,
+                    5.0,
+                    5.0,
+                    5.0,
+                    5.0,
+                    5.0,
+                    5.0
+                ]
+            },
+            "Laser": [
+                {
+                    "Typeis": "405nm",
+                    "AutoStart": false,
+                    "Mode": "DIGITAL",
+                    "Power": 20.0
                 },
-                "nm405nm561nm488": {
-                    "ChannelID": [
-                        "FSC",
-                        "SSC",
-                        "VL1",
-                        "VL3",
-                        "YL1",
-                        "VL5",
-                        "YL3",
-                        "BL4",
-                        "VL6",
-                        "YL4",
-                        "VL2",
-                        "BL1",
-                        "VL4",
-                        "YL2",
-                        "BL3"
-                    ]
+                {
+                    "Typeis": "488nm",
+                    "AutoStart": false,
+                    "Mode": "DIGITAL",
+                    "Power": 20.0
                 },
-                "nm488nm561nm640": {
-                    "ChannelID": [
-                        "FSC",
-                        "SSC",
-                        "BL2",
-                        "YL1",
-                        "BL3",
-                        "YL2",
-                        "BL6",
-                        "YL5",
-                        "RL3",
-                        "YL4",
-                        "RL2",
-                        "BL1",
-                        "BL4",
-                        "YL3",
-                        "RL1"
-                    ]
+                {
+                    "Typeis": "640nm",
+                    "AutoStart": false,
+                    "Mode": "DIGITAL",
+                    "Power": 20.0
+                },
+                {
+                    "Typeis": "561nm",
+                    "AutoStart": false,
+                    "Mode": "DIGITAL",
+                    "Power": 20.0
                 }
+            ],
+            "Cell": null
+        },
+        "CytometerInfo": {
+            "PMTConfig": {
+                "PMTLayout": 2,
+                "List": [
+                    {
+                        "ID": 0,
+                        "Filter": "780/60",
+                        "Voltage": "NaN",
+                        "IsVoltageKnown": false,
+                        "DefaultVoltage": -1.0
+                    },
+                    {
+                        "ID": 1,
+                        "Filter": "675/30",
+                        "Voltage": "NaN",
+                        "IsVoltageKnown": false,
+                        "DefaultVoltage": -1.0
+                    },
+                    {
+                        "ID": 2,
+                        "Filter": "615/20",
+                        "Voltage": "NaN",
+                        "IsVoltageKnown": false,
+                        "DefaultVoltage": -1.0
+                    },
+                    {
+                        "ID": 3,
+                        "Filter": "572/28",
+                        "Voltage": "NaN",
+                        "IsVoltageKnown": false,
+                        "DefaultVoltage": -1.0
+                    },
+                    {
+                        "ID": 4,
+                        "Filter": "530/30",
+                        "Voltage": "NaN",
+                        "IsVoltageKnown": false,
+                        "DefaultVoltage": -1.0
+                    },
+                    {
+                        "ID": 5,
+                        "Filter": "445/45",
+                        "Voltage": "NaN",
+                        "IsVoltageKnown": false,
+                        "DefaultVoltage": -1.0
+                    },
+                    {
+                        "ID": -1,
+                        "Filter": "",
+                        "Voltage": "NaN",
+                        "IsVoltageKnown": false,
+                        "DefaultVoltage": -1.0
+                    },
+                    {
+                        "ID": -1,
+                        "Filter": "",
+                        "Voltage": "NaN",
+                        "IsVoltageKnown": false,
+                        "DefaultVoltage": -1.0
+                    }
+                ],
+                "Length": 8
+            },
+            "LaserConfig": {
+                "LaserInfo": [
+                    {
+                        "ID": 0,
+                        "Power": 20.0,
+                        "IsPowerKnown": true
+                    },
+                    {
+                        "ID": 1,
+                        "Power": 20.0,
+                        "IsPowerKnown": true
+                    },
+                    {
+                        "ID": 2,
+                        "Power": 20.0,
+                        "IsPowerKnown": true
+                    }
+                ],
+                "Length": 3,
+                "Is561System": false,
+                "ConfigType": 0
             }
         }
     }
-  }
 }

@@ -157,10 +157,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Equipment\AutoSample.cs" />
+    <Compile Include="Equipment\CytometerInfo.cs" />
     <Compile Include="Equipment\Device.cs" />
     <Compile Include="Equipment\FLChannel.cs" />
     <Compile Include="Equipment\LaserConfig.cs" />
+    <Compile Include="Equipment\LaserInfo.cs" />
+    <Compile Include="Equipment\PMTConfig.cs" />
+    <Compile Include="Equipment\PMTInfo.cs" />
     <Compile Include="Equipment\SystemInfo.cs" />
+    <Compile Include="Equipment\WaveLengthHelper.cs" />
     <Compile Include="Equipment\Weight.cs" />
     <Compile Include="ExpClass\Parameters.cs" />
     <Compile Include="ExpClass\SampleData.cs" />

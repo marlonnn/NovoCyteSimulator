@@ -77,7 +77,7 @@ namespace NovoCyteSimulator
         {
             InitializeMachineStatus();
             InitializeStateChangeHandler();
-            StartUSBThread();
+            //StartUSBThread();
             SetCommandHandler();
         }
 

@@ -48,6 +48,8 @@ namespace NovoCyteSimulator
 
         public Device Device { get; set; }
 
-        public LaserConfig LaserConfig { get; set; }
+        //public LaserConfig LaserConfig { get; set; }
+
+        public CytometerInfo CytometerInfo { get; set; }
     }
 }

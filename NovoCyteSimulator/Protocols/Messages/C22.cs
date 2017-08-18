@@ -1,4 +1,5 @@
-﻿using NovoCyteSimulator.ExpClass;
+﻿using NovoCyteSimulator.Equipment;
+using NovoCyteSimulator.ExpClass;
 using NovoCyteSimulator.Messages;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,6 @@ namespace NovoCyteSimulator.Protocols.Messages
 
         private byte[] CreateTransferParam(int length)
         {
-            length = 0;
             byte[] param = new byte[3 + length * 144];
             //Y1=1表示采集的细胞数据还未传输结束
             param[0] = 0x01;
@@ -99,57 +99,94 @@ namespace NovoCyteSimulator.Protocols.Messages
             param[1] = (byte)y2;
             param[2] = (byte)(y2 >> 8);
 
-            //for (int i = 0; i < length; i++) 
-            //{
-            //    byte[] Temp = new byte[144];
-            //    //Index
-            //    byte[] index = BitConverter.GetBytes(Index);
-            //    Array.Copy(index, 0, Temp, 0, 4);
-            //    //Time
-            //    float time = GetValue("Time", Index);
-            //    byte[] Times = BitConverter.GetBytes(time);
-            //    Array.Copy(Times, 0, Temp, 4, 4);
-            //    //width
-            //    float width = GetValue("Width", Index);
-            //    byte[] Widths = BitConverter.GetBytes(width);
-            //    Array.Copy(Widths, 0, Temp, 8, 4);
-            //    for (int j = 0; j < 3; j++)
-            //    {
-            //        Temp[12 + j * 4] = 0;
-            //    }
-            //    for (int j=0; j<2; j++)
-            //    {
-            //        float area = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
-            //        float height = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
-            //        byte[] Heights = BitConverter.GetBytes(height);
-            //        Array.Copy(Heights, 0, Temp, 24 + j * 4, 4);
+            for (int i = 0; i < length; i++)
+            {
+                byte[] Temp = new byte[144];
+                //Index
+                byte[] index = BitConverter.GetBytes(Index);
+                Array.Copy(index, 0, Temp, 0, 4);
+                //Time
+                float time = GetValue("Time", Index);
+                byte[] Times = BitConverter.GetBytes(time);
+                Array.Copy(Times, 0, Temp, 4, 4);
+                //width
+                float width = GetValue("Width", Index);
+                byte[] Widths = BitConverter.GetBytes(width);
+                Array.Copy(Widths, 0, Temp, 8, 4);
+                for (int j = 0; j < 3; j++)
+                {
+                    Temp[12 + j * 4] = 0;
+                }
 
-            //        byte[] Areas = BitConverter.GetBytes(area);
-            //        Array.Copy(Areas, 0, Temp, 28 + j * 4, 4);
-            //    }
-            //    for (int j = 0; j < 13; j++)
-            //    {
-            //        float area = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
-            //        float height = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
+                float fscapdArea = GetValue(string.Format("{0}{1}", "FSC", "-A"), Index);
+                float fscapdHeight = GetValue(string.Format("{0}{1}", "FSC", "-H"), Index);
 
-            //        byte[] Heights = BitConverter.GetBytes(height);
-            //        Array.Copy(Heights, 0, Temp, 32 + j * 4, 4);
+                byte[] fscHeights = BitConverter.GetBytes(fscapdHeight);
+                byte[] fscAreas = BitConverter.GetBytes(fscapdArea);
 
-            //        byte[] Areas = BitConverter.GetBytes(area);
-            //        Array.Copy(Areas, 0, Temp, 36 + j * 4, 4);
-            //    }
-            //    Array.Copy(Temp, 0, param, 3 + i * 144, 144);
-            //    Index++;
-            //}
+                Array.Copy(fscHeights, 0, Temp, 24, 4);
+                Array.Copy(fscAreas, 0, Temp, 28, 4);
+
+                float sscapdArea = GetValue(string.Format("{0}{1}", "SSC", "-A"), Index);
+                float sscapdHeight = GetValue(string.Format("{0}{1}", "SSC", "-H"), Index);
+
+                byte[] sscHeights = BitConverter.GetBytes(sscapdHeight);
+                byte[] sscAreas = BitConverter.GetBytes(sscapdArea);
+
+                Array.Copy(sscHeights, 0, Temp, 32, 4);
+                Array.Copy(sscAreas, 0, Temp, 36, 4);
+
+                for (int j = 2; j < 15; j++)
+                {
+                    float pmtArea = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
+                    float pmtHeight = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
+                    byte[] pmtHeights = BitConverter.GetBytes(pmtHeight);
+                    Array.Copy(pmtHeights, 0, Temp, 40 + j * 4, 4);
+
+                    byte[] pmtAreas = BitConverter.GetBytes(pmtArea);
+                    Array.Copy(pmtAreas, 0, Temp, 44 + j * 4, 4);
+                }
+                Array.Copy(Temp, 0, param, 3 + i * 144, 144);
+                Index++;
+            }
 
             return param;
+        }
+
+        public void Test()
+        {
+            byte[] Temp = new byte[144];
+            float fscapdArea = GetValue(string.Format("{0}{1}", "FSC", "-A"), Index);
+            float fscapdHeight = GetValue(string.Format("{0}{1}", "FSC", "-H"), Index);
+
+            byte[] fscHeights = BitConverter.GetBytes(fscapdHeight);
+            byte[] fscAreas = BitConverter.GetBytes(fscapdArea);
+
+            float sscapdArea = GetValue(string.Format("{0}{1}", "SSC", "-A"), Index);
+            float sscapdHeight = GetValue(string.Format("{0}{1}", "SSC", "-H"), Index);
+
+            byte[] sscHeights = BitConverter.GetBytes(sscapdHeight);
+            byte[] sscAreas = BitConverter.GetBytes(sscapdArea);
+
+            for (int j = 2; j < 15; j++)
+            {
+                float apdArea = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
+                float apdHeight = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
+
+                byte[] Heights = BitConverter.GetBytes(apdHeight);
+                Array.Copy(Heights, 0, Temp, 24 + j * 4, 4);
+
+                byte[] Areas = BitConverter.GetBytes(apdArea);
+                Array.Copy(Areas, 0, Temp, 28 + j * 4, 4);
+            }
         }
 
         private string GetChannel(int index)
         {
             //暂时使用405 488 640 机型
-            var channelIDs = config.LaserConfig.LaserChannelIDDic[Equipment.LaserType.nm405nm488nm640];
-            return channelIDs.ChannelID[index];
+            //var channelIDs = config.LaserConfig.LaserChannelIDDic[Equipment.LaserType.nm405nm488nm640];
+            //return channelIDs.ChannelID[index];
+            return FLChannel.GetFLChannel(config.CytometerInfo).GetPxLxChannelID(index - 2).ToString();
         }
 
         private float GetValue(string key, int index)
