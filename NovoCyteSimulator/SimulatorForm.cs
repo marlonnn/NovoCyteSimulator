@@ -1,4 +1,5 @@
 ﻿using LuaInterface;
+using NovoCyteSimulator.Equipment;
 using NovoCyteSimulator.ExpClass;
 using NovoCyteSimulator.LuaScript.LuaInterface;
 using NovoCyteSimulator.Messages;
@@ -24,8 +25,6 @@ namespace NovoCyteSimulator
 {
     public partial class SimulatorForm : Form
     {
-        private NovoCyteSimulator.ExpClass.SampleData _sampleData;
-
         private string _connectString;
 
         private Config _config;
@@ -43,6 +42,9 @@ namespace NovoCyteSimulator
 
         private Thread luaThread;
         private Thread selectStateThread;
+
+        private DBOperate dbOp;
+
         public SimulatorForm()
         {
             InitializeComponent();
@@ -77,7 +79,7 @@ namespace NovoCyteSimulator
         {
             InitializeMachineStatus();
             InitializeStateChangeHandler();
-            //StartUSBThread();
+            StartUSBThread();
             SetCommandHandler();
         }
 
@@ -234,6 +236,8 @@ namespace NovoCyteSimulator
 
         private void btnNcf_Click(object sender, EventArgs e)
         {
+            //var v = FLChannel.GetFLChannel(NovoCyteConfig.GetInstance().Config.CytometerInfo).channels;
+
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             openFileDialog1.Filter = "ncf Files(*.ncf)|*.ncf|All Files (*.*)|*.*";
             openFileDialog1.InitialDirectory = string.Format("{0}\\{1}", System.Environment.CurrentDirectory, "NCFData");
@@ -242,51 +246,79 @@ namespace NovoCyteSimulator
 
             if (res == DialogResult.OK)
             {
-                string fileName = openFileDialog1.FileName;
-                _connectString = string.Format("Data Source={0}; Version=3", fileName);
                 try
                 {
-                    SQLiteConfig.DatabaseFile = openFileDialog1.FileName;
-                    this.lbDB.Text = SQLiteConfig.DataSource;
-                    InitializeSampleData();
+                    string fileName = openFileDialog1.FileName;
+                    dbOp = DBOperate.CreateDBOperator(fileName);
+                    if (dbOp.Connect(false))
+                    {
+                        ReadSampleConfig();
+                    }
+                    if (dbOp != null && dbOp.IsOpen)
+                    {
+                        dbOp.Close(false);
+                    }
                 }
-                catch (Exception ee)
+                catch (Exception ex)
                 {
-                    LogHelper.GetLogger<SimulatorForm>().Debug(ee.Message);
+
                 }
             }
         }
 
-        private void InitializeSampleData()
+        private void ReadSampleConfig()
         {
-            using (SQLiteConnection conn = new SQLiteConnection(SQLiteConfig.DataSource))
+            string sql = "Select * from SampleConfig";
+            var table = dbOp.TryExecuteDataTable(sql, null);
+            if (table != null)
             {
-                using (SQLiteCommand cmd = new SQLiteCommand())
+                NCFData.GetData().Configs.Clear();
+                foreach (DataRow row in table.Rows)
                 {
-                    cmd.Connection = conn;
-                    conn.Open();
-                    SQLiteHelper sh = new SQLiteHelper(cmd);
-                    try
-                    {
+                    SampleConfig sample = new SampleConfig();
+                    Parameters paras = new Parameters(Convert.ToString(row["ParameterNames"]), '\t');
 
-                        string sampleConfigSql = "Select * from SampleConfig";
-                        DataTable sampleConfigDt = sh.Select(sampleConfigSql);
-                        List<object> sampleConfigs = EntityHelper.DataTableToList(sampleConfigDt, "SampleConfig");
-                        _sampleData.SetParameters(sampleConfigs);
+                    sample.SC_ID = Convert.ToInt32(row["SC_ID"]);
+                    sample.SampleName = Convert.ToString(row["SampleName"]);
 
-                        string sampleDataDataSql = string.Format(
-                            "Select Data from SampleDataData where SD_ID = {0} Order by [Order]", 2);
-                        DataTable sampleDataDataDt = sh.Select(sampleDataDataSql);
-                        List<object> sampleDataDatas = EntityHelper.DataTableToList(sampleDataDataDt, "SampleDataData");
-                        _sampleData.SetBytes(sampleDataDatas);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogHelper.GetLogger<SimulatorForm>().Error(ex.Message);
-                        LogHelper.GetLogger<SimulatorForm>().Error(ex.StackTrace);
-                    }
-                    conn.Close();
+                    sample.SampleName = Convert.ToString(row["SampleName"]);
+                    sample.Unlimited = Convert.ToBoolean(row["Unlimited"]);
+                    sample.EventsLimits = Convert.ToUInt32(row["EventsLimits"]);
+                    sample.TimeLimits = Convert.ToUInt16(row["TimeLimits"]);
+                    sample.VolumeLimits = Convert.ToUInt16(row["VolumeLimits"]);
+                    sample.GateLimits = table.Columns.Contains("GateLimits") ? Convert.ToString(row["GateLimits"]) : string.Empty;
+                    sample.FlowRateLevel = (FlowRateLevel)Convert.ToByte(row["FlowRateLevel"]);
+                    sample.CustomFlowRate = Convert.ToUInt16(row["CustomFlowRate"]);
+                    sample.PrimaryChannel = (SByte)Convert.ToByte(row["PrimaryChannel"]);
+                    sample.PrimaryThreshold = Convert.ToInt32(row["PrimaryThreshold"]);
+                    sample.SecondaryChannel = (SByte)Convert.ToByte(row["SecondaryChannel"]);
+                    sample.SecondaryThreshold = Math.Max(Convert.ToInt32(row["SecondaryThreshold"]), 10);
+                    sample.StorageGate = table.Columns.Contains("StorageGate") ? Convert.ToString(row["StorageGate"]) : string.Empty;
+
+                    if (paras.Count > 0) sample.Parameters = paras;
+
+                    ReadSampleDataData(sample, sample.SC_ID);
+                    NCFData.GetData().Configs.Add(sample);
                 }
+                //var v = NCFData.GetData().Configs[0].SampleData;
+                //C22 c22 = decoders[0x22] as C22;
+                //c22.Test();
+            }
+        }
+
+        private void ReadSampleDataData(SampleConfig sample, int sdid)
+        {
+            var reader = dbOp.TryExecuteReader(string.Format(@"Select Data from SampleDataData where SD_ID = {0} Order by [Order]", sdid), null);
+            List<byte[]> data = new List<byte[]>();
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    object o = reader.GetValue(0);
+                    if (o is DBNull) continue;
+                    data.Add((byte[])o);
+                }
+                sample.SampleData.SetBytes(data, sample.Parameters);
             }
         }
 

@@ -43,7 +43,7 @@ namespace NovoCyteSimulator.Equipment
     public class FLChannel
     {
         public static FLChannel flChannel;
-        private List<FLChannelID> channels;
+        public List<FLChannelID> channels;
         private CytometerInfo cytoInfo;
 
         public FLChannel(CytometerInfo cytoInfo)

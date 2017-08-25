@@ -104,23 +104,6 @@ namespace NovoCyteSimulator.LuaInterface
 
         private bool isStop;
 
-        private double constantSpeed;
-        public double ConstantSpeed
-        {
-            get
-            {
-                lock (this)
-                    return constantSpeed;
-            }
-            set
-            {
-                lock (this)
-                {
-                    constantSpeed = value;
-                }
-            }
-        }
-
         private double totalTime;
         public double TotalTime
         {
@@ -144,14 +127,6 @@ namespace NovoCyteSimulator.LuaInterface
             this.alpha = 4800;
             isStop = true;
             InitializeTimer();
-            //InitializeMotorThread();
-        }
-
-        private void InitializeMotorThread()
-        {
-            motorThread = new Thread(new ThreadStart(Run));
-            motorThread.IsBackground = true;
-            //motorThread.Start();
         }
 
         private double currentTime;
@@ -174,20 +149,6 @@ namespace NovoCyteSimulator.LuaInterface
         }
         private Thread motorThread;
 
-        private void Run()
-        {
-            this.Speed = this.ConstantSpeed * 600;
-            this.Round = this.ConstantSpeed * this.CurrentTime;
-            if (this.CurrentTime - this.TotalTime > 0)
-            {
-                stop();
-            }
-            this.CurrentTime += 100;
-            //Console.WriteLine("---motor id: " + id);
-            //Console.WriteLine("---time tick round: " + round);
-            //Console.WriteLine("---time tick speed: " + speed);
-        }
-
         private System.Threading.Timer stateTimer;
         private AutoResetEvent autoEvent;
         private void InitializeTimer()
@@ -199,7 +160,6 @@ namespace NovoCyteSimulator.LuaInterface
             stateTimer = new System.Threading.Timer(CheckStatus,
                                    autoEvent, 0, 100);
         }
-        private int invokeCount = 0;
 
         // This method is called by the timer delegate.
         public void CheckStatus(Object stateInfo)
@@ -210,10 +170,10 @@ namespace NovoCyteSimulator.LuaInterface
                 //Console.WriteLine("id: {0},  {1} Checking status {2,3}.",
                 //    id, DateTime.Now.ToString("h:mm:ss.fff"),
                 //    (++invokeCount).ToString());
-                this.Speed = this.ConstantSpeed * 600;//转/毫秒
-                this.Round = this.ConstantSpeed * this.CurrentTime / 1000;
-                //Console.WriteLine("id: {0}, Speed: {1} ", id, Speed);
-                //Console.WriteLine("id: {0}, Round: {1} ", id, Round);
+                //this.Speed = this.ConstantSpeed * 600;//转/毫秒
+                this.Round = this.Speed * (this.CurrentTime / (1000 * 60));
+                //Console.WriteLine("id: {0}, Speed: {1}, CurrentTime: {2} ", id, Speed, this.CurrentTime / 1000);
+                //Console.WriteLine("id: {0}, Round: {1}, CurrentTime: {2} ", id, Round, this.CurrentTime / 1000);
                 if (this.CurrentTime - this.TotalTime > 0)
                 {
                     // Reset the counter and signal the waiting thread.
@@ -241,10 +201,20 @@ namespace NovoCyteSimulator.LuaInterface
         {
             isStop = true;
             this.TotalRound = round;
-            this.ConstantSpeed = speed < 0 ? -speed / 600 : speed / 600; //转/分 --> 转/100毫秒
-            this.TotalTime = (round / this.ConstantSpeed) * 1000;//需要运行的时间
+            this.Speed = speed;
+            //转/分 --> 转/100毫秒
+            if (speed < 0)
+            {
+                this.Speed = -1 * speed;
+            }
+            else
+            {
+                this.Speed = speed;
+            }
+            //this.ConstantSpeed = speed < 0 ? -speed / 600 : speed / 600; //转/分 --> 转/100毫秒
+            this.TotalTime = (round / speed) * 60 * 1000d;//需要运行的时间 ms
             this.CurrentTime = 0;
-            //Console.WriteLine("id: {0}, round:{1}, speed:{2}, totalTime:{2} ms ", id, round, TotalTime);
+            //Console.WriteLine("id: {0}, round: {1}, speed: {2}, totalTime: {3} ms ", id, round, speed, TotalTime);
             isStop = false;
             autoEvent.WaitOne();
             
@@ -252,7 +222,16 @@ namespace NovoCyteSimulator.LuaInterface
 
         public void chspeed(int newspeed)
         {
-            //this.Speed = newspeed < 0 ? -newspeed : newspeed;
+            this.Speed = newspeed;
+            if (speed < 0)
+            {
+                this.Speed = -1 * speed;
+            }
+            else
+            {
+                this.Speed = speed;
+            }
+            this.TotalTime = (round / this.Speed) * 60 * 1000d;//需要运行的时间 ms
         }
 
         public void stop()

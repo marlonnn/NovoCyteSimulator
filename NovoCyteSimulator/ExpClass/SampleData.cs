@@ -23,46 +23,20 @@ namespace NovoCyteSimulator.ExpClass
             private set;
         }
 
-        public void SetParameters(List<object> sampleConfigs)
+        public void SetBytes(IEnumerable<byte[]> datas, Parameters Parameters)
         {
-            if (sampleConfigs != null)
-            {
-                foreach (object o in sampleConfigs)
-                {
-                    SampleConfig s = o as SampleConfig;
-                    if (s != null)
-                    {
-                        Parameters = new Parameters(s.ParameterNames, ParaNamesSeparator);
-                    }
-                }
-            }
-        }
-
-        public void SetBytes(List<object> sampleDataDatas)
-        {
-            List<byte[]> datas = new List<byte[]>();
-            if (sampleDataDatas != null)
-            {
-                foreach (object o in sampleDataDatas)
-                {
-                    SampleDataData s = o as SampleDataData;
-                    if (s != null)
-                    {
-                        datas.Add(s.Data);
-                    }
-                }
-            }
-            SetBytes(datas);
-        }
-
-        public void SetBytes(IEnumerable<byte[]> datas)
-        {
+            this.Parameters = Parameters;
             Data = new Dictionary<string, List<float>>();
 
-            foreach(Parameter para in Parameters)
+            foreach (Parameter para in Parameters)
             {
                 Data.Add(para.Name, new List<float>());
             }
+
+            //foreach (var v in FLChannel.GetFLChannel(NovoCyteConfig.GetInstance().Config.CytometerInfo).channels)
+            //{
+            //    Data.Add(v.ToString(), new List<float>());
+            //}
             int size = 4;
             long totalSize = 0;
             foreach (byte[] data in datas)
@@ -75,7 +49,7 @@ namespace NovoCyteSimulator.ExpClass
             List<float>[] values = Data.Values.ToArray();
 
             uint[] multiple = new uint[Parameters.Count];
-            for (int i=0; i<keys.Length; i++)
+            for (int i = 0; i < keys.Length; i++)
             {
                 //为了与老的软件兼容，无论节拍是5ms或1us，始终用5ms
                 multiple[i] = keys[i].ToLower() == "time" ? 5u : 1u;
@@ -98,5 +72,38 @@ namespace NovoCyteSimulator.ExpClass
                 }
             }
         }
+
+        //public void SetParameters(List<object> sampleConfigs)
+        //{
+        //    if (sampleConfigs != null)
+        //    {
+        //        foreach (object o in sampleConfigs)
+        //        {
+        //            SampleConfig s = o as SampleConfig;
+        //            if (s != null)
+        //            {
+        //                Parameters = new Parameters(s.ParameterNames, ParaNamesSeparator);
+        //            }
+        //        }
+        //    }
+        //}
+
+        //public void SetBytes(List<object> sampleDataDatas)
+        //{
+        //    List<byte[]> datas = new List<byte[]>();
+        //    if (sampleDataDatas != null)
+        //    {
+        //        foreach (object o in sampleDataDatas)
+        //        {
+        //            SampleDataData s = o as SampleDataData;
+        //            if (s != null)
+        //            {
+        //                datas.Add(s.Data);
+        //            }
+        //        }
+        //    }
+        //    SetBytes(datas);
+        //}
+
     }
 }

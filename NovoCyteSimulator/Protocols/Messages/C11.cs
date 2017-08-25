@@ -106,7 +106,7 @@ namespace NovoCyteSimulator.Protocols.Messages
             //重力传感器检测是否使能(0：关闭，1：开启)
             //byte C = novoCyteConfig.Config.Device.GravitySensorDetectionEnable;
             param[20] = config.Device.GravitySensorDetectionEnable;
-            Console.WriteLine("startTime:{0}, volum:{1}, " , time, volum);
+            //Console.WriteLine("startTime:{0}, volum:{1}, " , time, volum);
             
             //流程执行的节拍数
             byte[] t1 = new byte[4];
@@ -126,7 +126,7 @@ namespace NovoCyteSimulator.Protocols.Messages
             t2[3] = (byte)(TotalTicks >> 24);
   
             Array.Copy(t2, 0, param, 25, 4);
-            Console.WriteLine("ticks:{0}, totalTicks:{1}, " , ticks, TotalTicks);
+            //Console.WriteLine("ticks:{0}, totalTicks:{1}, " , ticks, TotalTicks);
             //AutoSampler联机状态
             param[29] = (byte)config.Device.AutoSampleConnectStateType;
 

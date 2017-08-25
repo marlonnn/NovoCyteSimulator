@@ -55,7 +55,15 @@ namespace NovoCyteSimulator
                 //novoCyteSimulatorForm = SpringHelper.GetObject<NovoCyteSimulatorForm>("novoCyteSimulatorForm");
                 simulatorForm = SpringHelper.GetObject<SimulatorForm>("simulatorForm");
                 Config config = NovoCyteConfig.GetInstance().Config;
-
+                PMTInfo[] pmtInfos = config.CytometerInfo.PMTConfig.List;
+                string[] filters = new string[pmtInfos.Length];
+                for(int i= 0; i < pmtInfos.Length; i++)
+                {
+                    filters[i] = pmtInfos[i].Filter;
+                }
+                NovoCyteConfig.GetInstance().Config.CytometerInfo.PMTConfig.Set(Equipment.Type.nm405nm488nm640, new bool[] { true, true, true, true, true, true, false, false }, 
+                    true, PMTConfig.Layout.FL16, filters);
+                var v = FLChannel.GetFLChannel(NovoCyteConfig.GetInstance().Config.CytometerInfo).channels;
                 //var v1 = FLChannel.GetFLChannel(config.CytometerInfo);
                 //var channel = FLChannel.GetFLChannel(config.CytometerInfo).GetPxLxChannelID(0);
                 //for (int i=0; i<13; i++)

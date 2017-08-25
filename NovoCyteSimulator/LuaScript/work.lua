@@ -167,6 +167,7 @@ function work:itemRun(item)       -- 运行时序节点
         end
         info = info .. string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega)
         motor:run(TimingConst.IMOTOR, xmotor.rounds, omega)    -- 执行run动作
+		subwork:print(string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega))
       elseif xmotor.op == TimingConst.MOTOR_CHSPEED then-- 如果执行的是变速操作
         if xmotor.omega then
         omega = xmotor.omega

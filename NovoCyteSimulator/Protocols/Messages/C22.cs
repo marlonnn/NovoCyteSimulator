@@ -1,6 +1,7 @@
 ﻿using NovoCyteSimulator.Equipment;
 using NovoCyteSimulator.ExpClass;
 using NovoCyteSimulator.Messages;
+using Summer.System.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace NovoCyteSimulator.Protocols.Messages
     /// </summary>
     public class C22 : CBase
     {
-        private SampleData _sampleData;
+        //private SampleData _sampleData;
 
         //表示采集的细胞数据还未传输结束
         private byte y1;
@@ -138,13 +139,25 @@ namespace NovoCyteSimulator.Protocols.Messages
 
                 for (int j = 2; j < 15; j++)
                 {
-                    float pmtArea = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
-                    float pmtHeight = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
-                    byte[] pmtHeights = BitConverter.GetBytes(pmtHeight);
-                    Array.Copy(pmtHeights, 0, Temp, 40 + j * 4, 4);
+                    string channelName = GetChannel(j);
+                    if (!string.IsNullOrEmpty(channelName))
+                    {
+                        float pmtArea = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
+                        float pmtHeight = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
+                        byte[] pmtHeights = BitConverter.GetBytes(pmtHeight);
+                        Array.Copy(pmtHeights, 0, Temp, 40 + j * 4, 4);
 
-                    byte[] pmtAreas = BitConverter.GetBytes(pmtArea);
-                    Array.Copy(pmtAreas, 0, Temp, 44 + j * 4, 4);
+                        byte[] pmtAreas = BitConverter.GetBytes(pmtArea);
+                        Array.Copy(pmtAreas, 0, Temp, 44 + j * 4, 4);
+                    }
+                    else
+                    {
+                        byte[] pmtHeights = new byte[4];
+                        Array.Copy(pmtHeights, 0, Temp, 40 + j * 4, 4);
+
+                        byte[] pmtAreas = new byte[4];
+                        Array.Copy(pmtAreas, 0, Temp, 44 + j * 4, 4);
+                    }
                 }
                 Array.Copy(Temp, 0, param, 3 + i * 144, 144);
                 Index++;
@@ -170,14 +183,26 @@ namespace NovoCyteSimulator.Protocols.Messages
 
             for (int j = 2; j < 15; j++)
             {
-                float apdArea = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
-                float apdHeight = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
+                string channelName = GetChannel(j);
+                if (!string.IsNullOrEmpty(channelName))
+                {
+                    float apdArea = GetValue(string.Format("{0}{1}", GetChannel(j), "-A"), Index);
+                    float apdHeight = GetValue(string.Format("{0}{1}", GetChannel(j), "-H"), Index);
 
-                byte[] Heights = BitConverter.GetBytes(apdHeight);
-                Array.Copy(Heights, 0, Temp, 24 + j * 4, 4);
+                    byte[] Heights = BitConverter.GetBytes(apdHeight);
+                    Array.Copy(Heights, 0, Temp, 24 + j * 4, 4);
 
-                byte[] Areas = BitConverter.GetBytes(apdArea);
-                Array.Copy(Areas, 0, Temp, 28 + j * 4, 4);
+                    byte[] Areas = BitConverter.GetBytes(apdArea);
+                    Array.Copy(Areas, 0, Temp, 28 + j * 4, 4);
+                }
+                else
+                {
+                    byte[] Heights = new byte[4];
+                    Array.Copy(Heights, 0, Temp, 24 + j * 4, 4);
+
+                    byte[] Areas = new byte[4];
+                    Array.Copy(Areas, 0, Temp, 28 + j * 4, 4);
+                }
             }
         }
 
@@ -186,12 +211,31 @@ namespace NovoCyteSimulator.Protocols.Messages
             //暂时使用405 488 640 机型
             //var channelIDs = config.LaserConfig.LaserChannelIDDic[Equipment.LaserType.nm405nm488nm640];
             //return channelIDs.ChannelID[index];
-            return FLChannel.GetFLChannel(config.CytometerInfo).GetPxLxChannelID(index - 2).ToString();
+            var chanel = FLChannel.GetFLChannel(config.CytometerInfo).GetPxLxChannelID(index - 2);
+            if (chanel == FLChannelID.NonFL)
+            {
+                return "";
+            }
+            else
+            {
+                return chanel.ToString();
+            }
         }
 
         private float GetValue(string key, int index)
         {
-            return _sampleData.Data[key][index];
+            try
+            {
+                var v = FLChannel.GetFLChannel(config.CytometerInfo).channels;
+                return NCFData.GetData().Configs[0].SampleData.Data[key][index];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(key);
+                LogHelper.GetLogger<C22>().Error(ex.Message);
+                LogHelper.GetLogger<C22>().Error(ex.StackTrace);
+                return 0;
+            }
         }
 
         private byte[] StructToBytes(Event structure)
@@ -227,10 +271,11 @@ namespace NovoCyteSimulator.Protocols.Messages
         public override byte[] Encode()
         {
             byte[] param = null;
-            int remain = _sampleData.Data["Time"].Count - Index;
-            if (remain >= 500)
+            var v = NCFData.GetData().Configs[0].SampleData.Data;
+            int remain = NCFData.GetData().Configs[0].SampleData.Data["Time"].Count - Index;
+            if (remain >= 5)
             {
-                param = CreateTransferParam(500);
+                param = CreateTransferParam(5);
             }
             else if (remain != 0)
             {
@@ -242,6 +287,8 @@ namespace NovoCyteSimulator.Protocols.Messages
                 param = new byte[2] { 0x00, 0x02 };
                 return this.Encode(message, param);
             }
+            //for test no data
+            //param = CreateTransferParam(0);
             return this.Encode(message, param);
         }
     }

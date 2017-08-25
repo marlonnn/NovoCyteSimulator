@@ -67,7 +67,7 @@
                 "Has_AdjustThresholdRealTime": true,
                 "Has_AutoResumePressure": true,
                 "Has_Decontaminate": true,
-                "Has_FLChannelCount": true,
+                "Has_FLChannelCount": false,
                 "Has_FMIPump": true,
                 "Has_HeightCheck": true,
                 "Has_PID": true,
@@ -141,21 +141,21 @@
                     },
                     {
                         "ID": 1,
-                        "Filter": "675/30",
+                        "Filter": "695/40",
                         "Voltage": "NaN",
                         "IsVoltageKnown": false,
                         "DefaultVoltage": -1.0
                     },
                     {
                         "ID": 2,
-                        "Filter": "615/20",
+                        "Filter": "660/20",
                         "Voltage": "NaN",
                         "IsVoltageKnown": false,
                         "DefaultVoltage": -1.0
                     },
                     {
                         "ID": 3,
-                        "Filter": "572/28",
+                        "Filter": "615/20",
                         "Voltage": "NaN",
                         "IsVoltageKnown": false,
                         "DefaultVoltage": -1.0

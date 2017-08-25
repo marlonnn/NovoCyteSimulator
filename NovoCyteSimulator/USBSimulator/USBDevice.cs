@@ -79,6 +79,7 @@ namespace NovoCyteSimulator.USBSimulator
                         byte[] txBytes = decoders[msgType].Encode();
                         //string readableByte = Util.StringUtil.Byte2ReadableXstring(txBytes);
                         LoopbackDev.SendData(ref txBytes[0], (uint)txBytes.Length, status, uint.MaxValue);
+                        LogHelper.GetLogger<CBase>().Debug(string.Format("发送的消息类型为：{0} 发送完成。", string.Format("0x{0:X2} ", msgType)));
                     }
                     else
                     {

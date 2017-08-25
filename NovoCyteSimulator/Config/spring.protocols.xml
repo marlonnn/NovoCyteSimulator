@@ -52,7 +52,6 @@
     <property name="_c78" ref="C78"/>
   </object>
   <object name="C22" type="NovoCyteSimulator.Protocols.Messages.C22, NovoCyteSimulator">
-    <property name="_sampleData" ref="sampleData"/>
   </object>
   <object name="C24" type="NovoCyteSimulator.Protocols.Messages.C24, NovoCyteSimulator">
     <property name="_c78" ref="C78"/>

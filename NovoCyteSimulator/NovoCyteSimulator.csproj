@@ -167,8 +167,12 @@
     <Compile Include="Equipment\SystemInfo.cs" />
     <Compile Include="Equipment\WaveLengthHelper.cs" />
     <Compile Include="Equipment\Weight.cs" />
+    <Compile Include="ExpClass\NCFData.cs" />
     <Compile Include="ExpClass\Parameters.cs" />
+    <Compile Include="ExpClass\SampleConfig.cs" />
     <Compile Include="ExpClass\SampleData.cs" />
+    <Compile Include="ExpClass\SampleGraph.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="LuaInterface\FromLua.cs" />
     <Compile Include="LuaInterface\Motor.cs" />
     <Compile Include="LuaInterface\MotorManager.cs" />
@@ -213,15 +217,12 @@
     <Compile Include="SimulatorForm.Designer.cs">
       <DependentUpon>SimulatorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SQLite\DBOperate.cs" />
     <Compile Include="SQLite\Entity\EntityHelper.cs" />
-    <Compile Include="SQLite\Entity\SampleConfig.cs" />
-    <Compile Include="SQLite\Entity\SampleData.cs" />
     <Compile Include="SQLite\Entity\SampleDataData.cs" />
-    <Compile Include="SQLite\SQLiteConfig.cs" />
-    <Compile Include="SQLite\SQLiteColumn.cs" />
-    <Compile Include="SQLite\SQLiteColumnList.cs" />
-    <Compile Include="SQLite\SQLiteHelper.cs" />
-    <Compile Include="SQLite\SQLiteTable.cs" />
+    <Compile Include="SQLite\OleDBOperate.cs" />
+    <Compile Include="SQLite\SQLiteOperate.cs" />
+    <Compile Include="SQLite\XmlOperate.cs" />
     <Compile Include="USBSimulator\USBDevice.cs" />
     <Compile Include="Util\JsonFile.cs" />
     <Compile Include="Util\StringUtil.cs" />
@@ -445,7 +446,7 @@
     <Content Include="System.Data.SQLite.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\cii-tech\TimeLapse\TimeLapse\Summer.System\Summer.System.csproj">
+    <ProjectReference Include="..\..\cii-tech\TimeLapse\TimeLapse\Summer.System\Summer.System.csproj">
       <Project>{cd89e930-b8ef-48af-9efe-d78efb313c76}</Project>
       <Name>Summer.System</Name>
     </ProjectReference>
