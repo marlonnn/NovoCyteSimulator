@@ -12,7 +12,7 @@ end
 
 function work_sleep:init ()
   logger:info("work sleep: init")
-  subwork:print("work sleep: init")
+  subwork:Print("work sleep: init")
   self.grpIdx = 1
   self.subIdx = 1
   self.grpCnt = 1
@@ -28,7 +28,7 @@ end
 
 function work_sleep:run ()
   logger:info("work sleep: run")
-  subwork:print("work sleep: run")
+  subwork:Print("work sleep: run")
   local ret
   local ctrlTo, ref1, ref2
   while true do
@@ -48,7 +48,7 @@ function work_sleep:quit ()
   motor:config(TimingConst.IMOTOR, 256, 0.30)
   motor:config(TimingConst.PMOTOR,  16, 0.40)
   logger:info("work sleep: quit")
-  subwork:print("work sleep: quit")
+  subwork:Print("work sleep: quit")
 end
 
 function work_sleep:process ()

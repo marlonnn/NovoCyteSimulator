@@ -83,10 +83,8 @@ namespace NovoCyteSimulator.Protocols.Messages
 
             //测试开始时间
             byte[] T = new byte[4];
-            //double time = (double)SubWork.GetSubWork().StartTime;
-            //double elapseTime = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds - time;
             int time = (int)SubWork.GetSubWork().FromLua.Testsecs;
-            //T = BitConverter.GetBytes(elapseTime);
+            //T = BitConverter.GetBytes(time);
             T[0] = (byte)(time);
             T[1] = (byte)(time >> 8);
             T[2] = (byte)(time >> 16);
@@ -94,39 +92,28 @@ namespace NovoCyteSimulator.Protocols.Messages
             Array.Copy(T, 0, param, 12, 4);
 
             //测试样本量
-            //byte[] V = new byte[4];
+            byte[] V = new byte[4];
             float volum = (float)SubWork.GetSubWork().FromLua.Testsize;
-            //V[0] = (byte)(volum);
-            //V[1] = (byte)(volum >> 8);
-            //V[2] = (byte)(volum >> 16);
-            //V[3] = (byte)(volum >> 24);
-            var bytes = BitConverter.GetBytes(volum);
-            Array.Copy(bytes, 0, param, 16, 4);
+            V = BitConverter.GetBytes(volum);
+            Array.Copy(V, 0, param, 16, 4);
 
             //重力传感器检测是否使能(0：关闭，1：开启)
             //byte C = novoCyteConfig.Config.Device.GravitySensorDetectionEnable;
             param[20] = config.Device.GravitySensorDetectionEnable;
-            //Console.WriteLine("startTime:{0}, volum:{1}, " , time, volum);
+            Console.WriteLine("startTime:{0}, volum:{1}, " , time, volum);
             
             //流程执行的节拍数
             byte[] t1 = new byte[4];
-            int ticks = (int)SubWork.GetSubWork().FromLua.Testsecs;
-            t1[0] = (byte)(ticks);
-            t1[1] = (byte)(ticks >> 8);
-            t1[2] = (byte)(ticks >> 16);
-            t1[3] = (byte)(ticks >> 24);
+            double ticks = SubWork.GetSubWork().FromLua.Testsecs;
+            t1 = BitConverter.GetBytes(ticks);
             Array.Copy(t1, 0, param, 21, 4);
 
             //总节拍数
             byte[] t2 = new byte[4];
-            int TotalTicks = subwork.FromLua.Ttotal;
-            t2[0] = (byte)(TotalTicks);
-            t2[1] = (byte)(TotalTicks >> 8);
-            t2[2] = (byte)(TotalTicks >> 16);
-            t2[3] = (byte)(TotalTicks >> 24);
-  
+            double TotalTicks = subwork.FromLua.Ttotal;
+            t2 = BitConverter.GetBytes(TotalTicks);
             Array.Copy(t2, 0, param, 25, 4);
-            //Console.WriteLine("ticks:{0}, totalTicks:{1}, " , ticks, TotalTicks);
+            Console.WriteLine("ticks:{0}, totalTicks:{1}, " , ticks, TotalTicks);
             //AutoSampler联机状态
             param[29] = (byte)config.Device.AutoSampleConnectStateType;
 

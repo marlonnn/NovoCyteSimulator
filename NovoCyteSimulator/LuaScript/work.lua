@@ -104,7 +104,7 @@ function work:itemRun(item)       -- 运行时序节点
   local xmotor
   local omega
   local info
-  --subwork:print(motor.Motors[1]:reset())
+  --subwork:Print(motor.Motors[1]:reset())
   -- 阀控制
   info = "[VALVES]: "
   if item.valve then              -- 判断当前节点valve值是否为nil
@@ -115,25 +115,31 @@ function work:itemRun(item)       -- 运行时序节点
     ret = valve.off()                                   -- 如果valve值为nil,则关闭所有的valve
   end
   logger:info(info)
+  subwork:Print("Vales set end")
 
   -- 样本针电机控制
   if item.smotor then                                   -- 判断时序节点中样本针电机参数是否为nil
     info = "[SMOTOR]: "
     xmotor = item.smotor
-    if type(xmotor) == "table" then                     -- 如果smotor引用的是table类型
+    --subwork:Print("smotor start")
+	--subwork:Print(xmotor)
+	if type(xmotor) == "table" then                     -- 如果smotor引用的是table类型
       if xmotor.op == TimingConst.MOTOR_RUN then        -- 如果执行的是run操作
         if xmotor.omega then
         omega = xmotor.omega
         else
         error("SMOTOR missing parameter")
+		--subwork:Print("SMOTOR missing parameter")
         end
         info = info .. string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega) -- 打印相应参数信息,有助于调试
         motor:run(TimingConst.SMOTOR, xmotor.rounds, omega)    -- 执行run动作
+		--subwork:Print(string.format("[SMOTOR]: <RUN> %.2fr, %.2frpm", xmotor.rounds, omega))
       elseif xmotor.op == TimingConst.MOTOR_CHSPEED then-- 如果执行的是变速操作
         if xmotor.omega then
         omega = xmotor.omega
         else
         error("SMOTOR missing parameter")
+		--subwork:Print("SMOTOR missing parameter")
         end
         info = info .. string.format("<CHSPEED> %.2frpm", omega)
         motor:chspeed(TimingConst.SMOTOR, omega)        -- 执行变速动作
@@ -143,7 +149,7 @@ function work:itemRun(item)       -- 运行时序节点
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
         motor:stop(TimingConst.SMOTOR)                  -- 执行停止动作
-		subwork:print("----work SMOTOR motor stop----")
+		--subwork:Print("----work SMOTOR motor stop----")
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"
@@ -153,21 +159,26 @@ function work:itemRun(item)       -- 运行时序节点
     end
     logger:info(info)
   end
+  --subwork:Print("smotor end ")
 
   -- 注射器电机控制
   if item.imotor then                                   -- 判断时序节点中注射器电机参数是否为nil
     info = "[IMOTOR]: "
     xmotor = item.imotor
-    if type(xmotor) == "table" then                     -- 如果imotor引用的是table类型
-      if xmotor.op == TimingConst.MOTOR_RUN then        -- 如果执行的是run操作
+    --subwork:Print("imotor start")
+	--subwork:Print(xmotor)
+	if type(xmotor) == "table" then                     -- 如果imotor引用的是table类型
+      subwork:Print(xmotor.op)
+	  if xmotor.op == TimingConst.MOTOR_RUN then        -- 如果执行的是run操作
         if xmotor.omega then
         omega = xmotor.omega
+	    --subwork:Print(omega)
         else
         error("IMOTOR missing parameter")
         end
         info = info .. string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega)
         motor:run(TimingConst.IMOTOR, xmotor.rounds, omega)    -- 执行run动作
-		subwork:print(string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega))
+		--subwork:Print(string.format("[IMOTOR]: <RUN> %.2fr, %.2frpm", xmotor.rounds, omega))
       elseif xmotor.op == TimingConst.MOTOR_CHSPEED then-- 如果执行的是变速操作
         if xmotor.omega then
         omega = xmotor.omega
@@ -176,13 +187,13 @@ function work:itemRun(item)       -- 运行时序节点
         end
         info = info .. string.format("<CHSPEED> %.2frpm", omega)
         motor:chspeed(TimingConst.IMOTOR, omega)        -- 执行变速动作
+		--subwork:Print(string.format("[IMOTOR]: <CHSPEED> %.2frpm", omega))
       elseif xmotor.op == TimingConst.MOTOR_RESET then  -- 如果执行的是复位操作
         info = info .. "<RESET>"
         motor:reset(TimingConst.IMOTOR)                 -- 执行复位动作
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
         motor:stop(TimingConst.IMOTOR)                  -- 执行停止动作
-		subwork:print("----work IMOTOR motor stop----")
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"
@@ -192,35 +203,43 @@ function work:itemRun(item)       -- 运行时序节点
     end
     logger:info(info)
   end
-
+  --subwork:Print("imotor end")
   -- 蠕动泵电机控制
   if item.pmotor then                                   -- 判断时序节点中蠕动泵电机参数是否为nil
     info = "[PMOTOR]: "
     xmotor = item.pmotor
+	--subwork:Print("pmotor start")
+	--subwork:Print(xmotor)
     if type(xmotor) == "table" then                     -- 如果pmotor引用的是table类型
-      if xmotor.op == TimingConst.MOTOR_RUN then        -- 如果执行的是run操作
+      --subwork:Print(xmotor.op)
+	  if xmotor.op == TimingConst.MOTOR_RUN then        -- 如果执行的是run操作
         if xmotor.omega then
         omega = xmotor.omega
+		--subwork:Print(omega)
         else
         error("PMOTOR missing parameter")
+		--subwork:Print("PMOTOR missing parameter")
         end
         info = info .. string.format("<RUN> %.2fr, %.2frpm", xmotor.rounds, omega)
 		motor:run(TimingConst.PMOTOR, xmotor.rounds, omega)    -- 执行run动作
+		--subwork:Print(string.format("[PMOTOR]: <RUN> %.2fr, %.2frpm", xmotor.rounds, omega))
       elseif xmotor.op == TimingConst.MOTOR_CHSPEED then-- 如果执行的是变速操作
         if xmotor.omega then
         omega = xmotor.omega
         else
         error("PMOTOR missing parameter")
+		--subwork:Print("PMOTOR missing parameter")
         end
         info = info .. string.format("<CHSPEED> %.2frpm", omega)
         motor:chspeed(TimingConst.PMOTOR, omega)        -- 执行变速动作
+		--subwork:Print(string.format("[PMOTOR]: <CHSPEED> %.2frpm", omega))
       elseif xmotor.op == TimingConst.MOTOR_RESET then  -- 如果执行的是复位操作
         info = info .. "<RESET>"
         motor:reset(TimingConst.PMOTOR)                 -- 执行复位动作
       elseif xmotor.op == TimingConst.MOTOR_STOP then   -- 如果执行的是停止操作
         info = info .. "<STOP>"
         motor:stop(TimingConst.PMOTOR)                  -- 执行停止动作
-		subwork:print("----work PMOTOR motor stop----")
+		--subwork:Print("----work PMOTOR motor stop----")
       end
     elseif type(xmotor) == "function" then              -- 如果smotor引用的是function类型
       info = info .. "<CALL>"
@@ -230,6 +249,7 @@ function work:itemRun(item)       -- 运行时序节点
     end
     logger:info(info)
   end
+  --subwork:Print("pmotor end")
 end
 
 function work:subTimingInit()                           -- sub时序流程控制初始化
@@ -249,7 +269,8 @@ function work:subTimingRun()                            -- sub时序流程执行
   end
   repeat
     local item = self:itemGet()                         -- 从sub时序流程中获得一个节点
-    if not item then
+    --subwork:Print(item)
+	if not item then
       self.quittype = TimingConst.WORK_QUIT_Normal
       break
     end                          -- 如果获得的节点为nil,也就是说到了时序结尾,则退出
@@ -262,15 +283,22 @@ function work:subTimingRun()                            -- sub时序流程执行
     else
     logger:info(string.format("-> idx:%3d[0x%02x], ticks:%4d", idx, idx, item.ticks))
     end
+	--subwork:Print("item run")
     self:itemRun(item)                                  -- 执行获得的节点
-    subwork:alarmstart(item.ticks)
+    --subwork:Print("item run end")
+	subwork:alarmstart(item.ticks)
+	--subwork:Print("alarm start")
     while true do
       ret = subwork:alarmwait(item.awaketicks or 100)
       if ret == TimingConst.WORK_QUIT_Abort then 
-        self.quittype = ret
+        subwork:Print("abort")
+		self.quittype = ret
         return self.quittype                            -- 若出现异常，结束当前流程
       end
-      if ret ~= TimingConst.WORK_QUIT_Wait then break end
+      if ret ~= TimingConst.WORK_QUIT_Wait then 
+	    --subwork:Print("not equal work quit wait")
+		break 
+		end
       if item.awakehook then
         ret = item.awakehook(self)
         if ret ~= TimingConst.WORK_QUIT_Wait then break end
@@ -278,9 +306,11 @@ function work:subTimingRun()                            -- sub时序流程执行
     end
     self.quittype = ret
     if item.endhook then
+	  --subwork:Print("--end hook--")
       item.endhook(self, item)
     end
     idx = idx + 1                                       -- 下一个节点
+  	--subwork:Print(ret)
   until ret ~= TimingConst.WORK_QUIT_Next
 end
 
@@ -302,7 +332,7 @@ end
 
 function work:grpTimingRun()                            -- grp时序流程执行
   local grp = self.grp
-  subwork:print(grp)
+  --subwork:Print(grp)
   logger:info("grpTimingRun: ", grp.name)
   while self.grpIdx <= #grp do                          -- 循环grp里每一个sub时序
 	self.sub = grp[self.grpIdx]                         -- 获得当前的sub时序
@@ -319,7 +349,7 @@ end
 
 function work:grpTimingQuit()                           -- grp时序流程退出
   if self.grpEndHook then self:grpEndHook() end         -- 是否需要退出回调
-  subwork:print("work: grpTimingQuit")
+  --subwork:Print("work: grpTimingQuit")
   logger:info("grpTimingQuit")
   --logger:warn("quittype: ", self.quittype)
 

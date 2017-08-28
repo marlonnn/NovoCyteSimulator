@@ -62,8 +62,12 @@ namespace NovoCyteSimulator.LuaInterface
         /// <param name="id"> 电机ID </param>
         /// <param name="round">转动总圈数(单位:`r`) </param>
         /// <param name="speed">转速,带方向(单位:`rpm`)</param>
-        public void run(int id, int round, int speed)
+        public void run(int id, double round, double speed)
         {
+            if (speed < 0)
+            {
+                speed = -1 * speed;
+            }
             motors[id].run(round, speed);
         }
 
@@ -88,9 +92,10 @@ namespace NovoCyteSimulator.LuaInterface
         /// </summary>
         /// <param name="id"></param>
         /// <param name="newspeed">新的转速,带方向(单位:`rpm`)</param>
-        public void chspeed(int id, int newspeed)
+        public void chspeed(int id, double newspeed)
         {
-            motors[id].Speed = newspeed;
+            motors[id].chspeed(newspeed);
+            //Console.WriteLine("id: {0}, change speed: {1}", id, newspeed);
         }
 
         /// <summary>

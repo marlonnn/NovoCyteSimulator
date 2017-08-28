@@ -33,8 +33,8 @@ function work_measure:init ()
   self.grpCnt = 1
   self.subCnt = 1
   self.grp = timing[self.timingName]            -- 根据时序名获得grp时序引用
-  subwork:print("work measure init")
-  subwork:print(self.grp)
+  subwork:Print("work measure init")
+  subwork:Print(self.grp)
   self.sub = nil
   local tstart = tmr:systicks()
   subwork:stateset(self.stateTo, 0, 0)
@@ -89,13 +89,14 @@ function work_measure:awakehook()
   local factor = config.compensation[self.testsel].coef[config.instrumenttype]
   local testsize = runrounds * config.imotor.volumperround / factor
   --logger:warn(string.format("runrounds:%.2f, testsecs:%d, testsize:%.2f", runrounds, testsecs, testsize))
-  subwork:print(string.format("runrounds:%.2f, testsecs:%d, testsize:%.2f", runrounds, testsecs, testsize));
+  --subwork:print(string.format("runrounds:%.2f, testsecs:%d, testsize:%.2f", runrounds, testsecs, testsize));
   --subwork:print("----work measure testsecs----------");
   --subwork:print(testsecs);
   --subwork:print("----work measure testsize----------");
   --subwork:print(testsize);
 
   subwork:testinfoset(testsecs, testsize)
+  --subwork:Print(string.format("runrounds:%.2f, testsecs:%d, testsize:%.2f", runrounds, testsecs, testsize))
 
   local _, ref1 = subwork:ctrlto()
   if subwork:cellisstop() or ref1 == 0 then
@@ -149,7 +150,7 @@ function work_measure:quit ()
     self.subref1 = ref1
     self.subref2 = ref2
   end
-  subwork:print("---work measure quit---")
+  subwork:Print("---work measure quit---")
   subwork.FromLua.State = self.stateTo
 end
 

@@ -97,7 +97,14 @@ namespace NovoCyteSimulator.LuaInterface
             {
                 lock (this)
                 {
-                    speed = value;
+                    if (value < 0)
+                    {
+                        speed = -1 * value;
+                    }
+                    else
+                    {
+                        speed = value;
+                    }
                 }
             }
         }
@@ -147,8 +154,6 @@ namespace NovoCyteSimulator.LuaInterface
                 }
             }
         }
-        private Thread motorThread;
-
         private System.Threading.Timer stateTimer;
         private AutoResetEvent autoEvent;
         private void InitializeTimer()
@@ -159,6 +164,7 @@ namespace NovoCyteSimulator.LuaInterface
                               DateTime.Now, id);
             stateTimer = new System.Threading.Timer(CheckStatus,
                                    autoEvent, 0, 100);
+            autoEvent.WaitOne();
         }
 
         // This method is called by the timer delegate.
@@ -172,8 +178,8 @@ namespace NovoCyteSimulator.LuaInterface
                 //    (++invokeCount).ToString());
                 //this.Speed = this.ConstantSpeed * 600;//转/毫秒
                 this.Round = this.Speed * (this.CurrentTime / (1000 * 60));
-                //Console.WriteLine("id: {0}, Speed: {1}, CurrentTime: {2} ", id, Speed, this.CurrentTime / 1000);
-                //Console.WriteLine("id: {0}, Round: {1}, CurrentTime: {2} ", id, Round, this.CurrentTime / 1000);
+                //Console.WriteLine("id: {0}, Speed: {1}, CurrentTime: {2} ", id, Speed, this.CurrentTime);
+                //Console.WriteLine("id: {0}, Round: {1}, CurrentTime: {2} ", id, Round, this.CurrentTime);
                 if (this.CurrentTime - this.TotalTime > 0)
                 {
                     // Reset the counter and signal the waiting thread.
@@ -202,36 +208,20 @@ namespace NovoCyteSimulator.LuaInterface
             isStop = true;
             this.TotalRound = round;
             this.Speed = speed;
-            //转/分 --> 转/100毫秒
-            if (speed < 0)
-            {
-                this.Speed = -1 * speed;
-            }
-            else
-            {
-                this.Speed = speed;
-            }
+
             //this.ConstantSpeed = speed < 0 ? -speed / 600 : speed / 600; //转/分 --> 转/100毫秒
-            this.TotalTime = (round / speed) * 60 * 1000d;//需要运行的时间 ms
+            this.TotalTime = (this.TotalRound / this.Speed) * 60 * 1000d;//需要运行的时间 ms
             this.CurrentTime = 0;
-            //Console.WriteLine("id: {0}, round: {1}, speed: {2}, totalTime: {3} ms ", id, round, speed, TotalTime);
+            Console.WriteLine("id: {0}, round: {1}, speed: {2}, totalTime: {3} ms ", id, round, speed, TotalTime);
             isStop = false;
-            autoEvent.WaitOne();
+            //autoEvent.WaitOne();
             
         }
 
-        public void chspeed(int newspeed)
+        public void chspeed(double newspeed)
         {
             this.Speed = newspeed;
-            if (speed < 0)
-            {
-                this.Speed = -1 * speed;
-            }
-            else
-            {
-                this.Speed = speed;
-            }
-            this.TotalTime = (round / this.Speed) * 60 * 1000d;//需要运行的时间 ms
+            this.TotalTime = (this.TotalRound / this.Speed) * 60 * 1000d;//需要运行的时间 ms
         }
 
         public void stop()

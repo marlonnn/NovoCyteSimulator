@@ -8,6 +8,7 @@
 --******************************************************************************
 
 require "LuaScript\\TimingConst"
+require "LuaScript\\subwork"  
 
 local TIMING_VERSION="Debug_1.1.0"
 
@@ -818,7 +819,7 @@ local TIMING_SUB_AbsSampleAcquisition = {
     self.teststart = tmr:systicks()
     self.ref1 = TimingConst.MEASURE_Testing     -- set state to testing
     self.ref2 = 0                               -- set step to 0
-    subwork:stateset(self.stateTo, self.ref1, self.ref2)
+	subwork:stateset(self.stateTo, self.ref1, self.ref2)
     self.idr = self.idr + PUSH * irounds
     item.awakehook = self.awakehook
     subwork:cellstart()

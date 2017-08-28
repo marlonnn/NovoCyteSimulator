@@ -37,8 +37,8 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
 
         private Stopwatch stopwatch;
 
-        private int itemTicks;
-        public int ItemTicks
+        private double itemTicks;
+        public double ItemTicks
         {
             get
             {
@@ -107,23 +107,24 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             fromLua.State = state;
             fromLua.Ref1 = ref1;
             fromLua.Ref2 = ref2;
+            Console.WriteLine(string.Format("state set to: {0}, sub state: {1}", fromLua.State, fromLua.Ref1));
         }
 
         // 设置流程时间,用于NovoExpress显示时间
         // tstart: 表示流程起始时刻的节拍数
         // ttotal: 表示流程执行总节拍数
-        public void timeset(int tstart, int ttotal)
+        public void timeset(double tstart, double ttotal)
         {
             fromLua.Tstart = tstart;
             fromLua.Ttotal = ttotal;
-            Console.WriteLine("--------->tstart:" + tstart);
-            Console.WriteLine("--------->Ttotal:" + ttotal);
+            Console.WriteLine(string.Format("--------->tstart: {0}, --------->ttotal: {1}" , tstart, ttotal));
         }
 
         // 启动一个alarm
         // nticks: alarm定时节拍数
-        public void alarmstart(int nticks)
+        public void alarmstart(double nticks)
         {
+            Console.WriteLine("--------->alarm start:" + nticks);
             ItemTicks = nticks;
             stopwatch.Reset();
             stopwatch.Start();
@@ -132,6 +133,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         // 关闭alarm
         public void alarmstop()
         {
+            Console.WriteLine("--------->alarm stop");
             stopwatch.Stop();
         }
 
@@ -141,16 +143,16 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         public int alarmwait(double awake)
         {
             int state = (int)WOEK_QUIT.WORK_QUIT_Wait;
+            //Console.WriteLine(string.Format("---awake time--- {0}, ---item ticks--- {1}", awake, itemTicks));
             if (awake != 0)
             {
-                Thread.Sleep((int)awake * 5);
+                Thread.Sleep(50);
                 double ticks = stopwatch.Elapsed.Ticks / 50000;
                 if (CompareDoubleTicks(ticks, itemTicks))
                 {
-                    state = (int)WOEK_QUIT.WORK_QUIT_Next;
-                    
-                    Console.WriteLine("==============work quit next=============");
                     alarmstop();
+                    state = (int)WOEK_QUIT.WORK_QUIT_Next;
+                    Console.WriteLine(string.Format("----work state: {0}", WOEK_QUIT.WORK_QUIT_Next.ToString()));
                 }
             }
             return state;
@@ -171,8 +173,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
 
         private bool CompareDoubleTicks(double ticks, double itemTicks)
         {
-            //Console.WriteLine("--------->ticks:" + ticks);
-            //Console.WriteLine("--------->itemTicks:" + itemTicks);
+            //Console.WriteLine(string.Format("--------->ticks: {0}, --------->itemTicks: {1} ", ticks, itemTicks));
             if (ticks - itemTicks > 0 && ticks - itemTicks <= 500)
             {
                 return true;
@@ -188,6 +189,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         public void pidcontrol(int opt)
         {
             fromLua.Opt = opt;
+            Console.WriteLine("---pid control---" + opt);
         }
 
         public void testinfoget(out int testsel, out bool isextdata, out int numclean)
@@ -197,7 +199,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             numclean = toLua.Numclean;
         }
 
-        public void testinfoset(int testsecs, double testsize)
+        public void testinfoset(double testsecs, double testsize)
         {
             fromLua.Testsecs = testsecs;
             fromLua.Testsize = testsize;
@@ -221,17 +223,9 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         /// <returns></returns>
         public bool cellstart()
         {
-            startTime = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            //startTime = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            Console.WriteLine("---cell start---");
             return true;
-        }
-
-        private double startTime;
-        public double StartTime
-        {
-            get
-            {
-                return startTime;
-            }
         }
 
         public void cellstop(int stopway)
@@ -253,7 +247,7 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         {
             if (obj != null)
             {
-                Console.WriteLine("------------------------->" + obj.ToString());
+                Console.WriteLine("<-----sub work print------->" + obj.ToString());
             }
             else
             {

@@ -60,8 +60,8 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
         }
 
         //表示流程起始时刻的节拍数
-        private int tstart; 
-        public int Tstart
+        private double tstart; 
+        public double Tstart
         {
             get
             {
@@ -73,8 +73,8 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             }
         }
         // 表示流程执行总节拍数
-        private int ttotal; 
-        public int Ttotal
+        private double ttotal; 
+        public double Ttotal
         {
             get
             {
@@ -101,8 +101,8 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             }
         }
 
-        private int testsecs;
-        public int Testsecs
+        private double testsecs;
+        public double Testsecs
         {
             get
             {
