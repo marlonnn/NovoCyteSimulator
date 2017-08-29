@@ -20,7 +20,8 @@ namespace NovoCyteSimulator.Protocols.Messages
             if (this.Decode(message, buf, out parameter))
             {
                 //清洗次数
-                config.Device.Cell.CleaningTimes = parameter[0];
+                var cleaningTimes = parameter[0];
+                _c78.R = 0x01;
                 _c78.M = this.message;
                 return true;
             }

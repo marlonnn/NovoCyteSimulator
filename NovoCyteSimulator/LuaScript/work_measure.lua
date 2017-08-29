@@ -33,8 +33,8 @@ function work_measure:init ()
   self.grpCnt = 1
   self.subCnt = 1
   self.grp = timing[self.timingName]            -- 根据时序名获得grp时序引用
-  subwork:Print("work measure init")
-  subwork:Print(self.grp)
+  --subwork:Print("work measure init")
+  --subwork:Print(self.grp)
   self.sub = nil
   local tstart = tmr:systicks()
   subwork:stateset(self.stateTo, 0, 0)
@@ -150,7 +150,7 @@ function work_measure:quit ()
     self.subref1 = ref1
     self.subref2 = ref2
   end
-  subwork:Print("---work measure quit---")
+  subwork:Print("work measure quit")
   subwork.FromLua.State = self.stateTo
 end
 

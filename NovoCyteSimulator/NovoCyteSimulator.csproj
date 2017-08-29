@@ -157,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Equipment\AutoSample.cs" />
+    <Compile Include="Equipment\CollectionParams.cs" />
     <Compile Include="Equipment\CytometerInfo.cs" />
     <Compile Include="Equipment\Device.cs" />
     <Compile Include="Equipment\FLChannel.cs" />

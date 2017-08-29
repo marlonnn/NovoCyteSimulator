@@ -56,10 +56,10 @@ function work_idle:run ()                   -- 执行idle
     ret = subwork:idlewait(200)
     idleduration = tmr:systicks() - tstart
     if ret == TimingConst.WORK_QUIT_Wait and idleduration >= sleeptime then       --判断仪器空闲时间长度是否达到休眠时间
-      stateTo =  TimingConst.WORK_SLEEPENTER
+	  stateTo =  TimingConst.WORK_SLEEPENTER
       break
     elseif ret ~= TimingConst.WORK_QUIT_Wait and ret ~= TimingConst.WORK_QUIT_AbortOthers then
-      ctrlTo, ref1, ref2 = subwork:ctrlto()
+      void, ctrlTo, ref1, ref2 = subwork:ctrlto()
       stateTo = ctrlTo
       self.subref1 = ref1
       self.subref2 = ref2
@@ -73,7 +73,7 @@ function work_idle:quit ()                  -- 退出idle
   motor:config(TimingConst.IMOTOR, 256, 0.30)
   motor:config(TimingConst.PMOTOR,  16, 0.40)
   logger:info("work idle: quit")
-  subwork:print(self.stateTo);
+  subwork:Print("work idle: quit");
   subwork.FromLua.State = self.stateTo
 end
 

@@ -47,7 +47,10 @@ namespace NovoCyteSimulator.LuaScript.LuaInterface
             }
             set
             {
-                this.stateto = value;
+                if (value != this.stateto)
+                {
+                    this.stateto = value;
+                }
             }
         }
         //表示下一级参数,对于`WORK_MAINTAIN`表示执行的维护流程,对于`WORK_INITPRIMING`、`WORK_DRAIN`、`WORK_DECONTAMINATION`表示执行步骤

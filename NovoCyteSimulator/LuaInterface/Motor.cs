@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NovoCyteSimulator.Equipment;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -180,7 +181,7 @@ namespace NovoCyteSimulator.LuaInterface
                 this.Round = this.Speed * (this.CurrentTime / (1000 * 60));
                 //Console.WriteLine("id: {0}, Speed: {1}, CurrentTime: {2} ", id, Speed, this.CurrentTime);
                 //Console.WriteLine("id: {0}, Round: {1}, CurrentTime: {2} ", id, Round, this.CurrentTime);
-                if (this.CurrentTime - this.TotalTime > 0)
+                if (CollectionParams.GetCollectionParams().ArrivedTime() || this.CurrentTime - this.TotalTime > 0)
                 {
                     // Reset the counter and signal the waiting thread.
                     isStop = true;

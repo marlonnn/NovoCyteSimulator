@@ -271,22 +271,44 @@ namespace NovoCyteSimulator.Protocols.Messages
         public override byte[] Encode()
         {
             byte[] param = null;
-            var v = NCFData.GetData().Configs[0].SampleData.Data;
             int remain = NCFData.GetData().Configs[0].SampleData.Data["Time"].Count - Index;
-            if (remain >= 5)
-            {
-                param = CreateTransferParam(5);
-            }
-            else if (remain != 0)
-            {
-                param = CreateTransferParam(remain);
-                Index = 0;
-            }
-            else
+            //达到测试预设时间
+            if (CollectionParams.GetCollectionParams().ArrivedTime())
             {
                 param = new byte[2] { 0x00, 0x02 };
                 return this.Encode(message, param);
             }
+            else if (CollectionParams.GetCollectionParams().ArrivedSize())
+            {
+                param = new byte[2] { 0x00, 0x04 };
+                return this.Encode(message, param);
+            }
+            else
+            {
+                if (remain >= 5)
+                {
+                    param = CreateTransferParam(5);
+                }
+                else if (remain != 0)
+                {
+                    param = CreateTransferParam(remain);
+                    Index = 0;
+                }
+            }
+            //if (remain >= 5)
+            //{
+            //    param = CreateTransferParam(5);
+            //}
+            //else if (remain != 0)
+            //{
+            //    param = CreateTransferParam(remain);
+            //    Index = 0;
+            //}
+            //else
+            //{
+            //    param = new byte[2] { 0x00, 0x02 };
+            //    return this.Encode(message, param);
+            //}
             //for test no data
             //param = CreateTransferParam(0);
             return this.Encode(message, param);

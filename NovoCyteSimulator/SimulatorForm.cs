@@ -48,7 +48,7 @@ namespace NovoCyteSimulator
         public SimulatorForm()
         {
             InitializeComponent();
-            InitializeLuaInterface();
+            //InitializeLuaInterface();
             this.Load += SimulatorForm_Load;
             this.FormClosing += SimulatorForm_FormClosing;
             this.KeyDown += SimulatorForm_KeyDown;
@@ -60,6 +60,20 @@ namespace NovoCyteSimulator
             if (e.Control == true && e.KeyCode == Keys.F7)
             {
                 viewLog(new string[] { "Simulator.log", "Simulator.transfer" });
+            }
+        }
+
+        private void StartLuaThread()
+        {
+            luaThread = new Thread(new ThreadStart(InitializeLuaInterface));
+            luaThread.Start();
+        }
+
+        private void StopLuaThread()
+        {
+            if (luaThread.IsAlive)
+            {
+                luaThread.Abort();
             }
         }
 
@@ -77,6 +91,7 @@ namespace NovoCyteSimulator
 
         private void SimulatorForm_Load(object sender, EventArgs e)
         {
+            StartLuaThread();
             InitializeMachineStatus();
             InitializeStateChangeHandler();
             StartUSBThread();
@@ -101,7 +116,7 @@ namespace NovoCyteSimulator
             C2D c2d = decoders[0x2D] as C2D;
             if (c2d != null)
             {
-                c2d.UpdateStateHandler += UpdateStateHandler;
+                c2d.UpdateStateHandler += ChangeStateToExitSleep;
             }
             C21 c21 = decoders[0x21] as C21;
             if (c21 != null)
@@ -117,7 +132,7 @@ namespace NovoCyteSimulator
                 if (state == 1)
                 {
                     //开始测试
-                    StartSelectStateThread((int)WorkState.WORK_MEASURE);
+                    ChangeState((int)WorkState.WORK_MEASURE);
                 }
                 else if (state == 0)
                 {
@@ -129,21 +144,14 @@ namespace NovoCyteSimulator
             }
         }
 
-        public void StartSelectStateThread(int state)
+        public void ChangeState(int state)
         {
-            selectStateThread = new Thread(() => SelectWorkState(state));
-            selectStateThread.IsBackground = true;
-            selectStateThread.Start();
+            SubWork.GetSubWork().ToLua.Stateto = state;
         }
 
-        public void SelectWorkState(int state)
+        private void ChangeStateToExitSleep()
         {
-            Select(state, 1, 1);
-        }
-
-        private void UpdateStateHandler()
-        {
-            StartSelectStateThread((int)WorkState.WORK_SLEEPEXIT);
+            SubWork.GetSubWork().ToLua.Stateto = (int)WorkState.WORK_SLEEPEXIT;
         }
 
         private void ComboBoxStatus_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -152,19 +160,19 @@ namespace NovoCyteSimulator
             switch (status)
             {
                 case "Start Up":
-                    StartSelectStateThread((int)WorkState.WORK_STARTUP);
+                    SubWork.GetSubWork().ToLua.Stateto = (int)WorkState.WORK_STARTUP;
                     break;
                 case "Idle":
-                    StartSelectStateThread((int)WorkState.WORK_IDLE);
+                    SubWork.GetSubWork().ToLua.Stateto = (int)WorkState.WORK_IDLE;
                     break;
                 case "Measure":
-                    StartSelectStateThread((int)WorkState.WORK_MEASURE);
+                    SubWork.GetSubWork().ToLua.Stateto = (int)WorkState.WORK_MEASURE;
                     break;
                 case "Maintain":
-                    StartSelectStateThread((int)WorkState.WORK_MAINTAIN);
+                    SubWork.GetSubWork().ToLua.Stateto = (int)WorkState.WORK_MAINTAIN;
                     break;
                 case "Sleep":
-                    StartSelectStateThread((int)WorkState.WORK_SLEEP);
+                    SubWork.GetSubWork().ToLua.Stateto = (int)WorkState.WORK_SLEEP;
                     break;
             }
         }
@@ -196,6 +204,7 @@ namespace NovoCyteSimulator
         private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopUSBThread();
+            StopLuaThread();
         }
 
         private void StartUSBThread()
@@ -236,8 +245,6 @@ namespace NovoCyteSimulator
 
         private void btnNcf_Click(object sender, EventArgs e)
         {
-            //var v = FLChannel.GetFLChannel(NovoCyteConfig.GetInstance().Config.CytometerInfo).channels;
-
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             openFileDialog1.Filter = "ncf Files(*.ncf)|*.ncf|All Files (*.*)|*.*";
             openFileDialog1.InitialDirectory = string.Format("{0}\\{1}", System.Environment.CurrentDirectory, "NCFData");
@@ -261,7 +268,8 @@ namespace NovoCyteSimulator
                 }
                 catch (Exception ex)
                 {
-
+                    LogHelper.GetLogger<SimulatorForm>().Error(ex.Message);
+                    LogHelper.GetLogger<SimulatorForm>().Error(ex.StackTrace);
                 }
             }
         }
@@ -300,9 +308,6 @@ namespace NovoCyteSimulator
                     ReadSampleDataData(sample, sample.SC_ID);
                     NCFData.GetData().Configs.Add(sample);
                 }
-                //var v = NCFData.GetData().Configs[0].SampleData;
-                //C22 c22 = decoders[0x22] as C22;
-                //c22.Test();
             }
         }
 
@@ -322,17 +327,6 @@ namespace NovoCyteSimulator
             }
         }
 
-        public void Select(int stateto, int subref1, int subref2)
-        {
-            SubWork subwork = SubWork.GetSubWork();
-            subwork.ToLua.Stateto = stateto;
-            subwork.ToLua.Subref1 = subref1;
-            subwork.ToLua.Subref2 = subref2;
-
-            LuaTable table = lua.GetTable("work");
-            LuaFunction function = (LuaFunction)table["setstate"];
-            function.Call();
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {

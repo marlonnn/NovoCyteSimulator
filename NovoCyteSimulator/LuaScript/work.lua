@@ -115,7 +115,7 @@ function work:itemRun(item)       -- 运行时序节点
     ret = valve.off()                                   -- 如果valve值为nil,则关闭所有的valve
   end
   logger:info(info)
-  subwork:Print("Vales set end")
+  --subwork:Print("Vales set end")
 
   -- 样本针电机控制
   if item.smotor then                                   -- 判断时序节点中样本针电机参数是否为nil
@@ -168,7 +168,7 @@ function work:itemRun(item)       -- 运行时序节点
     --subwork:Print("imotor start")
 	--subwork:Print(xmotor)
 	if type(xmotor) == "table" then                     -- 如果imotor引用的是table类型
-      subwork:Print(xmotor.op)
+      --subwork:Print(xmotor.op)
 	  if xmotor.op == TimingConst.MOTOR_RUN then        -- 如果执行的是run操作
         if xmotor.omega then
         omega = xmotor.omega
@@ -291,7 +291,7 @@ function work:subTimingRun()                            -- sub时序流程执行
     while true do
       ret = subwork:alarmwait(item.awaketicks or 100)
       if ret == TimingConst.WORK_QUIT_Abort then 
-        subwork:Print("abort")
+        --subwork:Print("abort")
 		self.quittype = ret
         return self.quittype                            -- 若出现异常，结束当前流程
       end
@@ -401,22 +401,22 @@ function work.Step(step, set)
 	return set * 2^16 + set 
 end
 
-function work:setstate()
-	work.stateTo = subwork.ToLua.Stateto
-	logger:info("state to: ------------------->")
-	logger:info(work.stateTo)
-	work:select()
-	return true
-end
+--function work:setstate()
+	--work.stateTo = subwork.ToLua.Stateto
+	--logger:info("state to: ------------------->")
+	--logger:info(work.stateTo)
+	--work:select()
+	--return true
+--end
 
-return work
+--return work
 
 --work.stateTo, work.subref1, work.subref2, work.isrecordnil = work_record:stateget()
 --work.stateTo, work.subref1, work.subref2 = subwork.ctrlto()
---work.stateTo = TimingConst.WORK_STARTUP
---while true do
-  --work:select()
---end
+work.stateTo = TimingConst.WORK_IDLE
+while true do
+	work:select()
+end
 
 -- work.stateTo = TimingConst.WORK_STARTUP                 -- 默认设置为开机初始化状态
 --[[

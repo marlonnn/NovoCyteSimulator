@@ -30,6 +30,7 @@ namespace NovoCyteSimulator.Protocols.Messages
                 SubWork.GetSubWork().ToLua.Numclean = parameter[2];
                 SubWork.GetSubWork().ToLua.Testsel = parameter[3];
                 SubWork.GetSubWork().ToLua.Isextdata = false;
+                SubWork.GetSubWork().workQuit = WOEK_QUIT.WORK_QUIT_Normal;
                 var StartStopCellCollection = parameter[0];
                 UpdateCellCollectionStateHandler?.Invoke(StartStopCellCollection);
                 var Version = parameter[1];

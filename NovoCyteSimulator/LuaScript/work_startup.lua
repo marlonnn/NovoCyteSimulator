@@ -49,7 +49,7 @@ function work_startup:quit ()                   -- 退出startup
     self.subref1 = ref1
     self.subref2 = ref2
   end
-  subwork:Print(self.stateTo);
+  --subwork:Print(self.stateTo);
   subwork.FromLua.State = self.stateTo
 end
 
